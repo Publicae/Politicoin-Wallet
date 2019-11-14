@@ -11,7 +11,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>publicae_ether_wallet</string>
+	<string>PBLC Wallet</string>
+	<key>CFBundleDisplayName</key>
+	<string>PBLC Wallet</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
