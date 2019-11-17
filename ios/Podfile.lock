@@ -1,6 +1,8 @@
 PODS:
   - camera (0.0.1):
     - Flutter
+  - Firebase/Analytics (6.13.0):
+    - Firebase/Core
   - Firebase/Core (6.13.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 6.1.6)
@@ -9,6 +11,10 @@ PODS:
   - Firebase/MLVision (6.13.0):
     - Firebase/CoreOnly
     - FirebaseMLVision (~> 0.19.0)
+  - firebase_analytics (0.0.1):
+    - Firebase/Analytics (~> 6.0)
+    - Firebase/Core
+    - Flutter
   - firebase_ml_vision (0.1.1):
     - Firebase/Core
     - Firebase/MLVision
@@ -118,6 +124,7 @@ PODS:
 
 DEPENDENCIES:
   - camera (from `.symlinks/plugins/camera/ios`)
+  - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_ml_vision (from `.symlinks/plugins/firebase_ml_vision/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
@@ -145,6 +152,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   camera:
     :path: ".symlinks/plugins/camera/ios"
+  firebase_analytics:
+    :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_ml_vision:
     :path: ".symlinks/plugins/firebase_ml_vision/ios"
   Flutter:
@@ -155,6 +164,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   camera: 38cc83ae9a5667bb5a71c7d9edaf60a91920fd4e
   Firebase: 458d109512200d1aca2e1b9b6cf7d68a869a4a46
+  firebase_analytics: 2f3ab38886ff9d915b076d5aae2f964dc5ce7549
   firebase_ml_vision: 9906bb7622851854989f1e37a726802102422a4d
   FirebaseAnalytics: 45f36d9c429fc91d206283900ab75390cd05ee8a
   FirebaseCore: 307ea2508df730c5865334e41965bd9ea344b0e5
