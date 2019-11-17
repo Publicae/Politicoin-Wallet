@@ -6,9 +6,14 @@ class AppConfig {
         "0x59FFB6Ea7bb59DAa2aC480D862d375F49F73915d");
 
     params['ropsten'] = AppConfigParams(
-        "https://ropsten.infura.io/v3/628074215a2449eb960b4fe9e95feb09",
-        "wss://ropsten.infura.io/ws",
-        "0x5060b60cb8Bd1C94B7ADEF4134555CDa7B45c461");
+        "https://ropsten.infura.io/v3/54db77af32da4dfbba6451be28f42c04",
+        "wss://ropsten.infura.io/ws/v3/54db77af32da4dfbba6451be28f42c04",
+        "0xd810650bd094a2eba59912ecfc07ee108699116c");
+
+    params['mainnet'] = AppConfigParams(
+        "https://mainnet.infura.io/v3/54db77af32da4dfbba6451be28f42c04",
+        "wss://mainnet.infura.io/ws/v3/54db77af32da4dfbba6451be28f42c04",
+        "0xd810650bd094a2eba59912ecfc07ee108699116c");
   }
 
   Map<String, AppConfigParams> params = Map<String, AppConfigParams>();

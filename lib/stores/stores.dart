@@ -24,7 +24,7 @@ Future<List<SingleChildCloneableWidget>> createStore(
   final configurationService = ConfigurationService(sharedPrefs);
   final addressService = AddressService(configurationService);
   final contract = await ContractParser.fromAssets(
-      'assets/TargaryenCoin.json', params.contractAddress);
+      'assets/PoliticoinToken.json', params.contractAddress);
 
   final contractService = ContractService(client, contract);
   final walletStore = WalletStore(
@@ -36,7 +36,7 @@ Future<List<SingleChildCloneableWidget>> createStore(
   final walletImportStore = WalletImportStore(walletStore, addressService);
   final walletTransferStore = WalletTransferStore(walletStore, contractService);
 
-  // intial state.
+  // initial state.
   if (configurationService.didSetupWallet()) {
     await walletStore.initialise();
   }

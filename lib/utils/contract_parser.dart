@@ -7,7 +7,7 @@ class ContractParser {
   static Future<DeployedContract> fromAssets(
       String path, String contractAddress) async {
     final contractJson =
-        jsonDecode(await rootBundle.loadString('assets/TargaryenCoin.json'));
+        jsonDecode(await rootBundle.loadString('assets/PoliticoinToken.json'));
 
     return DeployedContract(
         ContractAbi.fromJson(
