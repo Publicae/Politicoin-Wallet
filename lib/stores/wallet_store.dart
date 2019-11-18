@@ -28,6 +28,9 @@ abstract class WalletStoreBase with Store {
   BigInt ethBalance;
 
   @observable
+  BigInt ethGasPrice;
+
+  @observable
   String address;
 
   @observable
@@ -86,12 +89,10 @@ abstract class WalletStoreBase with Store {
 
   @action
   Future<void> fetchOwnBalance() async {
-    var tokenBalance = await _contractService
-        .getTokenBalance(EthereumAddress.fromHex(address));
-    var ethBalance =
-        await _contractService.getEthBalance(EthereumAddress.fromHex(address));
+    //var tokenBalance = await _contractService.getTokenBalance(EthereumAddress.fromHex(address));
+    var ethBalance = await _contractService.getEthBalance(EthereumAddress.fromHex(address));
 
-    this.tokenBalance = tokenBalance;
+    this.tokenBalance = BigInt.from(0); //tokenBalance;
     this.ethBalance = ethBalance.getInWei;
   }
 
@@ -101,5 +102,12 @@ abstract class WalletStoreBase with Store {
     await _configurationService.setupDone(false);
 
     this.transactions.clear();
+  }
+
+  @action
+  Future<void> fetchEthGasPrice() async {
+    var gasPrice = await _contractService.getEthGasPrice();
+
+    this.ethGasPrice = gasPrice.getInWei;
   }
 }

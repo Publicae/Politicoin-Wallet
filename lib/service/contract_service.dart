@@ -13,6 +13,7 @@ abstract class IContractService {
   Future<EtherAmount> getEthBalance(EthereumAddress from);
   Future<void> dispose();
   StreamSubscription listenTransfer(TransferEvent onTransfer);
+  Future<EtherAmount> getEthGasPrice();
 }
 
 class ContractService implements IContractService {
@@ -60,6 +61,10 @@ class ContractService implements IContractService {
 
   Future<EtherAmount> getEthBalance(EthereumAddress from) async {
     return await client.getBalance(from);
+  }
+
+  Future<EtherAmount> getEthGasPrice() async {
+    return await client.getGasPrice();
   }
 
   Future<BigInt> getTokenBalance(EthereumAddress from) async {

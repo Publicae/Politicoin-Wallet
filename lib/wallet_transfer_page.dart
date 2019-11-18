@@ -3,8 +3,10 @@ import 'package:pblcwallet/components/form/paper_input.dart';
 import 'package:pblcwallet/components/form/paper_validation_summary.dart';
 import 'package:pblcwallet/model/transaction.dart';
 import 'package:pblcwallet/stores/wallet_transfer_store.dart';
+import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 class WalletTransferPage extends StatefulWidget {
   WalletTransferPage(this.store, {Key key, this.title}) : super(key: key);
@@ -88,7 +90,18 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                             (error) => widget.store.setError(error.message));
                       }
                     : null,
-              )
+              ),
+              RaisedButton(
+                child: const Text('get gas price'),
+                onPressed: !widget.store.loading
+                  ? () async {
+                    await widget.store.walletStore.fetchEthGasPrice();
+                  }
+                  : null,
+              ),
+              Consumer<WalletStore>(
+                builder: (context, walletStore, _) => Text(walletStore.ethGasPrice.toString()),
+              ),
             ],
           );
         },
