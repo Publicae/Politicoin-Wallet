@@ -67,7 +67,7 @@ abstract class WalletTransferStoreBase with Store {
       _contractService.send(
         walletStore.privateKey,
         EthereumAddress.fromHex(this.to),
-        BigInt.from(double.parse(this.amount) * pow(10, 18)),
+        BigInt.from(double.parse(this.amount)),
         onTransfer: (from, to, value) {
           controller.add(transactionEvent.confirmed(from, to, value));
           controller.close();

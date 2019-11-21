@@ -21,7 +21,7 @@ class Balance extends StatelessWidget {
           ),
           Observer(
               builder: (_) => Text(
-                    "${EthAmountFormatter(store.tokenBalance).format()} tokens",
+                    "${EthAmountFormatter(store.tokenBalance).format()} PBLC",
                     style: Theme.of(context)
                         .textTheme
                         .body2
@@ -29,7 +29,7 @@ class Balance extends StatelessWidget {
                   )),
           Observer(
               builder: (_) => Text(
-                    "${EthAmountFormatter(store.ethBalance).format()} eth",
+                    "${EthAmountFormatter(store.ethBalance).format()} ETH",
                     style: Theme.of(context)
                         .textTheme
                         .body2

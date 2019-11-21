@@ -68,13 +68,19 @@ class ContractService implements IContractService {
   }
 
   Future<BigInt> getTokenBalance(EthereumAddress from) async {
-    var response = await client.call(
-      contract: contract,
-      function: _balanceFunction(),
-      params: [from],
-    );
+    try {
+      var response = await client.call(
+        contract: contract,
+        function: _balanceFunction(),
+        params: [from],
+      );
 
-    return response.first as BigInt;
+      return response.first as BigInt;
+    }
+    catch (e) {
+      print("${e.toString()} \n Couldn't get PBLC balance for address: $from");
+      return BigInt.from(0);
+    }
   }
 
   StreamSubscription listenTransfer(TransferEvent onTransfer, {int take}) {

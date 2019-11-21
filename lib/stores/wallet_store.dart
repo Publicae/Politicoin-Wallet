@@ -89,10 +89,10 @@ abstract class WalletStoreBase with Store {
 
   @action
   Future<void> fetchOwnBalance() async {
-    //var tokenBalance = await _contractService.getTokenBalance(EthereumAddress.fromHex(address));
+    var tokenBalance = await _contractService.getTokenBalance(EthereumAddress.fromHex(address));
     var ethBalance = await _contractService.getEthBalance(EthereumAddress.fromHex(address));
 
-    this.tokenBalance = BigInt.from(0); //tokenBalance;
+    this.tokenBalance = tokenBalance;
     this.ethBalance = ethBalance.getInWei;
   }
 
