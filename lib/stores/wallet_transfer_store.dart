@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:pblcwallet/model/transaction.dart';
 import 'package:pblcwallet/service/contract_service.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
@@ -63,8 +62,11 @@ abstract class WalletTransferStoreBase with Store {
 
     isLoading(true);
 
-    try {
-      _contractService.send(
+    // Amount we put in the textfield is in wei
+    // If we want it to be ether
+    // BigInt.from(double.parse(this.amount) * pow(10, 18))
+
+    _contractService.send(
         walletStore.privateKey,
         EthereumAddress.fromHex(this.to),
         BigInt.from(double.parse(this.amount)),
@@ -73,11 +75,11 @@ abstract class WalletTransferStoreBase with Store {
           controller.close();
           isLoading(false);
         },
-      ).then((id) => controller.add(transactionEvent.setId(id)));
-    } catch (ex) {
-      controller.addError(ex);
-      isLoading(false);
-    }
+        onError: (ex) {
+          controller.addError(ex);
+          isLoading(false);
+        })
+        .then((id) => {if (id != null) controller.add(transactionEvent.setId(id))});
 
     return controller.stream;
   }
