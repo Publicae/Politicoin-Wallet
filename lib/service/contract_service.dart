@@ -6,13 +6,27 @@ typedef TransferEvent = void Function(
 
 abstract class IContractService {
   Future<Credentials> getCredentials(String privateKey);
-  Future<String> send(
-      String privateKey, EthereumAddress receiver, BigInt amount,
-      {TransferEvent onTransfer, Function onError});
+
+  Future<String> send(String privateKey, 
+                      EthereumAddress receiver, 
+                      BigInt amount, 
+                      {TransferEvent onTransfer, 
+                      Function onError});
+
+  Future<String> sendEth(String privateKey, 
+                          EthereumAddress receiver, 
+                          BigInt amount, 
+                          {TransferEvent onTransfer, 
+                          Function onError});
+
   Future<BigInt> getTokenBalance(EthereumAddress from);
+
   Future<EtherAmount> getEthBalance(EthereumAddress from);
+
   Future<void> dispose();
+
   StreamSubscription listenTransfer(TransferEvent onTransfer);
+
   Future<EtherAmount> getEthGasPrice();
 }
 
@@ -29,9 +43,11 @@ class ContractService implements IContractService {
   Future<Credentials> getCredentials(String privateKey) =>
       client.credentialsFromPrivateKey(privateKey);
 
-  Future<String> send(
-      String privateKey, EthereumAddress receiver, BigInt amount,
-      {TransferEvent onTransfer, Function onError}) async {
+  Future<String> send(String privateKey, 
+                      EthereumAddress receiver, 
+                      BigInt amount, 
+                      {TransferEvent onTransfer, 
+                      Function onError}) async {
     final credentials = await this.getCredentials(privateKey);
     final from = await credentials.extractAddress();
     final networkId = await client.getNetworkId();
@@ -51,12 +67,45 @@ class ContractService implements IContractService {
         Transaction.callContract(
           contract: contract,
           function: _sendFunction(),
+          gasPrice: EtherAmount.inWei(BigInt.from(1000000000)), // ZOIS: set it in UI
+          maxGas: 3000000, // ZOIS: set it in UI
           parameters: [receiver, amount],
           from: from,
         ),
         chainId: networkId,
       );
       print('transact started $transactionId');
+      return transactionId;
+    } catch (ex) {
+      if (onError != null) {
+        onError(ex);
+      }
+      return null;
+    }
+  }
+
+  Future<String> sendEth(String privateKey, 
+                          EthereumAddress receiver, 
+                          BigInt amount, 
+                          {TransferEvent onTransfer, 
+                          Function onError}) async {
+    final credentials = await this.getCredentials(privateKey);
+    final networkId = await client.getNetworkId();
+    final from = await credentials.extractAddress();
+
+    try {
+      final transactionId = await client.sendTransaction(
+        credentials,
+        Transaction(
+          to: receiver,
+          gasPrice: EtherAmount.inWei(BigInt.from(1000000000)),
+          maxGas: 3000000,
+          value: EtherAmount.fromUnitAndValue(EtherUnit.wei, amount),
+        ),
+        chainId: networkId,
+      );
+      print('transact started $transactionId');
+      onTransfer(from, receiver, amount);
       return transactionId;
     } catch (ex) {
       if (onError != null) {
