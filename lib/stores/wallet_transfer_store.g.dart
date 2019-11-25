@@ -6,7 +6,7 @@ part of 'wallet_transfer_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars
+// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$WalletTransferStore on WalletTransferStoreBase, Store {
   final _$toAtom = Atom(name: 'WalletTransferStoreBase.to');
@@ -77,6 +77,30 @@ mixin _$WalletTransferStore on WalletTransferStoreBase, Store {
     }, _$loadingAtom, name: '${_$loadingAtom.name}_set');
   }
 
+  final _$ethGasPriceAtom = Atom(name: 'WalletTransferStoreBase.ethGasPrice');
+
+  @override
+  String get ethGasPrice {
+    _$ethGasPriceAtom.context.enforceReadPolicy(_$ethGasPriceAtom);
+    _$ethGasPriceAtom.reportObserved();
+    return super.ethGasPrice;
+  }
+
+  @override
+  set ethGasPrice(String value) {
+    _$ethGasPriceAtom.context.conditionallyRunInAction(() {
+      super.ethGasPrice = value;
+      _$ethGasPriceAtom.reportChanged();
+    }, _$ethGasPriceAtom, name: '${_$ethGasPriceAtom.name}_set');
+  }
+
+  final _$getEthGasPriceAsyncAction = AsyncAction('getEthGasPrice');
+
+  @override
+  Future getEthGasPrice() {
+    return _$getEthGasPriceAsyncAction.run(() => super.getEthGasPrice());
+  }
+
   final _$WalletTransferStoreBaseActionController =
       ActionController(name: 'WalletTransferStoreBase');
 
@@ -141,6 +165,17 @@ mixin _$WalletTransferStore on WalletTransferStoreBase, Store {
         _$WalletTransferStoreBaseActionController.startAction();
     try {
       return super.transfer();
+    } finally {
+      _$WalletTransferStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void transferEth() {
+    final _$actionInfo =
+        _$WalletTransferStoreBaseActionController.startAction();
+    try {
+      return super.transferEth();
     } finally {
       _$WalletTransferStoreBaseActionController.endAction(_$actionInfo);
     }

@@ -15,9 +15,7 @@ abstract class IContractService {
 
   Future<String> sendEth(String privateKey, 
                           EthereumAddress receiver, 
-                          BigInt amount, 
-                          {TransferEvent onTransfer, 
-                          Function onError});
+                          BigInt amount);
 
   Future<BigInt> getTokenBalance(EthereumAddress from);
 
@@ -86,9 +84,7 @@ class ContractService implements IContractService {
 
   Future<String> sendEth(String privateKey, 
                           EthereumAddress receiver, 
-                          BigInt amount, 
-                          {TransferEvent onTransfer, 
-                          Function onError}) async {
+                          BigInt amount) async {
     final credentials = await this.getCredentials(privateKey);
     final networkId = await client.getNetworkId();
     final from = await credentials.extractAddress();
@@ -105,12 +101,8 @@ class ContractService implements IContractService {
         chainId: networkId,
       );
       print('transact started $transactionId');
-      onTransfer(from, receiver, amount);
       return transactionId;
     } catch (ex) {
-      if (onError != null) {
-        onError(ex);
-      }
       return null;
     }
   }

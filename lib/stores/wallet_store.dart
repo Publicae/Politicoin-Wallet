@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:pblcwallet/model/transaction.dart';
 import 'package:pblcwallet/service/address_service.dart';
 import 'package:pblcwallet/service/configuration_service.dart';
@@ -92,7 +93,7 @@ abstract class WalletStoreBase with Store {
     var tokenBalance = await _contractService.getTokenBalance(EthereumAddress.fromHex(address));
     var ethBalance = await _contractService.getEthBalance(EthereumAddress.fromHex(address));
 
-    this.tokenBalance = tokenBalance;
+    this.tokenBalance = tokenBalance * BigInt.from(pow(10,9));
     this.ethBalance = ethBalance.getInWei;
   }
 

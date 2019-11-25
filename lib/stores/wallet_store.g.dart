@@ -6,7 +6,7 @@ part of 'wallet_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars
+// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$WalletStore on WalletStoreBase, Store {
   final _$tokenBalanceAtom = Atom(name: 'WalletStoreBase.tokenBalance');
@@ -41,6 +41,23 @@ mixin _$WalletStore on WalletStoreBase, Store {
       super.ethBalance = value;
       _$ethBalanceAtom.reportChanged();
     }, _$ethBalanceAtom, name: '${_$ethBalanceAtom.name}_set');
+  }
+
+  final _$ethGasPriceAtom = Atom(name: 'WalletStoreBase.ethGasPrice');
+
+  @override
+  BigInt get ethGasPrice {
+    _$ethGasPriceAtom.context.enforceReadPolicy(_$ethGasPriceAtom);
+    _$ethGasPriceAtom.reportObserved();
+    return super.ethGasPrice;
+  }
+
+  @override
+  set ethGasPrice(BigInt value) {
+    _$ethGasPriceAtom.context.conditionallyRunInAction(() {
+      super.ethGasPrice = value;
+      _$ethGasPriceAtom.reportChanged();
+    }, _$ethGasPriceAtom, name: '${_$ethGasPriceAtom.name}_set');
   }
 
   final _$addressAtom = Atom(name: 'WalletStoreBase.address');
@@ -113,5 +130,12 @@ mixin _$WalletStore on WalletStoreBase, Store {
   @override
   Future<void> resetWallet() {
     return _$resetWalletAsyncAction.run(() => super.resetWallet());
+  }
+
+  final _$fetchEthGasPriceAsyncAction = AsyncAction('fetchEthGasPrice');
+
+  @override
+  Future<void> fetchEthGasPrice() {
+    return _$fetchEthGasPriceAsyncAction.run(() => super.fetchEthGasPrice());
   }
 }

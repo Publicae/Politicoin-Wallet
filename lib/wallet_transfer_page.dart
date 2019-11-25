@@ -1,6 +1,7 @@
 import 'package:pblcwallet/components/form/paper_form.dart';
 import 'package:pblcwallet/components/form/paper_input.dart';
 import 'package:pblcwallet/components/form/paper_validation_summary.dart';
+import 'package:pblcwallet/components/form/paper_gasprice.dart';
 import 'package:pblcwallet/model/transaction.dart';
 import 'package:pblcwallet/stores/wallet_transfer_store.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
@@ -92,16 +93,25 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                     : null,
               ),
               RaisedButton(
-                child: const Text('get gas price'),
+                child: const Text('Transfer ETH'),
                 onPressed: !widget.store.loading
-                  ? () async {
-                    await widget.store.walletStore.fetchEthGasPrice();
-                  }
-                  : null,
+                    ? () => widget.store.transferEth()
+                    : null,
               ),
-              Consumer<WalletStore>(
-                builder: (context, walletStore, _) => Text(walletStore.ethGasPrice.toString()),
-              ),
+              Row(
+                children: <Widget>[
+                  RaisedButton(
+                    child: const Text('get gas price'),
+                    onPressed: !widget.store.loading
+                        ? () => widget.store.getEthGasPrice()
+                        : null,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  PaperGasPrice(_getEthGasPrice()),
+                ],
+              )
             ],
           );
         },
@@ -112,6 +122,11 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
   void _popForm() {
     _toController.value = TextEditingValue(text: widget.store.to ?? "");
     _amountController.value = TextEditingValue(text: widget.store.amount ?? "");
+  }
+
+  String _getEthGasPrice() {
+    var price = widget.store.ethGasPrice ?? "";
+    return price;
   }
 
   @override
