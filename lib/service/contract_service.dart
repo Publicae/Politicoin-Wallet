@@ -18,11 +18,20 @@ abstract class IContractService {
                       {TransferEvent onTransfer, 
                       Function onError});
 
+  Future<String> sell(String privateKey, 
+                      BigInt amount, 
+                      {TransferEvent onTransfer, 
+                      Function onError});
+
   Future<String> sendEth(String privateKey, 
                           EthereumAddress receiver, 
                           BigInt amount);
 
   Future<BigInt> getTokenBalance(EthereumAddress from);
+
+  Future<BigInt> getBuyPrice();
+
+  Future<BigInt> getSellPrice();
 
   Future<EtherAmount> getEthBalance(EthereumAddress from);
 
@@ -43,6 +52,9 @@ class ContractService implements IContractService {
   ContractFunction _balanceFunction() => contract.function('balanceOf');
   ContractFunction _sendFunction() => contract.function('transfer');
   ContractFunction _buyFunction() => contract.function('buy');
+  ContractFunction _sellFunction() => contract.function('sell');
+  ContractFunction _buyPriceFunction() => contract.function('buyPrice');
+  ContractFunction _sellPriceFunction() => contract.function('sellPrice');
 
   Future<Credentials> getCredentials(String privateKey) =>
       client.credentialsFromPrivateKey(privateKey);
@@ -107,7 +119,12 @@ class ContractService implements IContractService {
 
     // amount for PBLC = (buyPrice in contract) * amount
     // e.g to buy 1 PBLC we need the amount to be 63.800 * 1.000.000.000
-    var amountForPBLC = BigInt.from(63800) * amount; // ZOIS: function to get the buyprice from contract
+    var buyPrice = await getBuyPrice();
+    if (buyPrice == null || buyPrice == BigInt.from(0)) 
+      buyPrice = BigInt.from(63800);
+    
+    var amountForPBLC = buyPrice * amount;
+
     try {
       final transactionId = await client.sendTransaction(
         credentials,
@@ -119,6 +136,51 @@ class ContractService implements IContractService {
           parameters: [],
           from: from,
           value: EtherAmount.inWei(amountForPBLC)
+        ),
+        chainId: networkId,
+      );
+      print('transact started $transactionId');
+      return transactionId;
+    } catch (ex) {
+      if (onError != null) {
+        onError(ex);
+      }
+      return null;
+    }
+  }
+
+  Future<String> sell(String privateKey, 
+                      BigInt amount, 
+                      {TransferEvent onTransfer, 
+                      Function onError}) async {
+    final credentials = await this.getCredentials(privateKey);
+    final from = await credentials.extractAddress();
+    final networkId = await client.getNetworkId();
+
+    StreamSubscription event;
+    // Work around once sendTransacton doesn't return a Promise containing confirmation / receipt
+    if (onTransfer != null) {
+      event = listenTransfer((from, to, value) async {
+        onTransfer(from, to, value);
+        await event.cancel();
+      }, take: 1);
+    }
+
+    // 0.000063770000000000ETH = 1 token
+    // var sellPrice = await getSellPrice();
+    // if (sellPrice == null || sellPrice == BigInt.from(0)) 
+    //  sellPrice = BigInt.from(63770);
+    
+    try {
+      final transactionId = await client.sendTransaction(
+        credentials,
+        Transaction.callContract(
+          contract: contract,
+          function: _sellFunction(),
+          gasPrice: EtherAmount.inWei(BigInt.from(1000000000)), // ZOIS: set it in UI
+          maxGas: 3000000, // ZOIS: set it in UI
+          parameters: [amount],
+          from: from
         ),
         chainId: networkId,
       );
@@ -177,6 +239,38 @@ class ContractService implements IContractService {
     }
     catch (e) {
       print("${e.toString()} \n Couldn't get PBLC balance for address: $from");
+      return BigInt.from(0);
+    }
+  }
+
+  Future<BigInt> getBuyPrice() async {
+    try {
+      var response = await client.call(
+        contract: contract,
+        function: _buyPriceFunction(),
+        params: [],
+      );
+
+      return response.first as BigInt;
+    }
+    catch (e) {
+      print("${e.toString()} \n Couldn't get buyPrice for address: ${contract.address}");
+      return BigInt.from(0);
+    }
+  }
+
+  Future<BigInt> getSellPrice() async {
+    try {
+      var response = await client.call(
+        contract: contract,
+        function: _sellPriceFunction(),
+        params: [],
+      );
+
+      return response.first as BigInt;
+    }
+    catch (e) {
+      print("${e.toString()} \n Couldn't get sellPrice for address: ${contract.address}");
       return BigInt.from(0);
     }
   }

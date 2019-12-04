@@ -113,6 +113,26 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                     : null,
               ),
               RaisedButton(
+                child: const Text('Sell PBLC'),
+                onPressed: !widget.store.loading
+                    ? () {
+                        widget.store.sell().listen((tx) {
+                          switch (tx.status) {
+                            case TransactionStatus.started:
+                              Navigator.pushNamed(
+                                  context, '/processing-transaction');
+                              break;
+                            case TransactionStatus.confirmed:
+                              Navigator.popUntil(
+                                  context, ModalRoute.withName('/'));
+                              break;
+                          }
+                        }).onError(
+                            (error) => widget.store.setError(error.message));
+                      }
+                    : null,
+              ),
+              RaisedButton(
                 child: const Text('Transfer ETH'),
                 onPressed: !widget.store.loading
                     ? () => widget.store.transferEth()
