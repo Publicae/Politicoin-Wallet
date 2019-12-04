@@ -88,6 +88,34 @@ abstract class WalletTransferStoreBase with Store {
   }
 
   @action
+  Stream<Transaction> buy() {
+    var controller = StreamController<Transaction>();
+    var transactionEvent = Transaction();
+
+    isLoading(true);
+
+    // PBLC is 9 decimals. 1 PBLC = 0,000,000,001 ETH
+    // The amount we put in is in unit for 1 PBLC
+    var amount = double.parse(this.amount) * pow(10, 9);
+
+    _contractService.buy(
+        walletStore.privateKey,
+        BigInt.from(amount),
+        onTransfer: (from, to, value) {
+          controller.add(transactionEvent.confirmed(from, to, value));
+          controller.close();
+          isLoading(false);
+        },
+        onError: (ex) {
+          controller.addError(ex);
+          isLoading(false);
+        })
+        .then((id) => {if (id != null) controller.add(transactionEvent.setId(id))});
+
+    return controller.stream;
+  }
+
+  @action
   void transferEth() {
 
     // Amount we put in the textfield is in wei

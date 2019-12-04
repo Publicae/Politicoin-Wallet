@@ -13,6 +13,11 @@ abstract class IContractService {
                       {TransferEvent onTransfer, 
                       Function onError});
 
+  Future<String> buy(String privateKey, 
+                      BigInt amount, 
+                      {TransferEvent onTransfer, 
+                      Function onError});
+
   Future<String> sendEth(String privateKey, 
                           EthereumAddress receiver, 
                           BigInt amount);
@@ -37,6 +42,7 @@ class ContractService implements IContractService {
   ContractEvent _transferEvent() => contract.event('Transfer');
   ContractFunction _balanceFunction() => contract.function('balanceOf');
   ContractFunction _sendFunction() => contract.function('transfer');
+  ContractFunction _buyFunction() => contract.function('buy');
 
   Future<Credentials> getCredentials(String privateKey) =>
       client.credentialsFromPrivateKey(privateKey);
@@ -69,6 +75,50 @@ class ContractService implements IContractService {
           maxGas: 3000000, // ZOIS: set it in UI
           parameters: [receiver, amount],
           from: from,
+        ),
+        chainId: networkId,
+      );
+      print('transact started $transactionId');
+      return transactionId;
+    } catch (ex) {
+      if (onError != null) {
+        onError(ex);
+      }
+      return null;
+    }
+  }
+
+  Future<String> buy(String privateKey, 
+                      BigInt amount, 
+                      {TransferEvent onTransfer, 
+                      Function onError}) async {
+    final credentials = await this.getCredentials(privateKey);
+    final from = await credentials.extractAddress();
+    final networkId = await client.getNetworkId();
+
+    StreamSubscription event;
+    // Work around once sendTransacton doesn't return a Promise containing confirmation / receipt
+    if (onTransfer != null) {
+      event = listenTransfer((from, to, value) async {
+        onTransfer(from, to, value);
+        await event.cancel();
+      }, take: 1);
+    }
+
+    // amount for PBLC = (buyPrice in contract) * amount
+    // e.g to buy 1 PBLC we need the amount to be 63.800 * 1.000.000.000
+    var amountForPBLC = BigInt.from(63800) * amount; // ZOIS: function to get the buyprice from contract
+    try {
+      final transactionId = await client.sendTransaction(
+        credentials,
+        Transaction.callContract(
+          contract: contract,
+          function: _buyFunction(),
+          gasPrice: EtherAmount.inWei(BigInt.from(1000000000)), // ZOIS: set it in UI
+          maxGas: 3000000, // ZOIS: set it in UI
+          parameters: [],
+          from: from,
+          value: EtherAmount.inWei(amountForPBLC)
         ),
         chainId: networkId,
       );
