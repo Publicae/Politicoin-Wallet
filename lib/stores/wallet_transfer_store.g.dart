@@ -97,7 +97,7 @@ mixin _$WalletTransferStore on WalletTransferStoreBase, Store {
   final _$getEthGasPriceAsyncAction = AsyncAction('getEthGasPrice');
 
   @override
-  Future getEthGasPrice() {
+  Future<dynamic> getEthGasPrice() {
     return _$getEthGasPriceAsyncAction.run(() => super.getEthGasPrice());
   }
 
@@ -171,6 +171,28 @@ mixin _$WalletTransferStore on WalletTransferStoreBase, Store {
   }
 
   @override
+  Stream<Transaction> buy() {
+    final _$actionInfo =
+        _$WalletTransferStoreBaseActionController.startAction();
+    try {
+      return super.buy();
+    } finally {
+      _$WalletTransferStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Stream<Transaction> sell() {
+    final _$actionInfo =
+        _$WalletTransferStoreBaseActionController.startAction();
+    try {
+      return super.sell();
+    } finally {
+      _$WalletTransferStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void transferEth() {
     final _$actionInfo =
         _$WalletTransferStoreBaseActionController.startAction();
@@ -179,5 +201,12 @@ mixin _$WalletTransferStore on WalletTransferStoreBase, Store {
     } finally {
       _$WalletTransferStoreBaseActionController.endAction(_$actionInfo);
     }
+  }
+
+  @override
+  String toString() {
+    final string =
+        'to: ${to.toString()},amount: ${amount.toString()},errors: ${errors.toString()},loading: ${loading.toString()},ethGasPrice: ${ethGasPrice.toString()}';
+    return '{$string}';
   }
 }

@@ -138,4 +138,11 @@ mixin _$WalletStore on WalletStoreBase, Store {
   Future<void> fetchEthGasPrice() {
     return _$fetchEthGasPriceAsyncAction.run(() => super.fetchEthGasPrice());
   }
+
+  @override
+  String toString() {
+    final string =
+        'tokenBalance: ${tokenBalance.toString()},ethBalance: ${ethBalance.toString()},ethGasPrice: ${ethGasPrice.toString()},address: ${address.toString()},privateKey: ${privateKey.toString()},transactions: ${transactions.toString()}';
+    return '{$string}';
+  }
 }

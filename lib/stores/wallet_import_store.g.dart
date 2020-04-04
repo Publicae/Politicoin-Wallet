@@ -133,4 +133,11 @@ mixin _$WalletImportStore on WalletImportStoreBase, Store {
       _$WalletImportStoreBaseActionController.endAction(_$actionInfo);
     }
   }
+
+  @override
+  String toString() {
+    final string =
+        'type: ${type.toString()},mnemonic: ${mnemonic.toString()},privateKey: ${privateKey.toString()},errors: ${errors.toString()}';
+    return '{$string}';
+  }
 }

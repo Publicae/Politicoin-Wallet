@@ -137,4 +137,11 @@ mixin _$WalletCreateStore on WalletCreateStoreBase, Store {
       _$WalletCreateStoreBaseActionController.endAction(_$actionInfo);
     }
   }
+
+  @override
+  String toString() {
+    final string =
+        'mnemonic: ${mnemonic.toString()},mnemonicConfirm: ${mnemonicConfirm.toString()},step: ${step.toString()},errors: ${errors.toString()}';
+    return '{$string}';
+  }
 }
