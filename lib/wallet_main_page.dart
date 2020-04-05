@@ -1,14 +1,21 @@
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:mobx/mobx.dart';
+import 'package:pblcwallet/components/buttons/network_dropdown_button.dart';
 import 'package:pblcwallet/components/wallet/balance.dart';
+import 'package:pblcwallet/main.dart';
+import 'package:pblcwallet/stores/stores.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import 'app_config.dart';
 
 class WalletMainPage extends StatefulWidget {
-  WalletMainPage(this.walletStore, {Key key, this.title}) : super(key: key);
+  WalletMainPage(this.walletStore, {Key key, this.title, this.currentNetwork}) : super(key: key);
 
   final WalletStore walletStore;
   final String title;
+  final String currentNetwork;
 
   @override
   _WalletMainPageState createState() => _WalletMainPageState();
@@ -21,30 +28,64 @@ class _WalletMainPageState extends State<WalletMainPage> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
+            // ListTile(
+            //   title: Text("Get tokens "),
+            //   subtitle: Text("Receive some test tokens"),
+            //   trailing: Icon(Icons.attach_money),
+            //   onTap: () async {
+            //     var url =
+            //         'http://ec2-54-213-50-23.us-west-2.compute.amazonaws.com/transfer?address=${widget.walletStore.address}';
+            //     if (await canLaunch(url)) {
+            //       await launch(url);
+            //     } else {
+            //       throw 'Could not launch $url';
+            //     }
+            //   },
+            // ),
             ListTile(
-              title: Text("Get tokens "),
-              subtitle: Text("Receive some test tokens"),
-              trailing: Icon(Icons.attach_money),
-              onTap: () async {
-                var url =
-                    'http://ec2-54-213-50-23.us-west-2.compute.amazonaws.com/transfer?address=${widget.walletStore.address}';
-                if (await canLaunch(url)) {
-                  await launch(url);
-                } else {
-                  throw 'Could not launch $url';
-                }
-              },
+              title: Text(
+                "PBLC Wallet",
+                style: TextStyle(fontSize: 32.0),
+              ),
             ),
             ListTile(
               title: Text("Reset wallet"),
               subtitle: Text(
                   "warning: without your seed phrase you cannot restore your wallet"),
               trailing: Icon(Icons.warning),
-              onTap: () async {
-                await widget.walletStore.resetWallet();
-                Navigator.popAndPushNamed(context, "/");
+              onTap: () {
+                showAlertDialog(context);
               },
             ),
+            Divider(
+              color: Colors.red,
+            ),
+            ListTile(
+              title: Text("Send"),
+              subtitle: Text("PBLC or ETH"),
+              onTap: () async {
+                Navigator.popAndPushNamed(context, "/transfer");
+              },
+            ),
+            ListTile(
+              title: Text("My Transactions"),
+              subtitle: Text("see sent and received transactions"),
+              onTap: () async {
+                Navigator.popAndPushNamed(context, "/my-transactions");
+              },
+            ),
+            Divider(
+              color: Colors.red,
+            ),
+            ListTile(
+              title: Text("Change Network"),
+              subtitle: Text(
+                  "warning: this will restart the app!"),
+            ),
+            ListTile(
+              title: Text("Current Network: ${widget.currentNetwork}"),
+            ),
+            NetworkDropdown(),
           ],
         ),
       ),
@@ -68,6 +109,42 @@ class _WalletMainPageState extends State<WalletMainPage> {
       body: Consumer<WalletStore>(
         builder: (context, walletStore, _) => Balance(walletStore),
       ),
+    );
+  }
+  
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Reset"),
+      onPressed: () async {
+        await widget.walletStore.resetWallet();
+        Navigator.popAndPushNamed(context, "/");
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Reset wallet?"),
+      content: Text(
+          "warning: without your seed phrase you cannot restore your wallet"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

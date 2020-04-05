@@ -1,24 +1,38 @@
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:pblcwallet/app_config.dart';
 import 'package:pblcwallet/router.dart';
+import 'package:pblcwallet/service/address_service.dart';
+import 'package:pblcwallet/service/configuration_service.dart';
+import 'package:pblcwallet/service/contract_service.dart';
 import 'package:pblcwallet/stores/stores.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:web3dart/web3dart.dart';
+
+List<SingleChildCloneableWidget> stores;
+Web3Client client;
+WalletStore walletStore;
+ConfigurationService configurationService;
+AddressService addressService;
+ContractService contractService;
 
 void main() async {
   // bootstrapping;
   WidgetsFlutterBinding.ensureInitialized();
-  final stores = await createStore(AppConfig().params["ropsten"]);
+  stores = await createStore(AppConfig().params["ropsten"]);
 
-  runApp(MainApp(stores));
+  runApp(Phoenix(
+    child: MainApp(stores),
+  ));
 }
 
 class MainApp extends StatelessWidget {
   MainApp(this.stores);
   final List<SingleChildCloneableWidget> stores;
   final FirebaseAnalytics analytics = FirebaseAnalytics();
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

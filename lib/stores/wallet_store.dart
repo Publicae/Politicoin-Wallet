@@ -7,6 +7,7 @@ import 'package:pblcwallet/service/contract_service.dart';
 import 'package:mobx/mobx.dart';
 import 'package:web3dart/credentials.dart';
 
+
 part 'wallet_store.g.dart';
 
 class WalletStore = WalletStoreBase with _$WalletStore;
@@ -65,12 +66,16 @@ abstract class WalletStoreBase with Store {
   }
 
   Future<void> _initialiseFromPrivateKey(String privateKey) async {
-    final address = await _addressService.getPublicAddress(privateKey);
+    try {
+      final address = await _addressService.getPublicAddress(privateKey);
 
-    this.address = address.toString();
-    this.privateKey = privateKey;
+      this.address = address.toString();
+      this.privateKey = privateKey;
 
-    await _initialise();
+      await _initialise();
+    } catch (error) {
+      print(error);
+    }
   }
 
   Future<void> _initialise() async {
@@ -90,10 +95,12 @@ abstract class WalletStoreBase with Store {
 
   @action
   Future<void> fetchOwnBalance() async {
-    var tokenBalance = await _contractService.getTokenBalance(EthereumAddress.fromHex(address));
-    var ethBalance = await _contractService.getEthBalance(EthereumAddress.fromHex(address));
+    var tokenBalance = await _contractService
+        .getTokenBalance(EthereumAddress.fromHex(address));
+    var ethBalance =
+        await _contractService.getEthBalance(EthereumAddress.fromHex(address));
 
-    this.tokenBalance = tokenBalance * BigInt.from(pow(10,9));
+    this.tokenBalance = tokenBalance * BigInt.from(pow(10, 9));
     this.ethBalance = ethBalance.getInWei;
   }
 

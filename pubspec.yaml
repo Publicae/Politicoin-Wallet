@@ -38,6 +38,7 @@ dependencies:
   firebase_ml_vision: 0.9.3+5
   firebase_analytics: ^5.0.11
   url_launcher: ^5.4.1
+  flutter_phoenix: "^0.1.0"
 
 dev_dependencies:
   flutter_test:

@@ -12,22 +12,23 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:web_socket_channel/io.dart';
+import '../main.dart';
 
 Future<List<SingleChildCloneableWidget>> createStore(
     AppConfigParams params) async {
-  final client = Web3Client(params.web3HttpUrl, Client(), socketConnector: () {
+  client = Web3Client(params.web3HttpUrl, Client(), socketConnector: () {
     return IOWebSocketChannel.connect(params.web3RdpUrl).cast<String>();
   });
 
   final sharedPrefs = await SharedPreferences.getInstance();
 
-  final configurationService = ConfigurationService(sharedPrefs);
-  final addressService = AddressService(configurationService);
+  configurationService = ConfigurationService(sharedPrefs);
+  addressService = AddressService(configurationService);
   final contract = await ContractParser.fromAssets(
       'assets/PoliticoinToken.json', params.contractAddress);
 
-  final contractService = ContractService(client, contract);
-  final walletStore = WalletStore(
+  contractService = ContractService(client, contract);
+  walletStore = WalletStore(
     contractService,
     addressService,
     configurationService,
@@ -39,6 +40,7 @@ Future<List<SingleChildCloneableWidget>> createStore(
   // initial state.
   if (configurationService.didSetupWallet()) {
     await walletStore.initialise();
+    configurationService.setNetwork(params.network);
   }
 
   return [

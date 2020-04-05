@@ -4,9 +4,11 @@ abstract class IConfigurationService {
   Future<void> setMnemonic(String value);
   Future<void> setupDone(bool value);
   Future<void> setPrivateKey(String value);
+  Future<void> setNetwork(String value);
   String getMnemonic();
   String getPrivateKey();
   bool didSetupWallet();
+  String getNetwork();
 }
 
 class ConfigurationService implements IConfigurationService {
@@ -28,6 +30,11 @@ class ConfigurationService implements IConfigurationService {
     await _preferences.setBool("didSetupWallet", value);
   }
 
+  @override
+  Future<void> setNetwork(String value) async {
+    await _preferences.setString("network", value);
+  }
+
   // gets
   @override
   String getMnemonic() {
@@ -42,5 +49,10 @@ class ConfigurationService implements IConfigurationService {
   @override
   bool didSetupWallet() {
     return _preferences.getBool("didSetupWallet") ?? false;
+  }
+
+  @override
+  String getNetwork() {
+    return _preferences.getString("network");
   }
 }

@@ -1,4 +1,4 @@
-import 'package:pblcwallet/components/copyButton/copy_button.dart';
+import 'package:pblcwallet/components/buttons/copy_button.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:pblcwallet/utils/eth_amount_formatter.dart';
 import 'package:flutter/material.dart';

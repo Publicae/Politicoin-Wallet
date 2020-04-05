@@ -1,4 +1,4 @@
-import 'package:pblcwallet/components/copyButton/copy_button.dart';
+import 'package:pblcwallet/components/buttons/copy_button.dart';
 import 'package:pblcwallet/components/form/paper_form.dart';
 import 'package:pblcwallet/components/form/paper_input.dart';
 import 'package:pblcwallet/components/form/paper_validation_summary.dart';
