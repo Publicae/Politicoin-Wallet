@@ -2,10 +2,12 @@ import 'package:pblcwallet/main.dart';
 import 'package:pblcwallet/processing_transaction_page.dart';
 import 'package:pblcwallet/qrcode_reader_page.dart';
 import 'package:pblcwallet/service/configuration_service.dart';
+import 'package:pblcwallet/stores/wallet_buy_sell_store.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:pblcwallet/stores/wallet_create_store.dart';
 import 'package:pblcwallet/stores/wallet_import_store.dart';
 import 'package:pblcwallet/stores/wallet_transfer_store.dart';
+import 'package:pblcwallet/wallet_buy_sell_page.dart';
 import 'package:pblcwallet/wallet_create_page.dart';
 import 'package:pblcwallet/wallet_import_page.dart';
 import 'package:pblcwallet/wallet_main_page.dart';
@@ -21,8 +23,11 @@ Map<String, WidgetBuilder> getRoutes(context) {
             builder: (context, configurationService, _) {
           if (configurationService.didSetupWallet())
             return Consumer<WalletStore>(
-              builder: (context, walletStore, _) =>
-                  WalletMainPage(walletStore, title: "PBLC wallet", currentNetwork: configurationService.getNetwork(),),
+              builder: (context, walletStore, _) => WalletMainPage(
+                walletStore,
+                title: "PBLC wallet",
+                currentNetwork: configurationService.getNetwork(),
+              ),
             );
 
           return IntroPage();
@@ -42,11 +47,15 @@ Map<String, WidgetBuilder> getRoutes(context) {
     '/processing-transaction': (BuildContext context) =>
         Consumer<WalletTransferStore>(
           builder: (context, walletTransferStore, _) =>
-              ProcessingTransactionPage(title: "Sending Tokens"),
+              ProcessingTransactionPage(title: "Waiting..."),
         ),
     '/qrcode_reader': (BuildContext context) => QRCodeReaderPage(
           title: "Scan QRCode",
           onScanned: ModalRoute.of(context).settings.arguments,
-        )
+        ),
+    '/buy-sell': (BuildContext context) => Consumer<WalletBuySellStore>(
+          builder: (context, walletBuySellStore, _) =>
+              WalletBuySellPage(walletBuySellStore, title: "Buy/Sell PBLC"),
+        ),
   };
 }

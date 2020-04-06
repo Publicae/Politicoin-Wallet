@@ -171,28 +171,6 @@ mixin _$WalletTransferStore on WalletTransferStoreBase, Store {
   }
 
   @override
-  Stream<Transaction> buy() {
-    final _$actionInfo =
-        _$WalletTransferStoreBaseActionController.startAction();
-    try {
-      return super.buy();
-    } finally {
-      _$WalletTransferStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  Stream<Transaction> sell() {
-    final _$actionInfo =
-        _$WalletTransferStoreBaseActionController.startAction();
-    try {
-      return super.sell();
-    } finally {
-      _$WalletTransferStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void transferEth() {
     final _$actionInfo =
         _$WalletTransferStoreBaseActionController.startAction();

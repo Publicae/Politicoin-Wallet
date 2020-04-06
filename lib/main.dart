@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web3dart/web3dart.dart';
 
 List<SingleChildCloneableWidget> stores;
@@ -22,7 +23,9 @@ ContractService contractService;
 void main() async {
   // bootstrapping;
   WidgetsFlutterBinding.ensureInitialized();
-  stores = await createStore(AppConfig().params["ropsten"]);
+  final sharedPrefs = await SharedPreferences.getInstance();
+  configurationService = ConfigurationService(sharedPrefs);
+  stores = await createStore(AppConfig().params[configurationService.getNetwork()]);
 
   runApp(Phoenix(
     child: MainApp(stores),

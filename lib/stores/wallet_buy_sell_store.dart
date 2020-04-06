@@ -4,34 +4,25 @@ import 'package:pblcwallet/model/transaction.dart';
 import 'package:pblcwallet/service/contract_service.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:mobx/mobx.dart';
-import 'package:web3dart/credentials.dart';
 
-part 'wallet_transfer_store.g.dart';
+part 'wallet_buy_sell_store.g.dart';
 
-class WalletTransferStore = WalletTransferStoreBase with _$WalletTransferStore;
+class WalletBuySellStore = WalletBuySellStoreBase with _$WalletBuySellStore;
 
-abstract class WalletTransferStoreBase with Store {
-  WalletTransferStoreBase(this.walletStore, this._contractService);
+abstract class WalletBuySellStoreBase with Store {
+  WalletBuySellStoreBase(this.walletStore, this._contractService);
 
   final WalletStore walletStore;
   final IContractService _contractService;
 
   @observable
-  String to;
-  @observable
   String amount;
-  @observable
-  ObservableList<String> errors = ObservableList<String>();
-  @observable
-  bool loading;
   
   @observable
-  String ethGasPrice;
-
-  @action
-  void setTo(String value) {
-      this.to = value;
-  }
+  ObservableList<String> errors = ObservableList<String>();
+  
+  @observable
+  bool loading;
 
   @action
   void setAmount(String value) {
@@ -57,7 +48,6 @@ abstract class WalletTransferStoreBase with Store {
 
   @action
   void reset() {
-    this.to = "";
     this.amount = "";
     this.loading = true;
     this.errors.clear();
@@ -72,24 +62,19 @@ abstract class WalletTransferStoreBase with Store {
   }
 
   @action
-  Stream<Transaction> transfer() {
+  Stream<Transaction> buy() {
     var controller = StreamController<Transaction>();
     var transactionEvent = Transaction();
 
     isLoading(true);
 
     // PBLC is 9 decimals. 1 PBLC = 0,000,000,001 ETH
-    var amount = double.parse(this.amount) * pow(10, 9);
-    try {
-      EthereumAddress.fromHex(this.to);
-    } catch (ex) {
-      this.errors.add("Address format error: ${ex.message}");
-      return null;
-    }
+    // The amount we put in is in unit for 1 PBLC,
+    // so if we put 1 we mean 1.000.000.000 wei
+    var amount = double.tryParse(this.amount) * pow(10, 9);
 
-    _contractService.send(
+    _contractService.buy(
         walletStore.privateKey,
-        EthereumAddress.fromHex(this.to),
         BigInt.from(amount),
         onTransfer: (from, to, value) {
           controller.add(transactionEvent.confirmed(from, to, value));
@@ -106,25 +91,31 @@ abstract class WalletTransferStoreBase with Store {
   }
 
   @action
-  void transferEth() {
+  Stream<Transaction> sell() {
+    var controller = StreamController<Transaction>();
+    var transactionEvent = Transaction();
 
-    // Amount we put in the textfield is in wei
-    // If we want it to be ether
-    // BigInt.from(double.parse(this.amount) * pow(10, 18))
-    var amount = double.parse(this.amount);
+    isLoading(true);
 
-    _contractService.sendEth(
+    // PBLC is 9 decimals. 1 PBLC = 0,000,000,001 ETH
+    // The amount we put in is in unit for 1 PBLC, 
+    // so if we put 1 we mean 1.000.000.000 wei
+    var amount = double.parse(this.amount) * pow(10, 9);
+
+    _contractService.sell(
         walletStore.privateKey,
-        EthereumAddress.fromHex(this.to),
-        BigInt.from(amount))
-    .then((id) {
-      print("Transaction pending: $id");
-    });
-  }
+        BigInt.from(amount),
+        onTransfer: (from, to, value) {
+          controller.add(transactionEvent.confirmed(from, to, value));
+          controller.close();
+          isLoading(false);
+        },
+        onError: (ex) {
+          controller.addError(ex);
+          isLoading(false);
+        })
+        .then((id) => {if (id != null) controller.add(transactionEvent.setId(id))});
 
-  @action
-  Future getEthGasPrice() async {
-    await _contractService.getEthGasPrice()
-    .then((amnt) => this.ethGasPrice = amnt.getInWei.toString());
+    return controller.stream;
   }
 }

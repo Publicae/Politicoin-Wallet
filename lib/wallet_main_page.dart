@@ -1,14 +1,8 @@
-import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:mobx/mobx.dart';
 import 'package:pblcwallet/components/buttons/network_dropdown_button.dart';
 import 'package:pblcwallet/components/wallet/balance.dart';
-import 'package:pblcwallet/main.dart';
-import 'package:pblcwallet/stores/stores.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'app_config.dart';
 
 class WalletMainPage extends StatefulWidget {
   WalletMainPage(this.walletStore, {Key key, this.title, this.currentNetwork}) : super(key: key);
@@ -68,6 +62,13 @@ class _WalletMainPageState extends State<WalletMainPage> {
               },
             ),
             ListTile(
+              title: Text("Buy / Sell "),
+              subtitle: Text("Buy or Sell PBLC tokens"),
+              onTap: () async {
+                Navigator.popAndPushNamed(context, "/buy-sell");
+              },
+            ),
+            ListTile(
               title: Text("My Transactions"),
               subtitle: Text("see sent and received transactions"),
               onTap: () async {
@@ -82,10 +83,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
               subtitle: Text(
                   "warning: this will restart the app!"),
             ),
-            ListTile(
-              title: Text("Current Network: ${widget.currentNetwork}"),
-            ),
-            NetworkDropdown(),
+            NetworkDropdown(widget.currentNetwork),
           ],
         ),
       ),

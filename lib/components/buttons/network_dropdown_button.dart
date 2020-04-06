@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:intl/intl.dart';
 import 'package:pblcwallet/stores/stores.dart';
 
 import '../../app_config.dart';
 import '../../main.dart';
 
 class NetworkDropdown extends StatefulWidget {
+  NetworkDropdown(this.currentNetwork);
+  final String currentNetwork;
+
   @override
   _NetworkDropdownState createState() {
     return _NetworkDropdownState();
@@ -18,8 +22,11 @@ class _NetworkDropdownState extends State<NetworkDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: DropdownButton<String>(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget> [
+        Text("Current Network: "),
+        DropdownButton<String>(
         items: [
           DropdownMenuItem<String>(
             child: Text('Mainnet'),
@@ -48,9 +55,10 @@ class _NetworkDropdownState extends State<NetworkDropdown> {
           });
           changeNetwork(context);
         },
-        hint: Text('Select Network'),
+        hint: Text(toBeginningOfSentenceCase(widget.currentNetwork)),
         value: _value,
       ),
+      ],
     );
   }
 

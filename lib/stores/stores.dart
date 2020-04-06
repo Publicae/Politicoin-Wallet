@@ -2,6 +2,7 @@ import 'package:pblcwallet/app_config.dart';
 import 'package:pblcwallet/service/address_service.dart';
 import 'package:pblcwallet/service/configuration_service.dart';
 import 'package:pblcwallet/service/contract_service.dart';
+import 'package:pblcwallet/stores/wallet_buy_sell_store.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:pblcwallet/stores/wallet_create_store.dart';
 import 'package:pblcwallet/stores/wallet_import_store.dart';
@@ -20,9 +21,9 @@ Future<List<SingleChildCloneableWidget>> createStore(
     return IOWebSocketChannel.connect(params.web3RdpUrl).cast<String>();
   });
 
-  final sharedPrefs = await SharedPreferences.getInstance();
+  //final sharedPrefs = await SharedPreferences.getInstance();
 
-  configurationService = ConfigurationService(sharedPrefs);
+  //configurationService = ConfigurationService(sharedPrefs);
   addressService = AddressService(configurationService);
   final contract = await ContractParser.fromAssets(
       'assets/PoliticoinToken.json', params.contractAddress);
@@ -36,6 +37,7 @@ Future<List<SingleChildCloneableWidget>> createStore(
   final walletCreateStore = WalletCreateStore(walletStore, addressService);
   final walletImportStore = WalletImportStore(walletStore, addressService);
   final walletTransferStore = WalletTransferStore(walletStore, contractService);
+  final walletBuySellStore = WalletBuySellStore(walletStore, contractService);
 
   // initial state.
   if (configurationService.didSetupWallet()) {
@@ -49,5 +51,6 @@ Future<List<SingleChildCloneableWidget>> createStore(
     Provider<WalletCreateStore>(builder: (_) => walletCreateStore),
     Provider<WalletImportStore>(builder: (_) => walletImportStore),
     Provider<ConfigurationService>(builder: (_) => configurationService),
+    Provider<WalletBuySellStore>(builder: (_) => walletBuySellStore),
   ];
 }
