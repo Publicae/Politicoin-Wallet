@@ -1,4 +1,5 @@
 import 'package:pblcwallet/app_config.dart';
+import 'package:pblcwallet/data/fetchEtherscanData.dart';
 import 'package:pblcwallet/service/address_service.dart';
 import 'package:pblcwallet/service/configuration_service.dart';
 import 'package:pblcwallet/service/contract_service.dart';
@@ -7,6 +8,7 @@ import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:pblcwallet/stores/wallet_create_store.dart';
 import 'package:pblcwallet/stores/wallet_import_store.dart';
 import 'package:pblcwallet/stores/wallet_transfer_store.dart';
+import 'package:pblcwallet/stores/wallet_transactions_store.dart';
 import 'package:pblcwallet/utils/contract_parser.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +40,7 @@ Future<List<SingleChildCloneableWidget>> createStore(
   final walletImportStore = WalletImportStore(walletStore, addressService);
   final walletTransferStore = WalletTransferStore(walletStore, contractService);
   final walletBuySellStore = WalletBuySellStore(walletStore, contractService);
+  final walletTransactionsStore = WalletTransactionsStore(walletStore);
 
   // initial state.
   if (configurationService.didSetupWallet()) {
@@ -52,5 +55,7 @@ Future<List<SingleChildCloneableWidget>> createStore(
     Provider<WalletImportStore>(builder: (_) => walletImportStore),
     Provider<ConfigurationService>(builder: (_) => configurationService),
     Provider<WalletBuySellStore>(builder: (_) => walletBuySellStore),
+    Provider<WalletTransactionsStore>(builder: (_) => walletTransactionsStore),
+    Provider<FetchEtherscanData>(builder: (_) => FetchEtherscanData.create()),
   ];
 }

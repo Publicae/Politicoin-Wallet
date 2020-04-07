@@ -39,6 +39,7 @@ dependencies:
   firebase_analytics: ^5.0.11
   url_launcher: ^5.4.1
   flutter_phoenix: "^0.1.0"
+  chopper:
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +48,7 @@ dev_dependencies:
   mobx_codegen: ^1.0.1
   build_runner: ^1.7.4
   json_serializable: ^3.2.5
+  chopper_generator:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

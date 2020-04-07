@@ -84,7 +84,7 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                               switch (tx.status) {
                                 case TransactionStatus.started:
                                   Navigator.pushNamed(
-                                      context, '/processing-transaction');
+                                      context, '/transactions');
                                   break;
                                 case TransactionStatus.confirmed:
                                   Navigator.popUntil(

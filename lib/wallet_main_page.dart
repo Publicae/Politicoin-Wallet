@@ -72,7 +72,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
               title: Text("My Transactions"),
               subtitle: Text("see sent and received transactions"),
               onTap: () async {
-                Navigator.popAndPushNamed(context, "/my-transactions");
+                Navigator.popAndPushNamed(context, "/transactions");
               },
             ),
             Divider(

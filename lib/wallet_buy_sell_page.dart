@@ -59,10 +59,11 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
                     onPressed: !widget.store.loading
                         ? () {
                             widget.store.buy().listen((tx) {
+                              Navigator.pop(context);
                               switch (tx.status) {
                                 case TransactionStatus.started:
                                   Navigator.pushNamed(
-                                      context, '/processing-transaction');
+                                      context, '/transactions');
                                   break;
                                 case TransactionStatus.confirmed:
                                   Navigator.popUntil(
@@ -82,7 +83,7 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
                               switch (tx.status) {
                                 case TransactionStatus.started:
                                   Navigator.pushNamed(
-                                      context, '/processing-transaction');
+                                      context, '/transactions');
                                   break;
                                 case TransactionStatus.confirmed:
                                   Navigator.popUntil(

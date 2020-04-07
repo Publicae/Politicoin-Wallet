@@ -199,7 +199,6 @@ class ContractService implements IContractService {
                           BigInt amount) async {
     final credentials = await this.getCredentials(privateKey);
     final networkId = await client.getNetworkId();
-    final from = await credentials.extractAddress();
 
     try {
       final transactionId = await client.sendTransaction(
