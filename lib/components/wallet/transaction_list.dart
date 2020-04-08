@@ -34,20 +34,40 @@ class TransactionList extends StatelessWidget {
         shrinkWrap: true,
         itemCount: data.length,
         itemBuilder: (context, index) {
-          return _tile(data[index].hash, data[index].nonce, Icons.work);
+          return _tile(data[index]);
         });
   }
 
-  ListTile _tile(String title, String subtitle, IconData icon) => ListTile(
-        title: Text(title,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 20,
-            )),
-        subtitle: Text(subtitle),
-        leading: Icon(
-          icon,
-          color: Colors.blue[500],
+  Center _tile(TransactionModel transaction) => Center(
+        child: Card(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.album),
+                title:
+                    Text('${transaction.hash}', style: TextStyle(fontSize: 14)),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                  Text('blockNumber: ${transaction.blockNumber}'),
+                  Text('amount: ${transaction.value}'),
+                  Text('${transaction.formattedDate()}')
+                ]),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(transaction.txreceiptStatus == ""
+                      ? "pending"
+                      : "confirmed"),
+                  Text(transaction.to == store.walletStore.address
+                      ? "RECEIVED"
+                      : "SENT")
+                ],
+              )
+            ],
+          ),
         ),
       );
 }

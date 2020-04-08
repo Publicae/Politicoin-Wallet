@@ -56,6 +56,6 @@ Future<List<SingleChildCloneableWidget>> createStore(
     Provider<ConfigurationService>(builder: (_) => configurationService),
     Provider<WalletBuySellStore>(builder: (_) => walletBuySellStore),
     Provider<WalletTransactionsStore>(builder: (_) => walletTransactionsStore),
-    Provider<FetchEtherscanData>(builder: (_) => FetchEtherscanData.create()),
+    Provider<FetchEtherscanData>(builder: (_) => FetchEtherscanData.create("api-${configurationService.getNetwork()}")),
   ];
 }

@@ -1,7 +1,3 @@
-import 'package:pblcwallet/components/form/paper_form.dart';
-import 'package:pblcwallet/components/form/paper_input.dart';
-import 'package:pblcwallet/components/form/paper_validation_summary.dart';
-import 'package:pblcwallet/model/transaction.dart';
 import 'package:pblcwallet/stores/wallet_transactions_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';

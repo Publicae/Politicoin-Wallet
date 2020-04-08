@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 TransactionsModel transactionsModelFromJson(String str) => TransactionsModel.fromJson(json.decode(str));
 
 String transactionsModelToJson(TransactionsModel data) => json.encode(data.toJson());
@@ -114,4 +116,9 @@ class TransactionModel {
         "gasUsed": gasUsed,
         "confirmations": confirmations,
     };
+
+    String formattedDate() {
+      var date = new DateTime.fromMillisecondsSinceEpoch(int.parse(timeStamp) * 1000);
+      return DateFormat.yMMMMd().add_jm().format(date);
+    } 
 }
