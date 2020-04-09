@@ -27,6 +27,13 @@ mixin _$WalletTransactionsStore on WalletTransactionsStoreBase, Store {
     }, _$transactionsModelAtom, name: '${_$transactionsModelAtom.name}_set');
   }
 
+  final _$refreshAsyncAction = AsyncAction('refresh');
+
+  @override
+  Future<void> refresh(BuildContext context) {
+    return _$refreshAsyncAction.run(() => super.refresh(context));
+  }
+
   final _$fetchTransactionsAsyncAction = AsyncAction('fetchTransactions');
 
   @override

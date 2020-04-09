@@ -72,7 +72,7 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                 hintText: 'PBLC or ETH(in wei)',
                 onChanged: widget.store.setAmount,
               ),
-              Container( margin: EdgeInsets.all(15)),
+              Container(margin: EdgeInsets.all(15)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -83,12 +83,12 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                             widget.store.transfer().listen((tx) {
                               switch (tx.status) {
                                 case TransactionStatus.started:
-                                  Navigator.pushNamed(
-                                      context, '/transactions');
+                                  Navigator.pushNamed(context, '/transactions');
                                   break;
                                 case TransactionStatus.confirmed:
-                                  Navigator.popUntil(
-                                      context, ModalRoute.withName('/'));
+                                  //Navigator.popUntil(context, ModalRoute.withName('/'));
+                                  break;
+                                default:
                                   break;
                               }
                             }).onError((error) =>

@@ -55,7 +55,7 @@ class _NetworkDropdownState extends State<NetworkDropdown> {
           });
           changeNetwork(context);
         },
-        hint: Text(toBeginningOfSentenceCase(widget.currentNetwork)),
+        hint: Text(toBeginningOfSentenceCase(widget.currentNetwork ?? "ropsten")),
         value: _value,
       ),
       ],

@@ -19,6 +19,11 @@ abstract class WalletTransactionsStoreBase with Store {
   TransactionsModel transactionsModel = TransactionsModel();
 
   @action
+  Future<void> refresh(BuildContext context) async {
+    await fetchTransactions(context);
+  }
+
+  @action
   Future fetchTransactions(BuildContext context) async {
     final etherscanData = Provider.of<FetchEtherscanData>(context);
     final response = await etherscanData.fetchData(walletStore.address);

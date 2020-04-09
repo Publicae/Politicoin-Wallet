@@ -1,41 +1,50 @@
+import 'dart:async';
 import 'package:pblcwallet/model/transactionsModel.dart';
 import 'package:pblcwallet/stores/wallet_transactions_store.dart';
 import 'package:flutter/material.dart';
 
 class TransactionList extends StatelessWidget {
   TransactionList(this.store);
+
   final WalletTransactionsStore store;
+  final streamController = StreamController<List<TransactionModel>>();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<TransactionModel>>(
-      future: _fetchTransactions(context),
+    return StreamBuilder<List<TransactionModel>>(
+      stream: streamController.stream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<TransactionModel> data = snapshot.data;
-          return _transactionsListView(data);
+          return _transactionsListView(context, data);
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
+        } else {
+          _fetchTransactions(context);
         }
         return CircularProgressIndicator();
       },
     );
   }
 
-  Future<List<TransactionModel>> _fetchTransactions(
-      BuildContext context) async {
+  _fetchTransactions(BuildContext context) async {
     await store.fetchTransactions(context);
-    return store.transactionsModel.transactions;
+    streamController.add(store.transactionsModel.transactions);
   }
 
-  ListView _transactionsListView(data) {
-    return ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          return _tile(data[index]);
-        });
+  RefreshIndicator _transactionsListView(BuildContext context, data) {
+    return RefreshIndicator(
+      child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return _tile(data[index]);
+          }),
+      onRefresh: () async {
+        await _fetchTransactions(context);
+      },
+    );
   }
 
   Center _tile(TransactionModel transaction) => Center(
@@ -50,10 +59,11 @@ class TransactionList extends StatelessWidget {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                  Text('blockNumber: ${transaction.blockNumber}'),
-                  Text('amount: ${transaction.value}'),
-                  Text('${transaction.formattedDate()}')
-                ]),
+                    Text('blockNumber: ${transaction.blockNumber}'),
+                    Text('amount: ${transaction.value}'),
+                    Text('${transaction.formattedDate()}')
+                  ],
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

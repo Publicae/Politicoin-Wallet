@@ -25,7 +25,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPrefs = await SharedPreferences.getInstance();
   configurationService = ConfigurationService(sharedPrefs);
-  stores = await createStore(AppConfig().params[configurationService.getNetwork()]);
+  var network = configurationService.getNetwork() ?? "ropsten";
+  stores = await createStore(AppConfig().params[network]);
 
   runApp(Phoenix(
     child: MainApp(stores),

@@ -50,7 +50,7 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
                 hintText: 'PBLC',
                 onChanged: widget.store.setAmount,
               ),
-              Container( margin: EdgeInsets.all(15)),
+              Container(margin: EdgeInsets.all(15)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -62,12 +62,12 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
                               Navigator.pop(context);
                               switch (tx.status) {
                                 case TransactionStatus.started:
-                                  Navigator.pushNamed(
-                                      context, '/transactions');
+                                  Navigator.pushNamed(context, '/transactions');
                                   break;
                                 case TransactionStatus.confirmed:
-                                  Navigator.popUntil(
-                                      context, ModalRoute.withName('/'));
+                                  //Navigator.popUntil(context, ModalRoute.withName('/'));
+                                  break;
+                                default:
                                   break;
                               }
                             }).onError((error) =>
@@ -82,12 +82,12 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
                             widget.store.sell().listen((tx) {
                               switch (tx.status) {
                                 case TransactionStatus.started:
-                                  Navigator.pushNamed(
-                                      context, '/transactions');
+                                  Navigator.pushNamed(context, '/transactions');
                                   break;
                                 case TransactionStatus.confirmed:
-                                  Navigator.popUntil(
-                                      context, ModalRoute.withName('/'));
+                                  //Navigator.popUntil(context, ModalRoute.withName('/'));
+                                  break;
+                                default:
                                   break;
                               }
                             }).onError((error) =>

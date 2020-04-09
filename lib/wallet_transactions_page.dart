@@ -1,6 +1,5 @@
 import 'package:pblcwallet/stores/wallet_transactions_store.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'components/wallet/transaction_list.dart';
 
@@ -33,9 +32,7 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
 
   Widget buildForm() {
     return Center(
-      child: Observer(
-        builder: (_) => TransactionList(widget.store),
-      ),
+      child: TransactionList(widget.store),
     );
   }
 

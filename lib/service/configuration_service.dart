@@ -53,6 +53,6 @@ class ConfigurationService implements IConfigurationService {
 
   @override
   String getNetwork() {
-    return _preferences.getString("network");
+    return _preferences.getString("network") ?? "ropsten";
   }
 }
