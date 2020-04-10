@@ -119,8 +119,8 @@ abstract class WalletTransferStoreBase with Store {
         EthereumAddress.fromHex(this.to),
         BigInt.from(amount))
     .then((id) {
-      print("Transaction pending: $id");
-      Navigator.pushNamed(context, '/transactions');
+      print("Transaction ETH pending: $id");
+      //Navigator.pushNamed(context, '/transactions');
     });
   }
 

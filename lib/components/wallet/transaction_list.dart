@@ -8,12 +8,12 @@ class TransactionList extends StatelessWidget {
 
   final WalletTransactionsStore store;
   final streamController = StreamController<List<TransactionModel>>();
-  final interval = const Duration(seconds:10);
+  final interval = const Duration(seconds:25);
 
   @override
   Widget build(BuildContext context) {
 
-    store.timer = new Timer.periodic(interval, (Timer t) => _fetchTransactions(context));
+    store.timer = Timer.periodic(interval, (Timer t) => _fetchTransactions(context));
 
     return StreamBuilder<List<TransactionModel>>(
       stream: streamController.stream,
@@ -33,8 +33,13 @@ class TransactionList extends StatelessWidget {
 
   _fetchTransactions(BuildContext context) async {
     print("fetching transactions...");
-    await store.fetchTransactions(context);
-    streamController.add(store.transactionsModel.transactions);
+    try {
+      await store.fetchTransactions(context);
+      streamController.add(store.transactionsModel.transactions);
+    } catch(ex) {
+      print("ERROR: ${ex.toString()}");
+      store.timer.cancel();
+    }
   }
 
   RefreshIndicator _transactionsListView(BuildContext context, data) {
@@ -66,6 +71,8 @@ class TransactionList extends StatelessWidget {
                   children: <Widget>[
                     Text('blockNumber: ${transaction.blockNumber}'),
                     Text('amount: ${transaction.value}'),
+                    Text('from: ${transaction.from}'),
+                    Text('to: ${transaction.to}'),
                     Text('${transaction.formattedDate()}')
                   ],
                 ),

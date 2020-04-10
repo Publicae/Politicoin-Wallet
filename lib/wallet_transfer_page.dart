@@ -112,7 +112,10 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                   RaisedButton(
                     child: const Text('Transfer ETH'),
                     onPressed: !widget.store.loading
-                        ? () => widget.store.transferEth(context)
+                        ? () {
+                          showInfoFlushbar(context, true, "actual ETH transaction");
+                          widget.store.transferEth(context);
+                        }
                         : null,
                   ),
                   // Row(
