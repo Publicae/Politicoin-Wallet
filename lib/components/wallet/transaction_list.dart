@@ -8,9 +8,13 @@ class TransactionList extends StatelessWidget {
 
   final WalletTransactionsStore store;
   final streamController = StreamController<List<TransactionModel>>();
+  final interval = const Duration(seconds:10);
 
   @override
   Widget build(BuildContext context) {
+
+    store.timer = new Timer.periodic(interval, (Timer t) => _fetchTransactions(context));
+
     return StreamBuilder<List<TransactionModel>>(
       stream: streamController.stream,
       builder: (context, snapshot) {
@@ -28,6 +32,7 @@ class TransactionList extends StatelessWidget {
   }
 
   _fetchTransactions(BuildContext context) async {
+    print("fetching transactions...");
     await store.fetchTransactions(context);
     streamController.add(store.transactionsModel.transactions);
   }

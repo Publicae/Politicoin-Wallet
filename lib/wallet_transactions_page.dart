@@ -14,7 +14,6 @@ class WalletTransactionsPage extends StatefulWidget {
 }
 
 class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
-
   @override
   void initState() {
     super.initState();
@@ -22,6 +21,7 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
 
   @override
   Widget build(BuildContext context) {
+    //final String hash = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -39,5 +39,7 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
   @override
   void dispose() {
     super.dispose();
+    print("INFO: cancelling timer");
+    widget.store.timer.cancel();
   }
 }

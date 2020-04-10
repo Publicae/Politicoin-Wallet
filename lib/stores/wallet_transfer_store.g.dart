@@ -171,11 +171,11 @@ mixin _$WalletTransferStore on WalletTransferStoreBase, Store {
   }
 
   @override
-  void transferEth() {
+  void transferEth(BuildContext context) {
     final _$actionInfo =
         _$WalletTransferStoreBaseActionController.startAction();
     try {
-      return super.transferEth();
+      return super.transferEth(context);
     } finally {
       _$WalletTransferStoreBaseActionController.endAction(_$actionInfo);
     }

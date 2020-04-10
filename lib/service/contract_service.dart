@@ -228,7 +228,6 @@ class ContractService implements IContractService {
 
   Future<BigInt> getTokenBalance(EthereumAddress from) async {
     try {
-      print(client);
       var response = await client.call(
         contract: contract,
         function: _balanceFunction(),

@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:pblcwallet/components/form/paper_form.dart';
 import 'package:pblcwallet/components/form/paper_input.dart';
 import 'package:pblcwallet/components/form/paper_validation_summary.dart';
@@ -31,12 +32,22 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_right),
+            onPressed: () {
+              Navigator.popAndPushNamed(context, '/transactions', arguments: "");
+            },
+          ),
+        ],
       ),
-      body: buildForm(),
+      body: Builder(
+        builder: (ctx) => buildForm(ctx),
+      ),
     );
   }
 
-  Widget buildForm() {
+  Widget buildForm(BuildContext context) {
     return SingleChildScrollView(
       child: Observer(
         builder: (_) {
@@ -59,13 +70,17 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
                     onPressed: !widget.store.loading
                         ? () {
                             widget.store.buy().listen((tx) {
-                              Navigator.pop(context);
+                              //Navigator.pop(context);
                               switch (tx.status) {
                                 case TransactionStatus.started:
-                                  Navigator.pushNamed(context, '/transactions');
+                                  print('transact pending ${tx.key}');
+                                  //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
+                                  showInfoFlushbar(context, true, tx.key);
                                   break;
                                 case TransactionStatus.confirmed:
+                                  print('transact confirmed ${tx.key}');
                                   //Navigator.popUntil(context, ModalRoute.withName('/'));
+                                  showInfoFlushbar(context, false, tx.key);
                                   break;
                                 default:
                                   break;
@@ -82,9 +97,13 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
                             widget.store.sell().listen((tx) {
                               switch (tx.status) {
                                 case TransactionStatus.started:
-                                  Navigator.pushNamed(context, '/transactions');
+                                  print('transact pending ${tx.key}');
+                                  showInfoFlushbar(context, true, tx.key);
+                                  //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
                                   break;
                                 case TransactionStatus.confirmed:
+                                  print('transact confirmed ${tx.key}');
+                                  showInfoFlushbar(context, false, tx.key);
                                   //Navigator.popUntil(context, ModalRoute.withName('/'));
                                   break;
                                 default:
@@ -106,6 +125,20 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
 
   void _popForm() {
     _amountController.value = TextEditingValue(text: widget.store.amount ?? "");
+  }
+
+  void showInfoFlushbar(BuildContext context, bool pending, String hash) {
+    Flushbar(
+      title: pending ? 'Transaction Pending' : 'Transaction Confirmed',
+      message: '$hash',
+      icon: Icon(
+        Icons.info_outline,
+        size: 28,
+        color: Colors.blue.shade300,
+      ),
+      leftBarIndicatorColor: Colors.blue.shade300,
+      duration: Duration(seconds: 3),
+    )..show(context);
   }
 
   @override

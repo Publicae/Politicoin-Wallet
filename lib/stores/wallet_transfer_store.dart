@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:pblcwallet/model/transaction.dart';
 import 'package:pblcwallet/service/contract_service.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
@@ -106,7 +107,7 @@ abstract class WalletTransferStoreBase with Store {
   }
 
   @action
-  void transferEth() {
+  void transferEth(BuildContext context) {
 
     // Amount we put in the textfield is in wei
     // If we want it to be ether
@@ -119,6 +120,7 @@ abstract class WalletTransferStoreBase with Store {
         BigInt.from(amount))
     .then((id) {
       print("Transaction pending: $id");
+      Navigator.pushNamed(context, '/transactions');
     });
   }
 

@@ -14,6 +14,7 @@ abstract class WalletTransactionsStoreBase with Store {
   WalletTransactionsStoreBase(this.walletStore);
 
   final WalletStore walletStore;
+  Timer timer;
 
   @observable
   TransactionsModel transactionsModel = TransactionsModel();

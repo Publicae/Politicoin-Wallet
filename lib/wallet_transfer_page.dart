@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:pblcwallet/components/form/paper_form.dart';
 import 'package:pblcwallet/components/form/paper_input.dart';
 import 'package:pblcwallet/components/form/paper_validation_summary.dart';
@@ -46,9 +47,17 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
               });
             },
           ),
+          IconButton(
+            icon: Icon(Icons.arrow_right),
+            onPressed: () {
+              Navigator.popAndPushNamed(context, '/transactions', arguments: "");
+            },
+          ),
         ],
       ),
-      body: buildForm(),
+      body: Builder(
+        builder: (ctx) => buildForm(),
+      ),
     );
   }
 
@@ -83,9 +92,13 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                             widget.store.transfer().listen((tx) {
                               switch (tx.status) {
                                 case TransactionStatus.started:
-                                  Navigator.pushNamed(context, '/transactions');
+                                  print('transact pending ${tx.key}');
+                                  showInfoFlushbar(context, true, tx.key);
+                                  //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
                                   break;
                                 case TransactionStatus.confirmed:
+                                  print('transact confirmed ${tx.key}');
+                                  showInfoFlushbar(context, false, tx.key);
                                   //Navigator.popUntil(context, ModalRoute.withName('/'));
                                   break;
                                 default:
@@ -99,7 +112,7 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                   RaisedButton(
                     child: const Text('Transfer ETH'),
                     onPressed: !widget.store.loading
-                        ? () => widget.store.transferEth()
+                        ? () => widget.store.transferEth(context)
                         : null,
                   ),
                   // Row(
@@ -133,6 +146,20 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
   String _getEthGasPrice() {
     var price = widget.store.ethGasPrice ?? "";
     return price;
+  }
+
+  void showInfoFlushbar(BuildContext context, bool pending, String hash) {
+    Flushbar(
+      title: pending ? 'Transaction Pending' : 'Transaction Confirmed',
+      message: '$hash',
+      icon: Icon(
+        Icons.info_outline,
+        size: 28,
+        color: Colors.blue.shade300,
+      ),
+      leftBarIndicatorColor: Colors.blue.shade300,
+      duration: Duration(seconds: 3),
+    )..show(context);
   }
 
   @override

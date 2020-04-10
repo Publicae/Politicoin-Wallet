@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class WalletMainPage extends StatefulWidget {
-  WalletMainPage(this.walletStore, {Key key, this.title, this.currentNetwork}) : super(key: key);
+  WalletMainPage(this.walletStore, {Key key, this.title, this.currentNetwork})
+      : super(key: key);
 
   final WalletStore walletStore;
   final String title;
@@ -18,6 +19,8 @@ class WalletMainPage extends StatefulWidget {
 class _WalletMainPageState extends State<WalletMainPage> {
   @override
   Widget build(BuildContext context) {
+    refreshBalance();
+
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -80,8 +83,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
             ),
             ListTile(
               title: Text("Change Network"),
-              subtitle: Text(
-                  "warning: this will restart the app!"),
+              subtitle: Text("warning: this will restart the app!"),
             ),
             NetworkDropdown(widget.currentNetwork),
           ],
@@ -109,7 +111,11 @@ class _WalletMainPageState extends State<WalletMainPage> {
       ),
     );
   }
-  
+
+  refreshBalance() async {
+    await widget.walletStore.fetchOwnBalance();
+  }
+
   showAlertDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = FlatButton(
