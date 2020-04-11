@@ -23,6 +23,9 @@ class TransactionList extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<TransactionModel> data = snapshot.data;
+          if(data.isEmpty) {
+            return Text("No transactions available!");
+          }
           return _transactionsListView(context, data);
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");

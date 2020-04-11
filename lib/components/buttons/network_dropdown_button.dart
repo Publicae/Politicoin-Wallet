@@ -55,7 +55,7 @@ class _NetworkDropdownState extends State<NetworkDropdown> {
           });
           changeNetwork(context);
         },
-        hint: Text(toBeginningOfSentenceCase(widget.currentNetwork ?? "ropsten")),
+        hint: Text(toBeginningOfSentenceCase(widget.currentNetwork)),
         value: _value,
       ),
       ],
@@ -63,6 +63,7 @@ class _NetworkDropdownState extends State<NetworkDropdown> {
   }
 
   changeNetwork(BuildContext context) async {
+    stores = [];
     stores = await createStore(AppConfig().params[_value]);
     Phoenix.rebirth(context);
   }

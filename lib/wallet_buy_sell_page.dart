@@ -128,6 +128,7 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
   }
 
   void showInfoFlushbar(BuildContext context, bool pending, String hash) {
+    widget.store.loading = false;
     Flushbar(
       title: pending ? 'Transaction Pending' : 'Transaction Confirmed',
       message: '$hash',

@@ -1,4 +1,5 @@
 import 'package:chopper/chopper.dart';
+import 'package:pblcwallet/service/configuration_service.dart';
 
 part 'fetchEtherscanData.chopper.dart';
 
@@ -13,9 +14,16 @@ abstract class FetchEtherscanData extends ChopperService {
   @Post()
   Future<Response> postData(@Body() Map<String, dynamic> body);
 
-  static FetchEtherscanData create(String network) {
+  static FetchEtherscanData create(ConfigurationService configurationService) {
+  
+    //etherscan API
+    var etherscanNetwork = "api";
+    if (configurationService.getNetwork() != "mainnet") {
+      etherscanNetwork = "api-${configurationService.getNetwork()}";
+    }
+
     final client = ChopperClient(
-      baseUrl: 'https://$network.etherscan.io/api',
+      baseUrl: 'https://$etherscanNetwork.etherscan.io/api',
       services: [_$FetchEtherscanData()],
       converter: JsonConverter(),
     );

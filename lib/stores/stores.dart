@@ -36,11 +36,12 @@ Future<List<SingleChildCloneableWidget>> createStore(
     addressService,
     configurationService,
   );
-  final walletCreateStore = WalletCreateStore(walletStore, addressService);
-  final walletImportStore = WalletImportStore(walletStore, addressService);
-  final walletTransferStore = WalletTransferStore(walletStore, contractService);
-  final walletBuySellStore = WalletBuySellStore(walletStore, contractService);
-  final walletTransactionsStore = WalletTransactionsStore(walletStore);
+
+  walletCreateStore = WalletCreateStore(walletStore, addressService);
+  walletImportStore = WalletImportStore(walletStore, addressService);
+  walletTransferStore = WalletTransferStore(walletStore, contractService);
+  walletBuySellStore = WalletBuySellStore(walletStore, contractService);
+  walletTransactionsStore = WalletTransactionsStore(walletStore);
 
   // initial state.
   if (configurationService.didSetupWallet()) {
@@ -56,6 +57,6 @@ Future<List<SingleChildCloneableWidget>> createStore(
     Provider<ConfigurationService>(builder: (_) => configurationService),
     Provider<WalletBuySellStore>(builder: (_) => walletBuySellStore),
     Provider<WalletTransactionsStore>(builder: (_) => walletTransactionsStore),
-    Provider<FetchEtherscanData>(builder: (_) => FetchEtherscanData.create("api-${configurationService.getNetwork()}")),
+    Provider<FetchEtherscanData>(builder: (_) => FetchEtherscanData.create(configurationService)),
   ];
 }
