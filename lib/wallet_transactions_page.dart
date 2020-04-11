@@ -41,5 +41,6 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
     super.dispose();
     print("INFO: cancelling timer");
     widget.store.timer.cancel();
+    widget.store.timer = null;
   }
 }

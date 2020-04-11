@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:pblcwallet/model/transactionsModel.dart';
 import 'package:pblcwallet/stores/wallet_transactions_store.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,9 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    store.timer = Timer.periodic(interval, (Timer t) => _fetchTransactions(context));
+    if (store.timer == null) {
+      store.timer = Timer.periodic(interval, (Timer t) => _fetchTransactions(context));
+    }
 
     return StreamBuilder<List<TransactionModel>>(
       stream: streamController.stream,
@@ -39,7 +42,13 @@ class TransactionList extends StatelessWidget {
     } catch(ex) {
       print("ERROR: ${ex.toString()}");
       store.timer.cancel();
+      store.timer = null;
     }
+  }
+
+  String showAmount(String value) {
+    var ethValue = int.parse(value) / pow(10, 18);
+    return '$value wei / $ethValue ETH';
   }
 
   RefreshIndicator _transactionsListView(BuildContext context, data) {
@@ -70,7 +79,7 @@ class TransactionList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text('blockNumber: ${transaction.blockNumber}'),
-                    Text('amount: ${transaction.value}'),
+                    Text('amount: ${showAmount(transaction.value)}'),
                     Text('from: ${transaction.from}'),
                     Text('to: ${transaction.to}'),
                     Text('${transaction.formattedDate()}')
