@@ -10,7 +10,7 @@ class Transaction {
   String from;
   String to;
   DateTime date;
-  String receipt; // TODO: how to get receipt?
+  String receipt;
   BigInt value;
   TransactionStatus status;
 

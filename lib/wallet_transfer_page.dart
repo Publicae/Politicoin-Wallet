@@ -1,15 +1,11 @@
 import 'package:flushbar/flushbar.dart';
-import 'package:intl/intl.dart';
 import 'package:pblcwallet/components/form/paper_form.dart';
 import 'package:pblcwallet/components/form/paper_input.dart';
 import 'package:pblcwallet/components/form/paper_validation_summary.dart';
-import 'package:pblcwallet/components/form/paper_gasprice.dart';
 import 'package:pblcwallet/model/transaction.dart';
 import 'package:pblcwallet/stores/wallet_transfer_store.dart';
-import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:provider/provider.dart';
 
 class WalletTransferPage extends StatefulWidget {
   WalletTransferPage(this.store, {Key key, this.title}) : super(key: key);
@@ -194,10 +190,10 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
     _amountController.value = TextEditingValue(text: widget.store.amount ?? "");
   }
 
-  String _getEthGasPrice() {
-    var price = widget.store.ethGasPrice ?? "";
-    return price;
-  }
+  // String _getEthGasPrice() {
+  //   var price = widget.store.ethGasPrice ?? "";
+  //   return price;
+  // }
 
   void showInfoFlushbar(BuildContext context, bool pending, String hash) {
     widget.store.loading = false;

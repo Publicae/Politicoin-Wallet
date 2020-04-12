@@ -1,4 +1,3 @@
-import 'package:pblcwallet/main.dart';
 import 'package:pblcwallet/processing_transaction_page.dart';
 import 'package:pblcwallet/qrcode_reader_page.dart';
 import 'package:pblcwallet/service/configuration_service.dart';

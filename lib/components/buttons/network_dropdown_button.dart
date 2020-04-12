@@ -63,7 +63,6 @@ class _NetworkDropdownState extends State<NetworkDropdown> {
   }
 
   changeNetwork(BuildContext context) async {
-    stores = [];
     stores = await createStore(AppConfig().params[_value]);
     Phoenix.rebirth(context);
   }

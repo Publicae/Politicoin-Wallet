@@ -12,7 +12,6 @@ import 'package:pblcwallet/stores/wallet_transactions_store.dart';
 import 'package:pblcwallet/utils/contract_parser.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:web_socket_channel/io.dart';
 import '../main.dart';
