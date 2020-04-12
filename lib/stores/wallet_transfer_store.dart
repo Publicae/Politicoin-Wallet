@@ -25,13 +25,16 @@ abstract class WalletTransferStoreBase with Store {
   ObservableList<String> errors = ObservableList<String>();
   @observable
   bool loading;
-  
+
   @observable
   String ethGasPrice;
 
+  @observable
+  String denomination;
+
   @action
   void setTo(String value) {
-      this.to = value;
+    this.to = value;
   }
 
   @action
@@ -40,7 +43,7 @@ abstract class WalletTransferStoreBase with Store {
       this.errors.clear();
       this.loading = true;
     } else {
-      if(double.tryParse(value) != null) {
+      if (double.tryParse(value) != null) {
         this.loading = false;
         this.amount = value;
       } else {
@@ -91,34 +94,44 @@ abstract class WalletTransferStoreBase with Store {
     _contractService.send(
         walletStore.privateKey,
         EthereumAddress.fromHex(this.to),
-        BigInt.from(amount),
-        onTransfer: (from, to, value) {
-          controller.add(transactionEvent.confirmed(from, to, value));
-          controller.close();
-          isLoading(false);
-        },
-        onError: (ex) {
-          controller.addError(ex);
-          isLoading(false);
-        })
-        .then((id) => {if (id != null) controller.add(transactionEvent.setId(id))});
+        BigInt.from(amount), onTransfer: (from, to, value) {
+      controller.add(transactionEvent.confirmed(from, to, value));
+      controller.close();
+      isLoading(false);
+    }, onError: (ex) {
+      controller.addError(ex);
+      isLoading(false);
+    }).then(
+        (id) => {if (id != null) controller.add(transactionEvent.setId(id))});
 
     return controller.stream;
   }
 
   @action
   void transferEth(BuildContext context) {
+    var multiplier = 1;
+    switch (denomination) {
+      case "wei":
+        multiplier = 1;
+        break;
+      case "gwei":
+        multiplier = pow(10, 9);
+        break;
+      case "pwei":
+        multiplier = pow(10, 15);
+        break;
+      case "ether":
+        multiplier = pow(10, 18);
+        break;
+      default:
+        break;
+    }
+    var amount = double.parse(this.amount) * multiplier;
 
-    // Amount we put in the textfield is in wei
-    // If we want it to be ether
-    // BigInt.from(double.parse(this.amount) * pow(10, 18))
-    var amount = double.parse(this.amount);
-
-    _contractService.sendEth(
-        walletStore.privateKey,
-        EthereumAddress.fromHex(this.to),
-        BigInt.from(amount))
-    .then((id) {
+    _contractService
+        .sendEth(walletStore.privateKey, EthereumAddress.fromHex(this.to),
+            BigInt.from(amount))
+        .then((id) {
       print("Transaction ETH pending: $id");
       //Navigator.pushNamed(context, '/transactions');
     });
@@ -126,7 +139,8 @@ abstract class WalletTransferStoreBase with Store {
 
   @action
   Future getEthGasPrice() async {
-    await _contractService.getEthGasPrice()
-    .then((amnt) => this.ethGasPrice = amnt.getInWei.toString());
+    await _contractService
+        .getEthGasPrice()
+        .then((amnt) => this.ethGasPrice = amnt.getInWei.toString());
   }
 }

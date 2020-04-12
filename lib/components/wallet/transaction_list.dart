@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:pblcwallet/components/buttons/copy_button.dart';
 import 'package:pblcwallet/model/transactionsModel.dart';
 import 'package:pblcwallet/stores/wallet_transactions_store.dart';
 import 'package:flutter/material.dart';
@@ -98,6 +99,19 @@ class TransactionList extends StatelessWidget {
                   Text(transaction.to == store.walletStore.address
                       ? "RECEIVED"
                       : "SENT")
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  CopyButton(
+                    text: const Text('Copy From'),
+                    value: transaction.from,
+                  ),
+                  CopyButton(
+                    text: const Text('Copy To'),
+                    value: transaction.to,
+                  ),
                 ],
               )
             ],

@@ -116,6 +116,11 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
                   ),
                 ],
               ),
+              Divider(),
+              Text(
+                'Buy or sell PBLC tokens from the Politicoin contract.',
+                style: TextStyle(color: Colors.red),
+              ),
             ],
           );
         },

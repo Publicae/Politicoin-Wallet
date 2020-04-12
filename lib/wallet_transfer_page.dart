@@ -1,4 +1,5 @@
 import 'package:flushbar/flushbar.dart';
+import 'package:intl/intl.dart';
 import 'package:pblcwallet/components/form/paper_form.dart';
 import 'package:pblcwallet/components/form/paper_input.dart';
 import 'package:pblcwallet/components/form/paper_validation_summary.dart';
@@ -50,7 +51,8 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
           IconButton(
             icon: Icon(Icons.arrow_right),
             onPressed: () {
-              Navigator.popAndPushNamed(context, '/transactions', arguments: "");
+              Navigator.popAndPushNamed(context, '/transactions',
+                  arguments: "");
             },
           ),
         ],
@@ -75,11 +77,47 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                 hintText: 'Type the destination address',
                 onChanged: widget.store.setTo,
               ),
-              PaperInput(
-                controller: _amountController,
-                labelText: 'Amount',
-                hintText: 'PBLC or ETH(in wei)',
-                onChanged: widget.store.setAmount,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Expanded(
+                    child: PaperInput(
+                      controller: _amountController,
+                      labelText: 'Amount',
+                      hintText: '0',
+                      onChanged: widget.store.setAmount,
+                    ),
+                  ),
+                  DropdownButton<String>(
+                    items: [
+                      DropdownMenuItem<String>(
+                        child: Text('PBLC'),
+                        value: 'PBLC',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('wei'),
+                        value: 'wei',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('gwei (Shannon)'),
+                        value: 'gwei',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('pwei (Finney)'),
+                        value: 'pwei',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('ether (Buterin)'),
+                        value: 'ether',
+                      ),
+                    ],
+                    onChanged: (String value) {
+                      widget.store.denomination = value;
+                    },
+                    hint: Text("PBLC"),
+                    value: widget.store.denomination ?? "PBLC",
+                  ),
+                ],
               ),
               Container(margin: EdgeInsets.all(15)),
               Row(
@@ -87,7 +125,8 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                 children: <Widget>[
                   RaisedButton(
                     child: const Text('Transfer PBLC'),
-                    onPressed: !widget.store.loading
+                    onPressed: !widget.store.loading &&
+                            widget.store.denomination == "PBLC"
                         ? () {
                             widget.store.transfer().listen((tx) {
                               switch (tx.status) {
@@ -111,11 +150,13 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                   ),
                   RaisedButton(
                     child: const Text('Transfer ETH'),
-                    onPressed: !widget.store.loading
+                    onPressed: !widget.store.loading &&
+                            widget.store.denomination != "PBLC"
                         ? () {
-                          showInfoFlushbar(context, true, "actual ETH transaction");
-                          widget.store.transferEth(context);
-                        }
+                            showInfoFlushbar(
+                                context, true, "actual ETH transaction");
+                            widget.store.transferEth(context);
+                          }
                         : null,
                   ),
                   // Row(
@@ -134,6 +175,13 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                   // )
                 ],
               ),
+              Divider(),
+              Text(
+                'When transfering PBLC, make sure the receiving address has a PBLC compliant wallet!',
+                style: TextStyle(color: Colors.red),
+              ),
+              Divider(),
+              Text("1 Ether = 1,000,000,000,000,000,000 wei"),
             ],
           );
         },

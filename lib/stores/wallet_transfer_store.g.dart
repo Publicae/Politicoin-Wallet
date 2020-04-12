@@ -94,6 +94,23 @@ mixin _$WalletTransferStore on WalletTransferStoreBase, Store {
     }, _$ethGasPriceAtom, name: '${_$ethGasPriceAtom.name}_set');
   }
 
+  final _$denominationAtom = Atom(name: 'WalletTransferStoreBase.denomination');
+
+  @override
+  String get denomination {
+    _$denominationAtom.context.enforceReadPolicy(_$denominationAtom);
+    _$denominationAtom.reportObserved();
+    return super.denomination;
+  }
+
+  @override
+  set denomination(String value) {
+    _$denominationAtom.context.conditionallyRunInAction(() {
+      super.denomination = value;
+      _$denominationAtom.reportChanged();
+    }, _$denominationAtom, name: '${_$denominationAtom.name}_set');
+  }
+
   final _$getEthGasPriceAsyncAction = AsyncAction('getEthGasPrice');
 
   @override
@@ -184,7 +201,7 @@ mixin _$WalletTransferStore on WalletTransferStoreBase, Store {
   @override
   String toString() {
     final string =
-        'to: ${to.toString()},amount: ${amount.toString()},errors: ${errors.toString()},loading: ${loading.toString()},ethGasPrice: ${ethGasPrice.toString()}';
+        'to: ${to.toString()},amount: ${amount.toString()},errors: ${errors.toString()},loading: ${loading.toString()},ethGasPrice: ${ethGasPrice.toString()},denomination: ${denomination.toString()}';
     return '{$string}';
   }
 }

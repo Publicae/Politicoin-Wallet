@@ -44,7 +44,7 @@ Map<String, WidgetBuilder> getRoutes(context) {
         ),
     '/transfer': (BuildContext context) => Consumer<WalletTransferStore>(
           builder: (context, walletTransferStore, _) =>
-              WalletTransferPage(walletTransferStore, title: "Send Tokens"),
+              WalletTransferPage(walletTransferStore, title: "Send PBLC / ETH"),
         ),
     '/processing-transaction': (BuildContext context) =>
         Consumer<WalletTransferStore>(
