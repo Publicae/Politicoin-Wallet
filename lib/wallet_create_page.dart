@@ -101,7 +101,7 @@ class _WalletCreatePage extends State<WalletCreatePage> {
                 child: const Text('Confirm'),
                 onPressed: () async {
                   if (await widget.store.confirmMnemonic()) {
-                    Navigator.of(context).popAndPushNamed("/");
+                    Navigator.of(context).popAndPushNamed("/main-page");
                   }
                 },
               )

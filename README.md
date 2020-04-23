@@ -22,3 +22,9 @@ flutter packages pub run build_runner watch
 flutter packages pub run build_runner watch --delete-conflicting-outputs
 
 flutter pub run flutter_launcher_icons:main
+flutter pub run flutter_native_splash:create
+
+// Clean
+Xcode (DerivedData)
+Flutter (clean)
+Pods (rm -rf)

@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:pblcwallet/model/transaction.dart';
 import 'package:pblcwallet/service/address_service.dart';
 import 'package:pblcwallet/service/configuration_service.dart';
 import 'package:pblcwallet/service/contract_service.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pblcwallet/stores/login_store.dart';
+import 'package:provider/provider.dart';
 import 'package:web3dart/credentials.dart';
-
 
 part 'wallet_store.g.dart';
 
@@ -40,6 +42,9 @@ abstract class WalletStoreBase with Store {
 
   @observable
   ObservableList<Transaction> transactions = ObservableList<Transaction>();
+
+  @observable
+  String username = "";
 
   @action
   Future<void> initialise() async {
@@ -117,5 +122,13 @@ abstract class WalletStoreBase with Store {
     var gasPrice = await _contractService.getEthGasPrice();
 
     this.ethGasPrice = gasPrice.getInWei;
+  }
+
+  @action
+  Future getUserInfo(BuildContext context) async {
+    final loginStore = Provider.of<LoginStore>(context);
+
+    final user = await loginStore.getUser();
+    username = user.displayName;
   }
 }

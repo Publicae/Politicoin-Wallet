@@ -111,6 +111,23 @@ mixin _$WalletStore on WalletStoreBase, Store {
     }, _$transactionsAtom, name: '${_$transactionsAtom.name}_set');
   }
 
+  final _$usernameAtom = Atom(name: 'WalletStoreBase.username');
+
+  @override
+  String get username {
+    _$usernameAtom.context.enforceReadPolicy(_$usernameAtom);
+    _$usernameAtom.reportObserved();
+    return super.username;
+  }
+
+  @override
+  set username(String value) {
+    _$usernameAtom.context.conditionallyRunInAction(() {
+      super.username = value;
+      _$usernameAtom.reportChanged();
+    }, _$usernameAtom, name: '${_$usernameAtom.name}_set');
+  }
+
   final _$initialiseAsyncAction = AsyncAction('initialise');
 
   @override
@@ -139,10 +156,17 @@ mixin _$WalletStore on WalletStoreBase, Store {
     return _$fetchEthGasPriceAsyncAction.run(() => super.fetchEthGasPrice());
   }
 
+  final _$getUserInfoAsyncAction = AsyncAction('getUserInfo');
+
+  @override
+  Future<dynamic> getUserInfo(BuildContext context) {
+    return _$getUserInfoAsyncAction.run(() => super.getUserInfo(context));
+  }
+
   @override
   String toString() {
     final string =
-        'tokenBalance: ${tokenBalance.toString()},ethBalance: ${ethBalance.toString()},ethGasPrice: ${ethGasPrice.toString()},address: ${address.toString()},privateKey: ${privateKey.toString()},transactions: ${transactions.toString()}';
+        'tokenBalance: ${tokenBalance.toString()},ethBalance: ${ethBalance.toString()},ethGasPrice: ${ethGasPrice.toString()},address: ${address.toString()},privateKey: ${privateKey.toString()},transactions: ${transactions.toString()},username: ${username.toString()}';
     return '{$string}';
   }
 }

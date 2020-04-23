@@ -48,12 +48,12 @@ class _WalletImportPage extends State<WalletImportPage> {
                 onPressed: () async {
                   if (widget.store.type == WalletImportType.mnemonic &&
                       await widget.store.confirmMnemonic()) {
-                    Navigator.of(context).popAndPushNamed("/");
+                    Navigator.of(context).popAndPushNamed("/main-page");
                   }
 
                   if (widget.store.type == WalletImportType.privateKey &&
                       await widget.store.confirmPrivateKey()) {
-                    Navigator.of(context).popAndPushNamed("/");
+                    Navigator.of(context).popAndPushNamed("/main-page");
                   }
                 },
               )

@@ -1,3 +1,4 @@
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pblcwallet/components/buttons/network_dropdown_button.dart';
 import 'package:pblcwallet/components/wallet/balance.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
@@ -20,6 +21,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
   @override
   Widget build(BuildContext context) {
     refreshBalance();
+    getUserInfo();
 
     return Scaffold(
       drawer: Drawer(
@@ -39,11 +41,16 @@ class _WalletMainPageState extends State<WalletMainPage> {
             //     }
             //   },
             // ),
-            ListTile(
-              title: Text(
-                "PBLC Wallet",
-                style: TextStyle(fontSize: 32.0),
-              ),
+            Observer(
+                builder: (_) => ListTile(
+                      title: Text(
+                        "PBLC Wallet",
+                        style: TextStyle(fontSize: 32.0),
+                      ),
+                      subtitle: Text(widget.walletStore.username),
+                    )),
+            Divider(
+              color: Colors.red,
             ),
             ListTile(
               title: Text("Reset wallet"),
@@ -116,6 +123,10 @@ class _WalletMainPageState extends State<WalletMainPage> {
     await widget.walletStore.fetchOwnBalance();
   }
 
+  getUserInfo() async {
+    await widget.walletStore.getUserInfo(context);
+  }
+
   showAlertDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = FlatButton(
@@ -128,7 +139,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
       child: Text("Reset"),
       onPressed: () async {
         await widget.walletStore.resetWallet();
-        Navigator.popAndPushNamed(context, "/");
+        // Navigator.popAndPushNamed(context, "/main-page");
       },
     );
 

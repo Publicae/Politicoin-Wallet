@@ -3,6 +3,7 @@ import 'package:pblcwallet/data/fetchEtherscanData.dart';
 import 'package:pblcwallet/service/address_service.dart';
 import 'package:pblcwallet/service/configuration_service.dart';
 import 'package:pblcwallet/service/contract_service.dart';
+import 'package:pblcwallet/stores/login_store.dart';
 import 'package:pblcwallet/stores/wallet_buy_sell_store.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:pblcwallet/stores/wallet_create_store.dart';
@@ -48,6 +49,9 @@ Future<List<SingleChildCloneableWidget>> createStore(
     configurationService.setNetwork(params.network);
   }
 
+  LoginStore loginStore = LoginStore(configurationService);
+  isLoggedIn = await loginStore.isLoggedIn();
+
   return [
     Provider<WalletStore>(builder: (_) => walletStore),
     Provider<WalletTransferStore>(builder: (_) => walletTransferStore),
@@ -57,5 +61,6 @@ Future<List<SingleChildCloneableWidget>> createStore(
     Provider<WalletBuySellStore>(builder: (_) => walletBuySellStore),
     Provider<WalletTransactionsStore>(builder: (_) => walletTransactionsStore),
     Provider<FetchEtherscanData>(builder: (_) => FetchEtherscanData.create(configurationService)),
+    Provider<LoginStore>(builder: (_) => loginStore)
   ];
 }

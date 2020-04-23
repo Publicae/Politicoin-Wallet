@@ -29,6 +29,7 @@ WalletCreateStore walletCreateStore;
 WalletImportStore walletImportStore;
 WalletTransferStore walletTransferStore;
 WalletTransactionsStore walletTransactionsStore;
+bool isLoggedIn;
 
 void main() async {
   // bootstrapping;
@@ -54,7 +55,7 @@ class MainApp extends StatelessWidget {
       providers: stores,
       child: new MaterialApp(
         title: 'PBLC',
-        initialRoute: '/',
+        initialRoute: isLoggedIn ? '/main-page' : '/',
         routes: getRoutes(context),
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: analytics),
