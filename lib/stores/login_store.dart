@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pblcwallet/data/fetchFacebookData.dart';
+import 'package:pblcwallet/model/facebookProfileModel.dart';
 import 'package:pblcwallet/service/configuration_service.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 part 'login_store.g.dart';
 
@@ -13,12 +17,9 @@ abstract class LoginStoreBase with Store {
 
   final IConfigurationService _configurationService;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-    ],
-  );
+
+  GoogleSignIn googleSignIn;
+  FacebookLogin facebookSignIn;
 
   @observable
   String name;
@@ -27,8 +28,88 @@ abstract class LoginStoreBase with Store {
   @observable
   String imageUrl;
 
+  Future<String> signInWithFacebook() async {
+    facebookSignIn = FacebookLogin();
+
+    final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        final token = accessToken.token;
+        print(token);
+        /*
+         Token: ${accessToken.token}
+         User id: ${accessToken.userId}
+         Expires: ${accessToken.expires}
+         Permissions: ${accessToken.permissions}
+         Declined permissions: ${accessToken.declinedPermissions}
+         */
+
+        /*
+        final facebookData = FetchFacebookData.create();
+        final graphResponse = await facebookData.getProfile(token);
+        final profile = facebookProfileModelFromJson(graphResponse.bodyString);
+
+        assert(profile.email != null);
+        assert(profile.name != null);
+
+        name = profile.name;
+        email = profile.email;
+        */
+
+        final AuthCredential credential = FacebookAuthProvider.getCredential(
+          accessToken: token,
+        );
+
+        final AuthResult authResult =
+            await _auth.signInWithCredential(credential);
+        final FirebaseUser user = authResult.user;
+
+        assert(!user.isAnonymous);
+        assert(await user.getIdToken() != null);
+
+        final FirebaseUser currentUser = await _auth.currentUser();
+        assert(user.uid == currentUser.uid);
+
+        //assert(user.email != null);
+        assert(user.displayName != null);
+        assert(user.photoUrl != null);
+        user.providerData[0].email;
+
+        name = user.displayName;
+        email = user.providerData[0].email; //user.email;
+        imageUrl = user.photoUrl;
+
+        return 'signInWithFacebook succeeded: $user';
+
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login cancelled by the user.');
+        break;
+      case FacebookLoginStatus.error:
+        print('Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
+
+    return 'error';
+  }
+
   Future<String> signInWithGoogle() async {
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    );
+    GoogleSignInAccount googleSignInAccount;
+    try {
+      googleSignInAccount = await googleSignIn.signIn();
+    } catch (err) {
+      print(err);
+      return 'error';
+    }
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
 
@@ -58,21 +139,41 @@ abstract class LoginStoreBase with Store {
   }
 
   Future signOutGoogle(BuildContext context) async {
+    await _auth.signOut();
     await googleSignIn.signOut();
     print("User Google Sign Out");
   }
 
+  Future signOutFacebook(BuildContext context) async {
+    await _auth.signOut();
+    await facebookSignIn.logOut();
+    print("User Facebook Sign Out");
+  }
+
   Future attemptGoogleSignIn(BuildContext context) async {
-    signInWithGoogle().whenComplete(() {
-      Navigator.pushNamed(context, '/main-page');
+    signInWithGoogle().then((res) {
+      if (res != 'error') {
+        Navigator.pushNamed(context, '/main-page');
+      }
+    });
+  }
+
+  Future attemptFacebookSignIn(BuildContext context) async {
+    signInWithFacebook().then((res) {
+      if (res != 'error') {
+        Navigator.pushNamed(context, '/main-page');
+      }
     });
   }
 
   Future signOut(BuildContext context) async {
     if (googleSignIn != null) {
       await signOutGoogle(context);
+    } else if (facebookSignIn != null) {
+      await signOutFacebook(context);
     }
 
+    _configurationService.setLoggedIn(false);
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
   }

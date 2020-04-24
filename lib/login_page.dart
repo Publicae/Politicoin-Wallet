@@ -23,7 +23,12 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              FlutterLogo(size: 150),
+              // FlutterLogo(size: 150),
+              Image.asset(
+                'assets/icon/iTunesArtwork@3x.png',
+                width: 150,
+                height: 150,
+              ),
               SizedBox(height: 50),
               SignInButton(
                 Buttons.Google,
@@ -31,7 +36,14 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () async {
                   await widget.loginStore.attemptGoogleSignIn(context);
                 },
-              )
+              ),
+              SignInButton(
+                Buttons.Facebook,
+                text: "Sign in with Facebook",
+                onPressed: () async {
+                  await widget.loginStore.attemptFacebookSignIn(context);
+                },
+              ),
             ],
           ),
         ),

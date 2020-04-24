@@ -163,6 +163,13 @@ mixin _$WalletStore on WalletStoreBase, Store {
     return _$getUserInfoAsyncAction.run(() => super.getUserInfo(context));
   }
 
+  final _$signOutAsyncAction = AsyncAction('signOut');
+
+  @override
+  Future<dynamic> signOut(BuildContext context) {
+    return _$signOutAsyncAction.run(() => super.signOut(context));
+  }
+
   @override
   String toString() {
     final string =

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PBLC Wallet</string>
+    
+    <!-- YOUR FACEBOOK CONFIG STRINGS GO HERE -->
+    <string name="facebook_app_id">222850152335736</string>
+    <string name="fb_login_protocol_scheme">fb222850152335736</string>
+</resources>

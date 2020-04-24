@@ -93,6 +93,13 @@ class _WalletMainPageState extends State<WalletMainPage> {
               subtitle: Text("warning: this will restart the app!"),
             ),
             NetworkDropdown(widget.currentNetwork),
+            ListTile(
+              title: Text("Sign Out"),
+              subtitle: Text(""),
+              onTap: () {
+                signOutDialog(context);
+              },
+            ),
           ],
         ),
       ),
@@ -148,6 +155,40 @@ class _WalletMainPageState extends State<WalletMainPage> {
       title: Text("Reset wallet?"),
       content: Text(
           "warning: without your seed phrase you cannot restore your wallet"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  signOutDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Sign Out"),
+      onPressed: () async {
+        await widget.walletStore.signOut(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Sign Out?"),
+      content: Text(""),
       actions: [
         cancelButton,
         continueButton,

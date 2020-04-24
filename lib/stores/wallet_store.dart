@@ -131,4 +131,10 @@ abstract class WalletStoreBase with Store {
     final user = await loginStore.getUser();
     username = user.displayName;
   }
+
+  @action
+  Future signOut(BuildContext context) async {
+    final loginStore = Provider.of<LoginStore>(context);
+    await loginStore.signOut(context);
+  }
 }

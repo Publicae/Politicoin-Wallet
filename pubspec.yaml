@@ -44,6 +44,7 @@ dependencies:
   firebase_auth: ^0.16.0
   google_sign_in: ^4.4.4
   flutter_signin_button: ^1.0.0
+  flutter_facebook_login: ^3.0.0
 
 
 dev_dependencies:
@@ -82,6 +83,7 @@ flutter:
   assets:
     - TargaryenCoin.json
     - PoliticoinToken.json
+    - assets/icon/iTunesArtwork@3x.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
