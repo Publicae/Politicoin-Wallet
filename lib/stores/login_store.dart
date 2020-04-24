@@ -30,7 +30,6 @@ abstract class LoginStoreBase with Store {
 
   Future<String> signInWithFacebook() async {
     facebookSignIn = FacebookLogin();
-
     final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
 
     switch (result.status) {
@@ -109,14 +108,19 @@ abstract class LoginStoreBase with Store {
       ],
     );
     GoogleSignInAccount googleSignInAccount;
+    GoogleSignInAuthentication googleSignInAuthentication;
     try {
-      googleSignInAccount = await googleSignIn.signIn();
+      var session = await isLoggedIn();
+      if (session) {
+        googleSignInAccount = await googleSignIn.signInSilently();
+      } else {
+        googleSignInAccount = await googleSignIn.signIn();
+      }
+      googleSignInAuthentication = await googleSignInAccount.authentication;
     } catch (err) {
       print(err);
       return 'error';
     }
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
 
     final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleSignInAuthentication.accessToken,
@@ -130,7 +134,7 @@ abstract class LoginStoreBase with Store {
       print(err);
       return "error";
     }
-    
+
     final FirebaseUser user = authResult.user;
 
     assert(!user.isAnonymous);
@@ -205,14 +209,39 @@ abstract class LoginStoreBase with Store {
 
   Future<String> deleteUser(BuildContext context) async {
     final currentUser = await _auth.currentUser();
-
     try {
       await currentUser.delete();
       return 'user deleted';
     } catch (err) {
       print(err);
-      Navigator.pop(context);
+      deleteDialog(context, err.message);
       return 'error';
     }
+  }
+
+  deleteDialog(BuildContext context, String err) {
+    Widget continueButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () async {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(err),
+      content: Text(""),
+      actions: [
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

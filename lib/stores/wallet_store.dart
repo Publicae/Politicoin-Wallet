@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:pblcwallet/app_config.dart';
+import 'package:pblcwallet/main.dart';
 import 'package:pblcwallet/model/transaction.dart';
 import 'package:pblcwallet/service/address_service.dart';
 import 'package:pblcwallet/service/configuration_service.dart';
@@ -145,7 +147,7 @@ abstract class WalletStoreBase with Store {
     if (res == 'user deleted') {
       await fetchOwnBalance();
 
-      sell().listen((tx) {
+      transfer().listen((tx) {
         switch (tx.status) {
           case TransactionStatus.started:
             print('transact pending ${tx.key}');
@@ -158,18 +160,26 @@ abstract class WalletStoreBase with Store {
         }
       }).onError((error) => print(error.message));
 
+      await resetWallet();
+
       Navigator.of(context)
           .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
     }
   }
 
   @action
-  Stream<Transaction> sell() {
+  Stream<Transaction> transfer() {
     var controller = StreamController<Transaction>();
     var transactionEvent = Transaction();
+
     var amount = BigInt.from(this.tokenBalance / BigInt.from(pow(10, 9)));
-    _contractService.sell(this.privateKey, amount,
-        onTransfer: (from, to, value) {
+    var network = configurationService.getNetwork();
+    var contractAddress = AppConfig().params[network].contractAddress;
+
+    _contractService.send(
+        this.privateKey,
+        EthereumAddress.fromHex(contractAddress),
+        amount, onTransfer: (from, to, value) {
       controller.add(transactionEvent.confirmed(from, to, value));
       controller.close();
     }, onError: (ex) {
