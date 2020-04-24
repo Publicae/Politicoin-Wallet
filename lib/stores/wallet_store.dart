@@ -137,4 +137,46 @@ abstract class WalletStoreBase with Store {
     final loginStore = Provider.of<LoginStore>(context);
     await loginStore.signOut(context);
   }
+
+  @action
+  Future deleteUser(BuildContext context) async {
+    final loginStore = Provider.of<LoginStore>(context);
+    final res = await loginStore.deleteUser(context);
+    if (res == 'user deleted') {
+      await fetchOwnBalance();
+
+      sell().listen((tx) {
+        switch (tx.status) {
+          case TransactionStatus.started:
+            print('transact pending ${tx.key}');
+            break;
+          case TransactionStatus.confirmed:
+            print('transact confirmed ${tx.key}');
+            break;
+          default:
+            break;
+        }
+      }).onError((error) => print(error.message));
+
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+    }
+  }
+
+  @action
+  Stream<Transaction> sell() {
+    var controller = StreamController<Transaction>();
+    var transactionEvent = Transaction();
+    var amount = BigInt.from(this.tokenBalance / BigInt.from(pow(10, 9)));
+    _contractService.sell(this.privateKey, amount,
+        onTransfer: (from, to, value) {
+      controller.add(transactionEvent.confirmed(from, to, value));
+      controller.close();
+    }, onError: (ex) {
+      controller.addError(ex);
+    }).then(
+        (id) => {if (id != null) controller.add(transactionEvent.setId(id))});
+
+    return controller.stream;
+  }
 }

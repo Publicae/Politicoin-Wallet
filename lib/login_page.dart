@@ -44,6 +44,8 @@ class _LoginPageState extends State<LoginPage> {
                   await widget.loginStore.attemptFacebookSignIn(context);
                 },
               ),
+              Divider(),
+              Text("Make sure you use a different email account, in Google and Facebook, otherwise only one of them can be used!"),
             ],
           ),
         ),

@@ -62,8 +62,13 @@ abstract class LoginStoreBase with Store {
           accessToken: token,
         );
 
-        final AuthResult authResult =
-            await _auth.signInWithCredential(credential);
+        AuthResult authResult;
+        try {
+          authResult = await _auth.signInWithCredential(credential);
+        } catch (err) {
+          print(err);
+          return "error";
+        }
         final FirebaseUser user = authResult.user;
 
         assert(!user.isAnonymous);
@@ -118,7 +123,14 @@ abstract class LoginStoreBase with Store {
       idToken: googleSignInAuthentication.idToken,
     );
 
-    final AuthResult authResult = await _auth.signInWithCredential(credential);
+    AuthResult authResult;
+    try {
+      authResult = await _auth.signInWithCredential(credential);
+    } catch (err) {
+      print(err);
+      return "error";
+    }
+    
     final FirebaseUser user = authResult.user;
 
     assert(!user.isAnonymous);
@@ -141,12 +153,14 @@ abstract class LoginStoreBase with Store {
   Future signOutGoogle(BuildContext context) async {
     await _auth.signOut();
     await googleSignIn.signOut();
+    _configurationService.setLoggedIn(false);
     print("User Google Sign Out");
   }
 
   Future signOutFacebook(BuildContext context) async {
     await _auth.signOut();
     await facebookSignIn.logOut();
+    _configurationService.setLoggedIn(false);
     print("User Facebook Sign Out");
   }
 
@@ -187,5 +201,18 @@ abstract class LoginStoreBase with Store {
   Future<FirebaseUser> getUser() async {
     final currentUser = await _auth.currentUser();
     return currentUser;
+  }
+
+  Future<String> deleteUser(BuildContext context) async {
+    final currentUser = await _auth.currentUser();
+
+    try {
+      await currentUser.delete();
+      return 'user deleted';
+    } catch (err) {
+      print(err);
+      Navigator.pop(context);
+      return 'error';
+    }
   }
 }

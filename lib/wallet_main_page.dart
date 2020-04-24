@@ -100,6 +100,18 @@ class _WalletMainPageState extends State<WalletMainPage> {
                 signOutDialog(context);
               },
             ),
+            Divider(
+              color: Colors.red,
+            ),
+            ListTile(
+              title: Text("Delete Account"),
+              subtitle: Text(
+                  "warning: all your PBLC tokens will be sent back to the PBLC contract"),
+              trailing: Icon(Icons.warning),
+              onTap: () {
+                deleteDialog(context);
+              },
+            ),
           ],
         ),
       ),
@@ -189,6 +201,40 @@ class _WalletMainPageState extends State<WalletMainPage> {
     AlertDialog alert = AlertDialog(
       title: Text("Sign Out?"),
       content: Text(""),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  deleteDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Delete"),
+      onPressed: () async {
+        await widget.walletStore.deleteUser(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete Account?"),
+      content: Text("This cannot be reversed! You will lose all your PBLC tokens!"),
       actions: [
         cancelButton,
         continueButton,
