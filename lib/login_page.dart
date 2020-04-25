@@ -26,66 +26,116 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // FlutterLogo(size: 150),
-              Image.asset(
-                'assets/icon/iTunesArtwork@3x.png',
-                width: 150,
-                height: 150,
-              ),
-              SizedBox(height: 50),
-              SignInButton(
-                Buttons.Google,
-                text: "Sign in with Google",
-                onPressed: () async {
-                  await widget.loginStore.attemptGoogleSignIn(context);
-                },
-              ),
-              SignInButton(
-                Buttons.Facebook,
-                text: "Sign in with Facebook",
-                onPressed: () async {
-                  await widget.loginStore.attemptFacebookSignIn(context);
-                },
-              ),
-              Divider(),
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Text(
-                    "Make sure you use a different email account, in Google and Facebook, otherwise only one of them can be used!"),
-              ),
-              Divider(),
-              Text("or enter the account id you have from Publicae"),
-              Container(
-                padding: EdgeInsets.all(10),
-                child: TextField(
-                  controller: _accountController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Type your account id',
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: Container(
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              //mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                // FlutterLogo(size: 150),
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/bkg1.png"),
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                  onChanged: widget.loginStore.setAccountId,
-                  onSubmitted: (String value) async {
-                    // apple review account
-                    if (value == 'ZIE5Wkj1t3V0x5ZAMS3W4UI5mKz2') {
-                      await widget.loginStore.attemptEmailSignIn(
-                        context,
-                        "apple-review@publicae.com",
-                        "123456789",
-                      );
-                    } else {
-                      // future functionality
-                    }
+                  height: MediaQuery.of(context).size.height / 3,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Sign In Now",
+                        style: TextStyle(fontSize: 32.0, color: Colors.white),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "Please sign in below \n to use the Politicoin app wallet",
+                        style: TextStyle(fontSize: 16.0, color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 50),
+                SignInButton(
+                  Buttons.Google,
+                  text: "Sign in with Google",
+                  onPressed: () async {
+                    await widget.loginStore.attemptGoogleSignIn(context);
                   },
                 ),
-              ),
-            ],
+                SignInButton(
+                  Buttons.Facebook,
+                  text: "Sign in with Facebook",
+                  onPressed: () async {
+                    await widget.loginStore.attemptFacebookSignIn(context);
+                  },
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 40.0, right: 40.0),
+                  child: Text(
+                    "Make sure you have a different email account, in Google and Facebook!",
+                    style: TextStyle(fontSize: 10.0, color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(height: 50),
+                Text(
+                  "or enter your account id",
+                  style: TextStyle(fontSize: 12.0, color: Colors.grey),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 5),
+                Container(
+                  padding: EdgeInsets.only(left: 40.0, right: 40.0),
+                  child: TextField(
+                    controller: _accountController,
+                    autofocus: false,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xfff3f3f3),
+                      labelText: 'account id',
+                      labelStyle: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.grey,
+                      ),
+                      contentPadding: const EdgeInsets.only(
+                          left: 15.0, top: 5.0, bottom: 5.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                    ),
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.grey,
+                    ),
+                    onChanged: widget.loginStore.setAccountId,
+                    onSubmitted: (String value) async {
+                      // apple review account
+                      if (value == 'ZIE5Wkj1t3V0x5ZAMS3W4UI5mKz2') {
+                        await widget.loginStore.attemptEmailSignIn(
+                          context,
+                          "apple-review@publicae.com",
+                          "123456789",
+                        );
+                      } else {
+                        // future functionality
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
