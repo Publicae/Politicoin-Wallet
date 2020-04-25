@@ -32,7 +32,7 @@ Map<String, WidgetBuilder> getRoutes(context) {
             return Consumer<WalletStore>(
               builder: (context, walletStore, _) => WalletMainPage(
                 walletStore,
-                title: "PBLC wallet",
+                title: "PBLC Wallet",
                 currentNetwork: configurationService.getNetwork(),
               ),
             );

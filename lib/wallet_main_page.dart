@@ -24,6 +24,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
     getUserInfo();
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
@@ -117,6 +118,13 @@ class _WalletMainPageState extends State<WalletMainPage> {
       ),
       appBar: AppBar(
         title: Text(widget.title),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        // flexibleSpace: Image(
+        //   image: AssetImage('assets/images/bkg1.png'),
+        //   fit: BoxFit.cover,
+        // ),
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
@@ -234,7 +242,8 @@ class _WalletMainPageState extends State<WalletMainPage> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Delete Account?"),
-      content: Text("This cannot be reversed! You will lose all your PBLC tokens!"),
+      content:
+          Text("This cannot be reversed! You will lose all your PBLC tokens!"),
       actions: [
         cancelButton,
         continueButton,
