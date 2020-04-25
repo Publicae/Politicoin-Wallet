@@ -13,6 +13,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _accountController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.loginStore.reset();
+    _accountController.value =
+        TextEditingValue(text: widget.loginStore.accountId ?? "");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,11 +55,46 @@ class _LoginPageState extends State<LoginPage> {
                 },
               ),
               Divider(),
-              Text("Make sure you use a different email account, in Google and Facebook, otherwise only one of them can be used!"),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                    "Make sure you use a different email account, in Google and Facebook, otherwise only one of them can be used!"),
+              ),
+              Divider(),
+              Text("or enter the account id you have from Publicae"),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: TextField(
+                  controller: _accountController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Type your account id',
+                  ),
+                  onChanged: widget.loginStore.setAccountId,
+                  onSubmitted: (String value) async {
+                    // apple review account
+                    if (value == 'ZIE5Wkj1t3V0x5ZAMS3W4UI5mKz2') {
+                      await widget.loginStore.attemptEmailSignIn(
+                        context,
+                        "apple-review@publicae.com",
+                        "123456789",
+                      );
+                    } else {
+                      // future functionality
+                    }
+                  },
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _accountController.dispose();
+    super.dispose();
   }
 }

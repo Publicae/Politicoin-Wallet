@@ -28,6 +28,19 @@ abstract class LoginStoreBase with Store {
   @observable
   String imageUrl;
 
+  @observable
+  String accountId;
+
+  @action
+  void setAccountId(String value) {
+    this.accountId = value;
+  }
+
+  @action
+  void reset() {
+    this.accountId = "";
+  }
+
   Future<String> signInWithFacebook() async {
     facebookSignIn = FacebookLogin();
     final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
@@ -154,15 +167,40 @@ abstract class LoginStoreBase with Store {
     return 'signInWithGoogle succeeded: $user';
   }
 
+  Future<String> signInWithEmail(String email, String password) async {
+    AuthResult authResult;
+    try {
+      authResult = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } catch (err) {
+      print(err);
+      return "error";
+    }
+
+    final FirebaseUser user = authResult.user;
+
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+
+    final FirebaseUser currentUser = await _auth.currentUser();
+    assert(user.uid == currentUser.uid);
+
+    assert(user.email != null);
+
+    email = user.email;
+
+    return 'signInWithEmail succeeded: $user';
+  }
+
   Future signOutGoogle(BuildContext context) async {
-    await _auth.signOut();
     await googleSignIn.signOut();
     _configurationService.setLoggedIn(false);
     print("User Google Sign Out");
   }
 
   Future signOutFacebook(BuildContext context) async {
-    await _auth.signOut();
     await facebookSignIn.logOut();
     _configurationService.setLoggedIn(false);
     print("User Facebook Sign Out");
@@ -184,7 +222,16 @@ abstract class LoginStoreBase with Store {
     });
   }
 
+  Future attemptEmailSignIn(BuildContext context, String email, String password) async {
+    signInWithEmail(email, password).then((res) {
+      if (res != 'error') {
+        Navigator.pushNamed(context, '/main-page');
+      }
+    });
+  }
+
   Future signOut(BuildContext context) async {
+    await _auth.signOut();
     if (googleSignIn != null) {
       await signOutGoogle(context);
     } else if (facebookSignIn != null) {
