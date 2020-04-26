@@ -26,94 +26,142 @@ class _WalletMainPageState extends State<WalletMainPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            // ListTile(
-            //   title: Text("Get tokens "),
-            //   subtitle: Text("Receive some test tokens"),
-            //   trailing: Icon(Icons.attach_money),
-            //   onTap: () async {
-            //     var url =
-            //         'http://ec2-54-213-50-23.us-west-2.compute.amazonaws.com/transfer?address=${widget.walletStore.address}';
-            //     if (await canLaunch(url)) {
-            //       await launch(url);
-            //     } else {
-            //       throw 'Could not launch $url';
-            //     }
-            //   },
-            // ),
-            Observer(
-                builder: (_) => ListTile(
-                      title: Text(
-                        "PBLC Wallet",
-                        style: TextStyle(fontSize: 32.0),
+        child: Container(
+          color: Colors.white,
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              // ListTile(
+              //   title: Text("Get tokens "),
+              //   subtitle: Text("Receive some test tokens"),
+              //   trailing: Icon(Icons.attach_money),
+              //   onTap: () async {
+              //     var url =
+              //         'http://ec2-54-213-50-23.us-west-2.compute.amazonaws.com/transfer?address=${widget.walletStore.address}';
+              //     if (await canLaunch(url)) {
+              //       await launch(url);
+              //     } else {
+              //       throw 'Could not launch $url';
+              //     }
+              //   },
+              // ),
+              _createHeader(),
+              // Observer(
+              //   builder: (_) => ListTile(
+              //     title: Text(
+              //       "PBLC Wallet",
+              //       style: TextStyle(fontSize: 32.0),
+              //     ),
+              //     subtitle: Text(widget.walletStore.username),
+              //   ),
+              // ),
+              Container(
+                color: Colors.white,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 30),
+                    new Container(
+                      height: 1,
+                      color: const Color(0xff858585),
+                    ),
+                    new Container(
+                      margin: EdgeInsets.fromLTRB(0, 1, 0, 0),
+                      height: 1,
+                      color: const Color(0xff858585),
+                    ),
+                    SizedBox(height: 30),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color(0x1e616161),
                       ),
-                      subtitle: Text(widget.walletStore.username),
-                    )),
-            Divider(
-              color: Colors.red,
-            ),
-            ListTile(
-              title: Text("Reset wallet"),
-              subtitle: Text(
-                  "warning: without your seed phrase you cannot restore your wallet"),
-              trailing: Icon(Icons.warning),
-              onTap: () {
-                showAlertDialog(context);
-              },
-            ),
-            Divider(
-              color: Colors.red,
-            ),
-            ListTile(
-              title: Text("Send"),
-              subtitle: Text("PBLC or ETH"),
-              onTap: () async {
-                Navigator.popAndPushNamed(context, "/transfer");
-              },
-            ),
-            ListTile(
-              title: Text("Buy / Sell "),
-              subtitle: Text("Buy or Sell PBLC tokens"),
-              onTap: () async {
-                Navigator.popAndPushNamed(context, "/buy-sell");
-              },
-            ),
-            ListTile(
-              title: Text("My Transactions"),
-              subtitle: Text("see sent and received transactions"),
-              onTap: () async {
-                Navigator.popAndPushNamed(context, "/transactions");
-              },
-            ),
-            Divider(
-              color: Colors.red,
-            ),
-            ListTile(
-              title: Text("Change Network"),
-              subtitle: Text("warning: this will restart the app!"),
-            ),
-            NetworkDropdown(widget.currentNetwork),
-            ListTile(
-              title: Text("Sign Out"),
-              subtitle: Text(""),
-              onTap: () {
-                signOutDialog(context);
-              },
-            ),
-            Divider(
-              color: Colors.red,
-            ),
-            ListTile(
-              title: Text("Delete Account"),
-              subtitle: Text(
-                  "warning: all your PBLC tokens will be sent back to the PBLC contract"),
-              trailing: Icon(Icons.warning),
-              onTap: () {
-                deleteDialog(context);
-              },
-            ),
-          ],
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                        child: ListTile(
+                          title: Text(
+                            "Send",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Color(0xff696969),
+                            ),
+                          ),
+                          //subtitle: Text("PBLC or ETH"),
+                          leading: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minWidth: 30,
+                              minHeight: 30,
+                              maxWidth: 30,
+                              maxHeight: 30,
+                            ),
+                            child: Image.asset(
+                              "assets/images/send.png",
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          trailing: Icon(
+                            Icons.arrow_right,
+                            color: Color(0xff696969),
+                          ),
+                          onTap: () async {
+                            Navigator.popAndPushNamed(context, "/transfer");
+                          },
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("Buy / Sell "),
+                      subtitle: Text("Buy or Sell PBLC tokens"),
+                      onTap: () async {
+                        Navigator.popAndPushNamed(context, "/buy-sell");
+                      },
+                    ),
+                    ListTile(
+                      title: Text("My Transactions"),
+                      subtitle: Text("see sent and received transactions"),
+                      onTap: () async {
+                        Navigator.popAndPushNamed(context, "/transactions");
+                      },
+                    ),
+                    Divider(
+                      color: Colors.red,
+                    ),
+                    ListTile(
+                      title: Text("Change Network"),
+                      subtitle: Text("warning: this will restart the app!"),
+                    ),
+                    NetworkDropdown(widget.currentNetwork),
+                    ListTile(
+                      title: Text("Sign Out"),
+                      subtitle: Text(""),
+                      onTap: () {
+                        signOutDialog(context);
+                      },
+                    ),
+                    Divider(
+                      color: Colors.red,
+                    ),
+                    ListTile(
+                      title: Text("Reset wallet"),
+                      subtitle: Text(
+                          "warning: without your seed phrase you cannot restore your wallet"),
+                      trailing: Icon(Icons.warning),
+                      onTap: () {
+                        showAlertDialog(context);
+                      },
+                    ),
+                    ListTile(
+                      title: Text("Delete Account"),
+                      subtitle: Text(
+                          "warning: all your PBLC tokens will be sent back to the PBLC contract"),
+                      trailing: Icon(Icons.warning),
+                      onTap: () {
+                        deleteDialog(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       appBar: AppBar(
@@ -142,6 +190,47 @@ class _WalletMainPageState extends State<WalletMainPage> {
       ),
       body: Consumer<WalletStore>(
         builder: (context, walletStore, _) => Balance(walletStore),
+      ),
+    );
+  }
+
+  Widget _createHeader() {
+    return DrawerHeader(
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('assets/images/bkg4.png'),
+        ),
+      ),
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            bottom: 17.0,
+            right: 50.0,
+            child: Text(
+              "PBLC Wallet",
+              style: TextStyle(
+                  color: Color(0xff555555),
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.w500),
+            ),
+          ),
+          Positioned(
+            bottom: 1.0,
+            right: 50.0,
+            child: Observer(
+              builder: (_) => Text(
+                widget.walletStore.username,
+                style: TextStyle(
+                    color: Color(0xff555555),
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w300),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
