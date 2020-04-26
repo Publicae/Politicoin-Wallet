@@ -24,40 +24,55 @@ class _NetworkDropdownState extends State<NetworkDropdown> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget> [
-        Text("Current Network: "),
+      children: <Widget>[
+        Text(
+          "Current Network is",
+          style: TextStyle(
+            fontSize: 15,
+            color: Color(0xff696969),
+          ),
+        ),
+        SizedBox(width: 10),
         DropdownButton<String>(
-        items: [
-          DropdownMenuItem<String>(
-            child: Text('Mainnet'),
-            value: 'mainnet',
-          ),
-          DropdownMenuItem<String>(
-            child: Text('Ropsten'),
-            value: 'ropsten',
-          ),
-          // DropdownMenuItem<String>(
-          //   child: Text('Rinkeby'),
-          //   value: 'rinkeby',
-          // ),
-          // DropdownMenuItem<String>(
-          //   child: Text('Kovan'),
-          //   value: 'kovan',
-          // ),
-          // DropdownMenuItem<String>(
-          //   child: Text('Goerli'),
-          //   value: 'goerli',
-          // ),
-        ],
-        onChanged: (String value) {
-          setState(() {
-            _value = value;
-          });
-          changeNetwork(context);
-        },
-        hint: Text(toBeginningOfSentenceCase(widget.currentNetwork)),
-        value: _value,
-      ),
+          items: [
+            DropdownMenuItem<String>(
+              child: Text('Mainnet',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Color(0xff555555),
+                  )),
+              value: 'mainnet',
+            ),
+            DropdownMenuItem<String>(
+              child: Text('Ropsten',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Color(0xff555555),
+                  )),
+              value: 'ropsten',
+            ),
+            // DropdownMenuItem<String>(
+            //   child: Text('Rinkeby'),
+            //   value: 'rinkeby',
+            // ),
+            // DropdownMenuItem<String>(
+            //   child: Text('Kovan'),
+            //   value: 'kovan',
+            // ),
+            // DropdownMenuItem<String>(
+            //   child: Text('Goerli'),
+            //   value: 'goerli',
+            // ),
+          ],
+          onChanged: (String value) {
+            setState(() {
+              _value = value;
+            });
+            changeNetwork(context);
+          },
+          hint: Text(toBeginningOfSentenceCase(widget.currentNetwork)),
+          value: _value,
+        ),
       ],
     );
   }

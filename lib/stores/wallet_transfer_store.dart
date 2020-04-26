@@ -30,7 +30,7 @@ abstract class WalletTransferStoreBase with Store {
   String ethGasPrice;
 
   @observable
-  String denomination;
+  String denomination = "PBLC";
 
   @action
   void setTo(String value) {

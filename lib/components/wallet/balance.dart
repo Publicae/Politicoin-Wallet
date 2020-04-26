@@ -16,15 +16,16 @@ class Balance extends StatelessWidget {
         //mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/bkg1.png"),
-                  fit: BoxFit.fill,
-                ),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/bkg1.png"),
+                fit: BoxFit.fill,
               ),
-              height: MediaQuery.of(context).size.height / 6,
-              width: MediaQuery.of(context).size.width,
-              child: null),
+            ),
+            height: MediaQuery.of(context).size.height / 6,
+            width: MediaQuery.of(context).size.width,
+            child: null,
+          ),
           SingleChildScrollView(
             child: Stack(
               children: <Widget>[
