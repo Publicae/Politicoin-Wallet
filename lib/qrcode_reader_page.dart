@@ -144,11 +144,39 @@ class _QRCodeReaderPageState extends State<QRCodeReaderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(widget.title),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        leading: IconButton(
+          icon: ImageIcon(
+            AssetImage("assets/images/back.png"),
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
-      body: _buildImage(),
+      body: Column(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/bkg1.png"),
+                fit: BoxFit.fill,
+              ),
+            ),
+            height: MediaQuery.of(context).size.height / 6,
+            width: MediaQuery.of(context).size.width,
+            child: null,
+          ),
+          Expanded(
+            child: _buildImage(),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xff515151),
         onPressed: _toggleCameraDirection,
         child: _direction == CameraLensDirection.back
             ? const Icon(Icons.camera_front)

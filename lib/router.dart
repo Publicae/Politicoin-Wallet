@@ -57,7 +57,7 @@ Map<String, WidgetBuilder> getRoutes(context) {
               ProcessingTransactionPage(title: "Waiting..."),
         ),
     '/qrcode_reader': (BuildContext context) => QRCodeReaderPage(
-          title: "Scan QRCode",
+          title: "Scan",
           onScanned: ModalRoute.of(context).settings.arguments,
         ),
     '/buy-sell': (BuildContext context) => Consumer<WalletBuySellStore>(
@@ -68,7 +68,7 @@ Map<String, WidgetBuilder> getRoutes(context) {
         Consumer<WalletTransactionsStore>(
           builder: (context, walletTransactionsStore, _) =>
               WalletTransactionsPage(walletTransactionsStore,
-                  title: "My Transactions"),
+                  title: "Transactions"),
         ),
   };
 }

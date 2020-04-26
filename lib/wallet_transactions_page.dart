@@ -23,16 +23,45 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
   Widget build(BuildContext context) {
     //final String hash = ModalRoute.of(context).settings.arguments;
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(widget.title),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        leading: IconButton(
+          icon: ImageIcon(
+            AssetImage("assets/images/back.png"),
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
-      body: buildForm(),
+      body: Builder(
+        builder: (ctx) => buildForm(ctx),
+      ),
     );
   }
 
-  Widget buildForm() {
+  Widget buildForm(BuildContext context) {
     return Center(
-      child: TransactionList(widget.store),
+      child: Column(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/bkg1.png"),
+                fit: BoxFit.fill,
+              ),
+            ),
+            height: MediaQuery.of(context).size.height / 6,
+            width: MediaQuery.of(context).size.width,
+            child: null,
+          ),
+          Expanded(
+            child: TransactionList(widget.store),
+          ),
+        ],
+      ),
     );
   }
 

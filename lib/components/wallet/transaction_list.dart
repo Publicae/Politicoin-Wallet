@@ -10,13 +10,13 @@ class TransactionList extends StatelessWidget {
 
   final WalletTransactionsStore store;
   final streamController = StreamController<List<TransactionModel>>();
-  final interval = const Duration(seconds:25);
+  final interval = const Duration(seconds: 25);
 
   @override
   Widget build(BuildContext context) {
-
     if (store.timer == null) {
-      store.timer = Timer.periodic(interval, (Timer t) => _fetchTransactions(context));
+      store.timer =
+          Timer.periodic(interval, (Timer t) => _fetchTransactions(context));
     }
 
     return StreamBuilder<List<TransactionModel>>(
@@ -24,7 +24,7 @@ class TransactionList extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<TransactionModel> data = snapshot.data;
-          if(data.isEmpty) {
+          if (data.isEmpty) {
             return Text("No transactions available!");
           }
           return _transactionsListView(context, data);
@@ -33,7 +33,7 @@ class TransactionList extends StatelessWidget {
         } else {
           _fetchTransactions(context);
         }
-        return CircularProgressIndicator();
+        return Center(child: CircularProgressIndicator());
       },
     );
   }
@@ -43,7 +43,7 @@ class TransactionList extends StatelessWidget {
     try {
       await store.fetchTransactions(context);
       streamController.add(store.transactionsModel.transactions);
-    } catch(ex) {
+    } catch (ex) {
       print("ERROR: ${ex.toString()}");
       store.timer.cancel();
       store.timer = null;
@@ -57,13 +57,16 @@ class TransactionList extends StatelessWidget {
 
   RefreshIndicator _transactionsListView(BuildContext context, data) {
     return RefreshIndicator(
-      child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return _tile(data[index]);
-          }),
+      child: Container(
+        //color: Colors.red,
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return _tile(data[index]);
+            }),
+      ),
       onRefresh: () async {
         await _fetchTransactions(context);
       },

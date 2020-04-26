@@ -302,9 +302,15 @@ class _WalletMainPageState extends State<WalletMainPage> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.send),
+            icon: ImageIcon(
+              AssetImage("assets/images/paper-plane.png"),
+            ),
             onPressed: () {
-              Navigator.of(context).pushNamed("/transfer");
+              Navigator.pushNamed(
+                context,
+                '/transfer',
+                arguments: "",
+              );
             },
           ),
         ],
@@ -376,7 +382,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
       child: Text("Reset"),
       onPressed: () async {
         await widget.walletStore.resetWallet();
-        // Navigator.popAndPushNamed(context, "/main-page");
+        Navigator.popAndPushNamed(context, "/main-page");
       },
     );
 

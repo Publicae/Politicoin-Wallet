@@ -38,12 +38,23 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
+        leading: IconButton(
+          icon: ImageIcon(
+            AssetImage("assets/images/back.png"),
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.arrow_right),
+            icon: ImageIcon(
+              AssetImage("assets/images/transactions.png"),
+            ),
             onPressed: () {
-              Navigator.popAndPushNamed(context, '/transactions',
-                  arguments: "");
+              Navigator.popAndPushNamed(
+                context,
+                '/transactions',
+                arguments: "",
+              );
             },
           ),
         ],
@@ -53,13 +64,13 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
         child: Builder(
-          builder: (ctx) => buildForm(),
+          builder: (ctx) => buildForm(ctx),
         ),
       ),
     );
   }
 
-  Widget buildForm() {
+  Widget buildForm(BuildContext context) {
     return Center(
       child: Column(
         children: <Widget>[
@@ -187,18 +198,6 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                           ),
                         ),
                       ],
-                    ),
-                    PaperInput(
-                      controller: _toController,
-                      labelText: 'Address',
-                      hintText: 'Type the destination address',
-                      filled: true,
-                      fillColor: Colors.white,
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Color(0xff515151),
-                      ),
-                      onChanged: widget.store.setTo,
                     ),
                     SizedBox(height: 10),
                     Row(
