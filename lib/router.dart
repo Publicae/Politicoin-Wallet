@@ -27,25 +27,21 @@ Map<String, WidgetBuilder> getRoutes(context) {
               LoginPage(loginStore, title: "Login"),
         ),
     '/main-page': (BuildContext context) => Consumer<ConfigurationService>(
-            builder: (context, configurationService, _) {
-          if (configurationService.didSetupWallet())
-            return Consumer<WalletStore>(
-              builder: (context, walletStore, _) => WalletMainPage(
-                walletStore,
-                title: "PBLC Wallet",
-                currentNetwork: configurationService.getNetwork(),
-              ),
-            );
-
-          return IntroPage();
-        }),
+          builder: (context, configurationService, _) => Consumer<WalletStore>(
+            builder: (context, walletStore, _) => WalletMainPage(
+              walletStore,
+              title: "PBLC Wallet",
+              currentNetwork: configurationService.getNetwork(),
+            ),
+          ),
+        ),
     '/create': (BuildContext context) => Consumer<WalletCreateStore>(
           builder: (context, walletCreateStore, _) =>
-              WalletCreatePage(walletCreateStore, title: "Create wallet"),
+              WalletCreatePage(walletCreateStore, title: "PBLC wallet"),
         ),
     '/import': (BuildContext context) => Consumer<WalletImportStore>(
           builder: (context, walletImportStore, _) =>
-              WalletImportPage(walletImportStore, title: "Import wallet"),
+              WalletImportPage(walletImportStore, title: "PBLC Wallet"),
         ),
     '/transfer': (BuildContext context) => Consumer<WalletTransferStore>(
           builder: (context, walletTransferStore, _) =>

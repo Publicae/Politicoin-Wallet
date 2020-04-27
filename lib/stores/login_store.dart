@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -209,7 +208,8 @@ abstract class LoginStoreBase with Store {
   Future attemptGoogleSignIn(BuildContext context) async {
     signInWithGoogle().then((res) {
       if (res != 'error') {
-        Navigator.pushNamed(context, '/main-page');
+        final route = _configurationService.didSetupWallet() ? '/main-page' : '/create';
+        Navigator.pushNamed(context, route);
       }
     });
   }
@@ -217,7 +217,8 @@ abstract class LoginStoreBase with Store {
   Future attemptFacebookSignIn(BuildContext context) async {
     signInWithFacebook().then((res) {
       if (res != 'error') {
-        Navigator.pushNamed(context, '/main-page');
+        final route = _configurationService.didSetupWallet() ? '/main-page' : '/create';
+        Navigator.pushNamed(context, route);
       }
     });
   }
@@ -225,7 +226,8 @@ abstract class LoginStoreBase with Store {
   Future attemptEmailSignIn(BuildContext context, String email, String password) async {
     signInWithEmail(email, password).then((res) {
       if (res != 'error') {
-        Navigator.pushNamed(context, '/main-page');
+        final route = _configurationService.didSetupWallet() ? '/main-page' : '/create';
+        Navigator.pushNamed(context, route);
       }
     });
   }

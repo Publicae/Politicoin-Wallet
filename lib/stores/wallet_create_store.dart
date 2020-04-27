@@ -30,6 +30,8 @@ abstract class WalletCreateStoreBase with Store {
   void generateMnemonic() {
     this.reset();
     this.mnemonic = _addressService.generateMnemonic();
+    
+    this.mnemonicConfirm = this.mnemonic;
   }
 
   @action

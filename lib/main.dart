@@ -51,11 +51,16 @@ class MainApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    var initialRoute = '/';
+    if (isLoggedIn) {
+        initialRoute = configurationService.didSetupWallet() ? '/main-page' : '/create';
+    }
+
     return MultiProvider(
       providers: stores,
       child: new MaterialApp(
         title: 'PBLC',
-        initialRoute: isLoggedIn ? '/main-page' : '/',
+        initialRoute: initialRoute,
         routes: getRoutes(context),
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: analytics),

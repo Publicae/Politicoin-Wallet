@@ -382,7 +382,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
       child: Text("Reset"),
       onPressed: () async {
         await widget.walletStore.resetWallet();
-        Navigator.popAndPushNamed(context, "/main-page");
+        Navigator.popAndPushNamed(context, "/create");
       },
     );
 
