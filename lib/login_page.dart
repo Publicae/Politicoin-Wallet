@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
         },
         child: Container(
           color: Colors.white,
-          child: Center(
+          child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
               //mainAxisAlignment: MainAxisAlignment.center,

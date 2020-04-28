@@ -86,76 +86,138 @@ class _WalletCreatePage extends State<WalletCreatePage> {
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: new BorderRadius.circular(5.0),
-              color: Color(0xfff6f6f6),
-            ),
-            height: MediaQuery.of(context).size.height / 4,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "12-word bip39 mnemonic",
-                  style: TextStyle(fontSize: 18.0, color: Color(0xff696969)),
+          SingleChildScrollView(
+              child: Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  color: Color(0xfff6f6f6),
                 ),
-                SizedBox(height: 10),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                height: MediaQuery.of(context).size.height / 4,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Observer(
-                      builder: (_) => Expanded(
-                        child: Text(
-                          widget.store.mnemonic,
-                          style: TextStyle(
-                              fontSize: 14.0, color: Color(0xff858585)),
+                    Text(
+                      "12-word bip39 mnemonic",
+                      style:
+                          TextStyle(fontSize: 18.0, color: Color(0xff696969)),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Observer(
+                          builder: (_) => Expanded(
+                            child: Text(
+                              widget.store.mnemonic,
+                              style: TextStyle(
+                                  fontSize: 14.0, color: Color(0xff858585)),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: IconButton(
+                            icon: Icon(Icons.content_copy),
+                            tooltip: 'copy address',
+                            onPressed: () {
+                              Clipboard.setData(
+                                ClipboardData(text: widget.store.mnemonic),
+                              );
+                              Scaffold.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text("Copied"),
+                                ),
+                              );
+                            },
+                            color: Color(0xff858585),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xffe1e1e1),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          child: FlatButton(
+                              child: const Text(
+                                'Generate New',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Color(0xff818181),
+                                ),
+                              ),
+                              onPressed: () async {
+                                widget.store.generateMnemonic();
+                              }),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/bkg5.png"),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          child: FlatButton(
+                              child: const Text(
+                                'Confirm',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () async {
+                                if (await widget.store.confirmMnemonic()) {
+                                  Navigator.of(context)
+                                      .popAndPushNamed("/main-page");
+                                }
+                              }),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    ListTile(
+                      title: Text(
+                        'Keep your seed phrase somewhere safe and do not lose it! Otherwise you will not be able to retrieve your accounts!',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      child: IconButton(
-                        icon: Icon(Icons.content_copy),
-                        tooltip: 'copy address',
-                        onPressed: () {
-                          Clipboard.setData(
-                            ClipboardData(text: widget.store.mnemonic),
-                          );
-                          Scaffold.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Copied"),
-                            ),
-                          );
-                        },
-                        color: Color(0xff858585),
-                      ),
+                      leading: Icon(Icons.info),
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              Container(
+                margin: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  color: Color(0xfff6f6f6),
+                ),
+                height: MediaQuery.of(context).size.height / 8,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xffe1e1e1),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      child: FlatButton(
-                          child: const Text(
-                            'Generate New',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Color(0xff818181),
-                            ),
-                          ),
-                          onPressed: () async {
-                            widget.store.generateMnemonic();
-                          }),
+                    Text(
+                      "import an account",
+                      style:
+                          TextStyle(fontSize: 18.0, color: Color(0xff696969)),
                     ),
+                    SizedBox(height: 20),
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.black,
@@ -165,83 +227,28 @@ class _WalletCreatePage extends State<WalletCreatePage> {
                         ),
                         borderRadius: BorderRadius.circular(5.0),
                       ),
-                      child: FlatButton(
-                          child: const Text(
-                            'Confirm',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                            ),
-                          ),
-                          onPressed: () async {
-                            if (await widget.store.confirmMnemonic()) {
-                              Navigator.of(context)
-                                  .popAndPushNamed("/main-page");
-                            }
-                          }),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          FlatButton(
+                              child: const Text(
+                                'Import Account',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () async {
+                                Navigator.of(context).pushNamed("/import");
+                              }),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
-                ListTile(
-                  title: Text(
-                    'Keep your seed phrase somewhere safe and do not lose it! Otherwise you will not be able to retrieve your accounts!',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  leading: Icon(Icons.info),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: new BorderRadius.circular(5.0),
-              color: Color(0xfff6f6f6),
-            ),
-            height: MediaQuery.of(context).size.height / 8,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "import an account",
-                  style: TextStyle(fontSize: 18.0, color: Color(0xff696969)),
-                ),
-                SizedBox(height: 20),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/bkg5.png"),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      FlatButton(
-                          child: const Text(
-                            'Import Account',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                            ),
-                          ),
-                          onPressed: () async {
-                            Navigator.of(context).pushNamed("/import");
-                          }),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          )
+              ),
+            ],
+          )),
         ],
       ),
     );

@@ -62,7 +62,7 @@ abstract class WalletImportStoreBase with Store {
         return true;
       }
     } catch (e) {
-      this.errors.add(e.toString());
+      //this.errors.add(e.toString());
     }
 
     this.errors.add("Invalid mnemonic, it requires 12 words.");
@@ -74,11 +74,13 @@ abstract class WalletImportStoreBase with Store {
   Future<bool> confirmPrivateKey() async {
     this.errors.clear();
     try {
-      await _addressService.setupFromPrivateKey(privateKey);
-      await walletStore.initialise();
-      return true;
+      if (_validatePrivateKey(privateKey)) {
+        await _addressService.setupFromPrivateKey(privateKey);
+        await walletStore.initialise();
+        return true;
+      }
     } catch (e) {
-      this.errors.add(e.toString());
+      //this.errors.add(e.toString());
     }
 
     this.errors.add("Invalid private key, please try again.");
@@ -100,5 +102,9 @@ abstract class WalletImportStoreBase with Store {
 
   bool _validateMnemonic(String mnemonic) {
     return _mnemonicWords(mnemonic).length == 12;
+  }
+
+  bool _validatePrivateKey(String pk) {
+    return pk.length > 0;
   }
 }

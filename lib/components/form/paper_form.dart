@@ -12,10 +12,13 @@ class PaperForm extends StatelessWidget {
     return Form(
       child: Padding(
         padding: EdgeInsets.all(this.padding),
-        child: Column(children: [
-          ...this.children,
-          ..._buildButtons(),
-        ]),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ...this.children,
+            ..._buildButtons(),
+          ],
+        ),
       ),
     );
   }
@@ -26,7 +29,7 @@ class PaperForm extends StatelessWidget {
     return [
       const SizedBox(height: 15),
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: this.actionButtons,
       )
     ];

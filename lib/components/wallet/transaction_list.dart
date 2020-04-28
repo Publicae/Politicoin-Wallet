@@ -64,7 +64,7 @@ class TransactionList extends StatelessWidget {
             shrinkWrap: true,
             itemCount: data.length,
             itemBuilder: (context, index) {
-              return _tile(data[index]);
+              return _tile(context, data[index]);
             }),
       ),
       onRefresh: () async {
@@ -73,52 +73,103 @@ class TransactionList extends StatelessWidget {
     );
   }
 
-  Center _tile(TransactionModel transaction) => Center(
-        child: Card(
+  Center _tile(BuildContext context, TransactionModel transaction) => Center(
+        child: Container(
+          margin: EdgeInsets.all(20),
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: new BorderRadius.circular(5.0),
+            color: Color(0xfff6f6f6),
+          ),
+          height: MediaQuery.of(context).size.height / 2,
+          width: MediaQuery.of(context).size.width,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.album),
-                title:
-                    Text('${transaction.hash}', style: TextStyle(fontSize: 14)),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              Text(
+                '${transaction.hash}',
+                style: TextStyle(color: Color(0xff616161), fontSize: 14),
+              ),
+              SizedBox(height: 20),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                decoration: BoxDecoration(
+                  color: Color(0xffededed),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5.0),
+                      topLeft: Radius.circular(5.0)),
+                ),
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('blockNumber: ${transaction.blockNumber}'),
-                    Text('amount: ${showAmount(transaction.value)}'),
-                    Text('from: ${transaction.from}'),
-                    Text('to: ${transaction.to}'),
-                    Text('${transaction.formattedDate()}')
+                    Container(
+                      height: 50,
+                      child: Center(
+                        child: Text(
+                          'block',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff818181),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '${transaction.blockNumber}',
+                      style: TextStyle(color: Color(0xff696969), fontSize: 14),
+                    ),
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(transaction.txreceiptStatus == ""
-                      ? "pending"
-                      : "confirmed"),
-                  Text(transaction.to == store.walletStore.address
-                      ? "RECEIVED"
-                      : "SENT")
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  CopyButton(
-                    text: const Text('Copy From'),
-                    value: transaction.from,
-                  ),
-                  CopyButton(
-                    text: const Text('Copy To'),
-                    value: transaction.to,
-                  ),
-                ],
-              )
             ],
           ),
         ),
+        // Card(
+        //   child: Column(
+        //     mainAxisSize: MainAxisSize.min,
+        //     children: <Widget>[
+        //       ListTile(
+        //         leading: Icon(Icons.album),
+        //         title:
+        //             Text('${transaction.hash}', style: TextStyle(fontSize: 14)),
+        //         subtitle: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: <Widget>[
+        //             Text('blockNumber: ${transaction.blockNumber}'),
+        //             Text('amount: ${showAmount(transaction.value)}'),
+        //             Text('from: ${transaction.from}'),
+        //             Text('to: ${transaction.to}'),
+        //             Text('${transaction.formattedDate()}')
+        //           ],
+        //         ),
+        //       ),
+        //       Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //         children: <Widget>[
+        //           Text(transaction.txreceiptStatus == ""
+        //               ? "pending"
+        //               : "confirmed"),
+        //           Text(transaction.to == store.walletStore.address
+        //               ? "RECEIVED"
+        //               : "SENT")
+        //         ],
+        //       ),
+        //       Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //         children: <Widget>[
+        //           CopyButton(
+        //             text: const Text('Copy From'),
+        //             value: transaction.from,
+        //           ),
+        //           CopyButton(
+        //             text: const Text('Copy To'),
+        //             value: transaction.to,
+        //           ),
+        //         ],
+        //       )
+        //     ],
+        //   ),
+        // ),
       );
 }

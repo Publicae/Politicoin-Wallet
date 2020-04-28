@@ -20,8 +20,9 @@ class PaperRadio extends StatelessWidget {
           value: value,
           groupValue: groupValue,
           onChanged: onChanged,
+          activeColor: Color(0xff818181),
         ),
-        Text(title),
+        Text(title, style: TextStyle(color: Color(0xff818181)),),
       ],
     );
   }
