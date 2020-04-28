@@ -3,6 +3,7 @@
 //     final transactionsModel = transactionsModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:intl/intl.dart';
 
@@ -120,5 +121,12 @@ class TransactionModel {
     String formattedDate() {
       var date = new DateTime.fromMillisecondsSinceEpoch(int.parse(timeStamp) * 1000);
       return DateFormat.yMMMMd().add_jm().format(date);
-    } 
+    }
+
+    String formattedValue() {
+      var val = int.parse(value);
+      var str = (val / pow(10, 18)).toString() + " ETH";
+
+      return str;
+    }
 }

@@ -70,7 +70,7 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
   }
 
   Widget buildForm(BuildContext context) {
-    return Center(
+    return SingleChildScrollView(
       child: Column(
         children: <Widget>[
           Container(
@@ -93,7 +93,7 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
               ),
               // border: Border.all(),
             ),
-            height: MediaQuery.of(context).size.height / 6,
+            height: 150,
             width: MediaQuery.of(context).size.width * 0.8,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -148,247 +148,163 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
             ),
           ),
           SizedBox(height: 20),
-          SingleChildScrollView(
-            child: Observer(
-              builder: (_) {
-                return PaperForm(
-                  padding: 20,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Text(
-                          "Please fill in the form below to buy or sell PBLC",
+          Observer(
+            builder: (_) {
+              return PaperForm(
+                padding: 20,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Please fill in the form below to buy or sell PBLC",
+                        style: TextStyle(
+                          fontSize: 10.0,
+                          color: Color(0xff515151),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Expanded(
+                        child: PaperInput(
+                          controller: _amountController,
+                          labelText: 'Amount',
+                          hintText: '0',
+                          filled: true,
+                          fillColor: Colors.white,
                           style: TextStyle(
-                            fontSize: 10.0,
+                            fontSize: 15,
                             color: Color(0xff515151),
                           ),
+                          onChanged: widget.store.setAmount,
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Expanded(
-                          child: PaperInput(
-                            controller: _amountController,
-                            labelText: 'Amount',
-                            hintText: '0',
-                            filled: true,
-                            fillColor: Colors.white,
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Color(0xff515151),
+                      ),
+                      SizedBox(width: 10),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  PaperValidationSummary(widget.store.errors),
+                  Opacity(
+                    opacity: !widget.store.loading ? 1.0 : 0.5,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        image: DecorationImage(
+                          image: AssetImage("assets/images/bkg5.png"),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Opacity(
+                        opacity: !widget.store.loading ? 1.0 : 0.5,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            FlatButton(
+                              child: const Text(
+                                'Buy PBLC',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: !widget.store.loading
+                                  ? () {
+                                      widget.store.buy().listen((tx) {
+                                        //Navigator.pop(context);
+                                        switch (tx.status) {
+                                          case TransactionStatus.started:
+                                            print('transact pending ${tx.key}');
+                                            //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
+                                            showInfoFlushbar(
+                                                context, true, tx.key);
+                                            break;
+                                          case TransactionStatus.confirmed:
+                                            print(
+                                                'transact confirmed ${tx.key}');
+                                            //Navigator.popUntil(context, ModalRoute.withName('/'));
+                                            showInfoFlushbar(
+                                                context, false, tx.key);
+                                            break;
+                                          default:
+                                            break;
+                                        }
+                                      }).onError((error) =>
+                                          widget.store.setError(error.message));
+                                    }
+                                  : null,
                             ),
-                            onChanged: widget.store.setAmount,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    PaperValidationSummary(widget.store.errors),
-                    Opacity(
-                      opacity: !widget.store.loading ? 1.0 : 0.5,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/bkg5.png"),
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: Opacity(
-                          opacity: !widget.store.loading ? 1.0 : 0.5,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              FlatButton(
-                                child: const Text(
-                                  'Buy PBLC',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                onPressed: !widget.store.loading
-                                    ? () {
-                                        widget.store.buy().listen((tx) {
-                                          //Navigator.pop(context);
-                                          switch (tx.status) {
-                                            case TransactionStatus.started:
-                                              print(
-                                                  'transact pending ${tx.key}');
-                                              //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
-                                              showInfoFlushbar(
-                                                  context, true, tx.key);
-                                              break;
-                                            case TransactionStatus.confirmed:
-                                              print(
-                                                  'transact confirmed ${tx.key}');
-                                              //Navigator.popUntil(context, ModalRoute.withName('/'));
-                                              showInfoFlushbar(
-                                                  context, false, tx.key);
-                                              break;
-                                            default:
-                                              break;
-                                          }
-                                        }).onError((error) => widget.store
-                                            .setError(error.message));
-                                      }
-                                    : null,
-                              ),
-                            ],
-                          ),
+                          ],
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Opacity(
-                      opacity: !widget.store.loading ? 1.0 : 0.5,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/bkg5.png"),
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  SizedBox(height: 10),
+                  Opacity(
+                    opacity: !widget.store.loading ? 1.0 : 0.5,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        image: DecorationImage(
+                          image: AssetImage("assets/images/bkg5.png"),
+                          fit: BoxFit.cover,
                         ),
-                        child: Opacity(
-                          opacity: !widget.store.loading ? 1.0 : 0.5,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              FlatButton(
-                                child: const Text(
-                                  'Sell PBLC',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.white,
-                                  ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Opacity(
+                        opacity: !widget.store.loading ? 1.0 : 0.5,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            FlatButton(
+                              child: const Text(
+                                'Sell PBLC',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
                                 ),
-                                onPressed: !widget.store.loading
-                                    ? () {
-                                        widget.store.sell().listen((tx) {
-                                          switch (tx.status) {
-                                            case TransactionStatus.started:
-                                              print(
-                                                  'transact pending ${tx.key}');
-                                              showInfoFlushbar(
-                                                  context, true, tx.key);
-                                              //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
-                                              break;
-                                            case TransactionStatus.confirmed:
-                                              print(
-                                                  'transact confirmed ${tx.key}');
-                                              showInfoFlushbar(
-                                                  context, false, tx.key);
-                                              //Navigator.popUntil(context, ModalRoute.withName('/'));
-                                              break;
-                                            default:
-                                              break;
-                                          }
-                                        }).onError((error) => widget.store
-                                            .setError(error.message));
-                                      }
-                                    : null,
                               ),
-                            ],
-                          ),
+                              onPressed: !widget.store.loading
+                                  ? () {
+                                      widget.store.sell().listen((tx) {
+                                        switch (tx.status) {
+                                          case TransactionStatus.started:
+                                            print('transact pending ${tx.key}');
+                                            showInfoFlushbar(
+                                                context, true, tx.key);
+                                            //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
+                                            break;
+                                          case TransactionStatus.confirmed:
+                                            print(
+                                                'transact confirmed ${tx.key}');
+                                            showInfoFlushbar(
+                                                context, false, tx.key);
+                                            //Navigator.popUntil(context, ModalRoute.withName('/'));
+                                            break;
+                                          default:
+                                            break;
+                                        }
+                                      }).onError((error) =>
+                                          widget.store.setError(error.message));
+                                    }
+                                  : null,
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                );
-              },
-            ),
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),
     );
   }
-  // Widget buildForm(BuildContext context) {
-  //   return SingleChildScrollView(
-  //     child: Observer(
-  //       builder: (_) {
-  //         return PaperForm(
-  //           padding: 50,
-  //           children: <Widget>[
-  //             PaperValidationSummary(widget.store.errors),
-  //             PaperInput(
-  //               controller: _amountController,
-  //               labelText: 'Amount',
-  //               hintText: 'PBLC',
-  //               onChanged: widget.store.setAmount,
-  //             ),
-  //             Container(margin: EdgeInsets.all(15)),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: <Widget>[
-  //                 RaisedButton(
-  //                   child: const Text('Buy PBLC'),
-  // onPressed: !widget.store.loading
-  //     ? () {
-  //         widget.store.buy().listen((tx) {
-  //           //Navigator.pop(context);
-  //           switch (tx.status) {
-  //             case TransactionStatus.started:
-  //               print('transact pending ${tx.key}');
-  //               //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
-  //               showInfoFlushbar(context, true, tx.key);
-  //               break;
-  //             case TransactionStatus.confirmed:
-  //               print('transact confirmed ${tx.key}');
-  //               //Navigator.popUntil(context, ModalRoute.withName('/'));
-  //               showInfoFlushbar(context, false, tx.key);
-  //               break;
-  //             default:
-  //               break;
-  //           }
-  //         }).onError((error) =>
-  //             widget.store.setError(error.message));
-  //       }
-  //     : null,
-  //                 ),
-  //                 RaisedButton(
-  //                   child: const Text('Sell PBLC'),
-  // onPressed: !widget.store.loading
-  //     ? () {
-  //         widget.store.sell().listen((tx) {
-  //           switch (tx.status) {
-  //             case TransactionStatus.started:
-  //               print('transact pending ${tx.key}');
-  //               showInfoFlushbar(context, true, tx.key);
-  //               //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
-  //               break;
-  //             case TransactionStatus.confirmed:
-  //               print('transact confirmed ${tx.key}');
-  //               showInfoFlushbar(context, false, tx.key);
-  //               //Navigator.popUntil(context, ModalRoute.withName('/'));
-  //               break;
-  //             default:
-  //               break;
-  //           }
-  //         }).onError((error) =>
-  //             widget.store.setError(error.message));
-  //       }
-  //     : null,
-  //                 ),
-  //               ],
-  //             ),
-  //             Divider(),
-  //             Text(
-  //               'Buy or sell PBLC tokens from the Politicoin contract.',
-  //               style: TextStyle(color: Colors.red),
-  //             ),
-  //           ],
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
 
   void _popForm() {
     _amountController.value = TextEditingValue(text: widget.store.amount ?? "");

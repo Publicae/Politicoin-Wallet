@@ -1,7 +1,6 @@
+import 'package:pblcwallet/components/transactions/transaction_list.dart';
 import 'package:pblcwallet/stores/wallet_transactions_store.dart';
 import 'package:flutter/material.dart';
-
-import 'components/wallet/transaction_list.dart';
 
 class WalletTransactionsPage extends StatefulWidget {
   WalletTransactionsPage(this.store, {Key key, this.title}) : super(key: key);

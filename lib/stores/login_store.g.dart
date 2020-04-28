@@ -60,10 +60,50 @@ mixin _$LoginStore on LoginStoreBase, Store {
     }, _$imageUrlAtom, name: '${_$imageUrlAtom.name}_set');
   }
 
+  final _$accountIdAtom = Atom(name: 'LoginStoreBase.accountId');
+
+  @override
+  String get accountId {
+    _$accountIdAtom.context.enforceReadPolicy(_$accountIdAtom);
+    _$accountIdAtom.reportObserved();
+    return super.accountId;
+  }
+
+  @override
+  set accountId(String value) {
+    _$accountIdAtom.context.conditionallyRunInAction(() {
+      super.accountId = value;
+      _$accountIdAtom.reportChanged();
+    }, _$accountIdAtom, name: '${_$accountIdAtom.name}_set');
+  }
+
+  final _$LoginStoreBaseActionController =
+      ActionController(name: 'LoginStoreBase');
+
+  @override
+  void setAccountId(String value) {
+    final _$actionInfo = _$LoginStoreBaseActionController.startAction();
+    try {
+      return super.setAccountId(value);
+    } finally {
+      _$LoginStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void reset() {
+    final _$actionInfo = _$LoginStoreBaseActionController.startAction();
+    try {
+      return super.reset();
+    } finally {
+      _$LoginStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     final string =
-        'name: ${name.toString()},email: ${email.toString()},imageUrl: ${imageUrl.toString()}';
+        'name: ${name.toString()},email: ${email.toString()},imageUrl: ${imageUrl.toString()},accountId: ${accountId.toString()}';
     return '{$string}';
   }
 }

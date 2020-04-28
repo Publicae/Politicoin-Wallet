@@ -170,6 +170,26 @@ mixin _$WalletStore on WalletStoreBase, Store {
     return _$signOutAsyncAction.run(() => super.signOut(context));
   }
 
+  final _$deleteUserAsyncAction = AsyncAction('deleteUser');
+
+  @override
+  Future<dynamic> deleteUser(BuildContext context) {
+    return _$deleteUserAsyncAction.run(() => super.deleteUser(context));
+  }
+
+  final _$WalletStoreBaseActionController =
+      ActionController(name: 'WalletStoreBase');
+
+  @override
+  Stream<Transaction> transfer() {
+    final _$actionInfo = _$WalletStoreBaseActionController.startAction();
+    try {
+      return super.transfer();
+    } finally {
+      _$WalletStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     final string =

@@ -57,7 +57,7 @@ class _WalletCreatePage extends State<WalletCreatePage> {
   }
 
   Widget buildForm(BuildContext context) {
-    return Center(
+    return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -86,8 +86,7 @@ class _WalletCreatePage extends State<WalletCreatePage> {
               ],
             ),
           ),
-          SingleChildScrollView(
-              child: Column(
+          Column(
             children: <Widget>[
               Container(
                 margin: EdgeInsets.all(20),
@@ -95,7 +94,7 @@ class _WalletCreatePage extends State<WalletCreatePage> {
                   borderRadius: new BorderRadius.circular(5.0),
                   color: Color(0xfff6f6f6),
                 ),
-                height: MediaQuery.of(context).size.height / 4,
+                height: 230,
                 width: MediaQuery.of(context).size.width,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -206,7 +205,7 @@ class _WalletCreatePage extends State<WalletCreatePage> {
                   borderRadius: new BorderRadius.circular(5.0),
                   color: Color(0xfff6f6f6),
                 ),
-                height: MediaQuery.of(context).size.height / 8,
+                height: 100,
                 width: MediaQuery.of(context).size.width,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -248,7 +247,7 @@ class _WalletCreatePage extends State<WalletCreatePage> {
                 ),
               ),
             ],
-          )),
+          ),
         ],
       ),
     );
