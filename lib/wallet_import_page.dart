@@ -98,6 +98,7 @@ class _WalletImportPage extends State<WalletImportPage> {
                     child: PaperForm(
                       padding: 10,
                       actionButtons: <Widget>[
+                        Expanded(child:
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.black,
@@ -135,7 +136,7 @@ class _WalletImportPage extends State<WalletImportPage> {
                               ),
                             ],
                           ),
-                        ),
+                        ),),
                       ],
                       children: <Widget>[
                         Row(

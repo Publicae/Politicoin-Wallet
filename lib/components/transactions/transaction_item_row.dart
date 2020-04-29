@@ -4,7 +4,12 @@ import 'package:pblcwallet/components/transactions/transaction_item_row_text.dar
 
 class TransactionItemRow extends StatelessWidget {
   const TransactionItemRow(
-      {Key key, this.title, this.property, this.color, this.copy = false, this.borderRadius})
+      {Key key,
+      this.title,
+      this.property,
+      this.color,
+      this.copy = false,
+      this.borderRadius})
       : super(key: key);
 
   final String title;
@@ -45,29 +50,33 @@ class TransactionItemRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Container(
-            width: MediaQuery.of(context).size.width * 0.55,
+            width: MediaQuery.of(context).size.width * 0.6,
             child: Text(
               '$property',
-              style: TextStyle(color: Color(0xff696969), fontSize: 10),
+              style: TextStyle(color: Color(0xff696969), fontSize: 12),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          IconButton(
-            icon: Icon(Icons.content_copy),
-            iconSize: 20,
-            tooltip: 'copy address',
-            onPressed: () {
-              Clipboard.setData(
-                ClipboardData(text: property),
-              );
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Copied"),
-                ),
-              );
-            },
-            color: Color(0xff858585),
+          Container(
+            //color: Colors.greenAccent,
+            width: 30,
+            child: IconButton(
+              icon: Icon(Icons.content_copy),
+              iconSize: 20,
+              tooltip: 'copy address',
+              onPressed: () {
+                Clipboard.setData(
+                  ClipboardData(text: property),
+                );
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Copied"),
+                  ),
+                );
+              },
+              color: Color(0xff858585),
+            ),
           ),
         ],
       );

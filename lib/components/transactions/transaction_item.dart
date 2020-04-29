@@ -14,7 +14,7 @@ class TransactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(20),
+      margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: new BorderRadius.circular(5.0),
