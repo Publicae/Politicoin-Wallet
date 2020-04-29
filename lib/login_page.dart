@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
         },
         child: Container(
           color: Colors.white,
-          child: SingleChildScrollView(
+          child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.max,
               //mainAxisAlignment: MainAxisAlignment.center,
@@ -64,74 +64,90 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(height: 50),
-                SignInButton(
-                  Buttons.Google,
-                  text: "Sign in with Google",
-                  onPressed: () async {
-                    await widget.loginStore.attemptGoogleSignIn(context);
-                  },
-                ),
-                SignInButton(
-                  Buttons.Facebook,
-                  text: "Sign in with Facebook",
-                  onPressed: () async {
-                    await widget.loginStore.attemptFacebookSignIn(context);
-                  },
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 40.0, right: 40.0),
-                  child: Text(
-                    "Make sure you have a different email account, in Google and Facebook!",
-                    style: TextStyle(fontSize: 10.0, color: Colors.grey),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(height: 50),
-                Text(
-                  "or enter your account id",
-                  style: TextStyle(fontSize: 12.0, color: Colors.grey),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 5),
-                Container(
-                  padding: EdgeInsets.only(left: 40.0, right: 40.0),
-                  child: TextField(
-                    controller: _accountController,
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Color(0xfff3f3f3),
-                      labelText: 'account id',
-                      labelStyle: TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.grey,
+                Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(20),
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(left: 40.0, right: 40.0),
+                        child: SignInButton(
+                          Buttons.Google,
+                          text: "Sign in with Google",
+                          onPressed: () async {
+                            await widget.loginStore
+                                .attemptGoogleSignIn(context);
+                          },
+                        ),
                       ),
-                      contentPadding: const EdgeInsets.only(
-                          left: 15.0, top: 5.0, bottom: 5.0),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
+                      Container(
+                        padding: EdgeInsets.only(left: 40.0, right: 40.0),
+                        child: SignInButton(
+                          Buttons.Facebook,
+                          text: "Sign in with Facebook",
+                          onPressed: () async {
+                            await widget.loginStore
+                                .attemptFacebookSignIn(context);
+                          },
+                        ),
                       ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                      Container(
+                        padding: EdgeInsets.only(left: 40.0, right: 40.0),
+                        child: Text(
+                          "Make sure you have a different email account, in Google and Facebook!",
+                          style: TextStyle(fontSize: 10.0, color: Colors.grey),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.grey,
-                    ),
-                    onChanged: widget.loginStore.setAccountId,
-                    onSubmitted: (String value) async {
-                      // apple review account
-                      if (value == 'ZIE5Wkj1t3V0x5ZAMS3W4UI5mKz2') {
-                        await widget.loginStore.attemptEmailSignIn(
-                          context,
-                          "apple-review@publicae.com",
-                          "123456789",
-                        );
-                      } else {
-                        // future functionality
-                      }
-                    },
+                      SizedBox(height: 50),
+                      Text(
+                        "or enter your account id",
+                        style: TextStyle(fontSize: 12.0, color: Colors.grey),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 5),
+                      Container(
+                        padding: EdgeInsets.only(left: 40.0, right: 40.0),
+                        child: TextField(
+                          controller: _accountController,
+                          autofocus: false,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Color(0xfff3f3f3),
+                            labelText: 'account id',
+                            labelStyle: TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.grey,
+                            ),
+                            contentPadding: const EdgeInsets.only(
+                                left: 15.0, top: 5.0, bottom: 5.0),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                          ),
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.grey,
+                          ),
+                          onChanged: widget.loginStore.setAccountId,
+                          onSubmitted: (String value) async {
+                            // apple review account
+                            if (value == 'ZIE5Wkj1t3V0x5ZAMS3W4UI5mKz2') {
+                              await widget.loginStore.attemptEmailSignIn(
+                                context,
+                                "apple-review@publicae.com",
+                                "123456789",
+                              );
+                            } else {
+                              // future functionality
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

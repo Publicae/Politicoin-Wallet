@@ -53,7 +53,7 @@ class _WalletImportPage extends State<WalletImportPage> {
   }
 
   Widget buildForm(BuildContext context) {
-    return SingleChildScrollView(
+    return Center(
       child: Container(
         child: Column(
           children: <Widget>[
@@ -82,84 +82,92 @@ class _WalletImportPage extends State<WalletImportPage> {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: new BorderRadius.circular(5.0),
-                color: Color(0xfff6f6f6),
-              ),
-              height: 280,
-              width: MediaQuery.of(context).size.width,
-              child: PaperForm(
-                padding: 10,
-                actionButtons: <Widget>[
+            Expanded(
+              child: ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.all(10),
+                children: <Widget>[
                   Container(
+                    margin: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.black,
-                      image: DecorationImage(
-                        image: AssetImage("assets/images/bkg5.png"),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: new BorderRadius.circular(5.0),
+                      color: Color(0xfff6f6f6),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        FlatButton(
-                          child: const Text(
-                            'Import Account',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
+                    height: 280,
+                    width: MediaQuery.of(context).size.width,
+                    child: PaperForm(
+                      padding: 10,
+                      actionButtons: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/bkg5.png"),
+                              fit: BoxFit.cover,
                             ),
+                            borderRadius: BorderRadius.circular(5.0),
                           ),
-                          onPressed: () async {
-                            if (widget.store.type ==
-                                    WalletImportType.mnemonic &&
-                                await widget.store.confirmMnemonic()) {
-                              Navigator.of(context)
-                                  .popAndPushNamed("/main-page");
-                            }
-                            if (widget.store.type ==
-                                    WalletImportType.privateKey &&
-                                await widget.store.confirmPrivateKey()) {
-                              Navigator.of(context)
-                                  .popAndPushNamed("/main-page");
-                            }
-                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              FlatButton(
+                                child: const Text(
+                                  'Import Account',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  if (widget.store.type ==
+                                          WalletImportType.mnemonic &&
+                                      await widget.store.confirmMnemonic()) {
+                                    Navigator.of(context)
+                                        .popAndPushNamed("/main-page");
+                                  }
+                                  if (widget.store.type ==
+                                          WalletImportType.privateKey &&
+                                      await widget.store.confirmPrivateKey()) {
+                                    Navigator.of(context)
+                                        .popAndPushNamed("/main-page");
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            PaperRadio(
+                              "Seed Phrase",
+                              groupValue: widget.store.type,
+                              value: WalletImportType.mnemonic,
+                              onChanged: (value) => widget.store.setType(value),
+                            ),
+                            PaperRadio(
+                              "Private Key",
+                              groupValue: widget.store.type,
+                              value: WalletImportType.privateKey,
+                              onChanged: (value) => widget.store.setType(value),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Visibility(
+                                child: privateKeyForm(),
+                                visible: widget.store.type ==
+                                    WalletImportType.privateKey),
+                            Visibility(
+                                child: mnemonicForm(),
+                                visible: widget.store.type ==
+                                    WalletImportType.mnemonic),
+                          ],
                         ),
                       ],
                     ),
-                  ),
-                ],
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      PaperRadio(
-                        "Seed Phrase",
-                        groupValue: widget.store.type,
-                        value: WalletImportType.mnemonic,
-                        onChanged: (value) => widget.store.setType(value),
-                      ),
-                      PaperRadio(
-                        "Private Key",
-                        groupValue: widget.store.type,
-                        value: WalletImportType.privateKey,
-                        onChanged: (value) => widget.store.setType(value),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Visibility(
-                          child: privateKeyForm(),
-                          visible:
-                              widget.store.type == WalletImportType.privateKey),
-                      Visibility(
-                          child: mnemonicForm(),
-                          visible:
-                              widget.store.type == WalletImportType.mnemonic),
-                    ],
                   ),
                 ],
               ),
