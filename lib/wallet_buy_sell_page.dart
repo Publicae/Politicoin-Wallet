@@ -129,21 +129,6 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
                     ),
                   ),
                 ),
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    child: Observer(
-                      builder: (_) => Text(
-                        "${EthAmountFormatter(widget.store.walletStore.ethBalance).format()} ETH",
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.white,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

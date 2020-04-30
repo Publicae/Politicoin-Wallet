@@ -45,6 +45,7 @@ dependencies:
   google_sign_in: ^4.4.4
   flutter_signin_button: ^1.0.0
   flutter_facebook_login: ^3.0.0
+  decimal: ^0.3.0
 
 
 dev_dependencies:
@@ -66,6 +67,7 @@ flutter_icons:
 flutter_native_splash:
   image: assets/splash/splash.png
   color: "ffffff"
+  fill: true
   # android: false
 
 # For information on the generic Dart part of this file, see the
