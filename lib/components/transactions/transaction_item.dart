@@ -18,7 +18,9 @@ class TransactionItem extends StatelessWidget {
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: new BorderRadius.circular(5.0),
-        color: Color(0xfff6f6f6),
+        color: transaction.txreceiptStatus == "0"
+            ? Color(0xaaff0000)
+            : Color(0xfff6f6f6),
       ),
       height: 360,
       width: MediaQuery.of(context).size.width,
@@ -33,17 +35,30 @@ class TransactionItem extends StatelessWidget {
                   transaction.to == store.walletStore.address
                       ? "RECEIVED"
                       : "SENT",
-                  style: TextStyle(color: Color(0xff616161), fontSize: 20),
+                  style: TextStyle(
+                      color: transaction.txreceiptStatus == "0"
+                          ? Color(0xffffffff)
+                          : Color(0xff616161),
+                      fontSize: 20),
                 ),
                 Text(
-                  transaction.txreceiptStatus == "" ? "Pending" : "Confirmed",
-                  style: TextStyle(color: Color(0xff616161), fontSize: 12),
+                  transaction.formatTxreceiptStatus(),
+                  style: TextStyle(
+                    color: transaction.txreceiptStatus == "0"
+                        ? Color(0xffffffff)
+                        : Color(0xff616161),
+                    fontSize: transaction.txreceiptStatus == "0" ? 20 : 12,
+                  ),
                 ),
               ],
             ),
             subtitle: Text(
               '${transaction.hash}',
-              style: TextStyle(color: Color(0xff818181), fontSize: 14),
+              style: TextStyle(
+                  color: transaction.txreceiptStatus == "0"
+                      ? Color(0xffffffff)
+                      : Color(0xff818181),
+                  fontSize: 14),
             ),
           ),
           SizedBox(height: 20),
@@ -74,7 +89,8 @@ class TransactionItem extends StatelessWidget {
             color: Color(0xffededed),
             property: transaction.formattedValue(),
             borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(5.0), bottomLeft: Radius.circular(5.0)),
+                bottomRight: Radius.circular(5.0),
+                bottomLeft: Radius.circular(5.0)),
           ),
         ],
       ),

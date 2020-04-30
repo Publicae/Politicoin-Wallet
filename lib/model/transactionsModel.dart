@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:intl/intl.dart';
+import 'package:web3dart/web3dart.dart';
 
 TransactionsModel transactionsModelFromJson(String str) => TransactionsModel.fromJson(json.decode(str));
 
@@ -128,5 +129,15 @@ class TransactionModel {
       var str = (val / pow(10, 18)).toString() + " ETH";
 
       return str;
+    }
+
+    String formatTxreceiptStatus() {
+      var res = "";
+
+      if (txreceiptStatus == "") res = "Pending";
+      if (txreceiptStatus == "0") res = "Failed!";
+      if (txreceiptStatus == "1") res = "Confirmed";
+
+      return res;
     }
 }

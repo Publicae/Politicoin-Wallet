@@ -51,10 +51,14 @@ class _NetworkDropdownState extends State<NetworkDropdown> {
                   )),
               value: 'ropsten',
             ),
-            // DropdownMenuItem<String>(
-            //   child: Text('Rinkeby'),
-            //   value: 'rinkeby',
-            // ),
+            DropdownMenuItem<String>(
+              child: Text('Rinkeby',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Color(0xff555555),
+                  )),
+              value: 'rinkeby',
+            ),
             // DropdownMenuItem<String>(
             //   child: Text('Kovan'),
             //   value: 'kovan',

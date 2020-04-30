@@ -9,7 +9,7 @@ class AppConfig {
     params['ropsten'] = AppConfigParams(
         "https://ropsten.infura.io/v3/54db77af32da4dfbba6451be28f42c04",
         "wss://ropsten.infura.io/ws/v3/54db77af32da4dfbba6451be28f42c04",
-        "0x5911e5fcBed146C9035ead03147dbF338EAD63Ee",
+        "0x7cbec5bcb81fd24db92f401f97c1dd48338f8df8",
         "ropsten");
 
     params['kovan'] = AppConfigParams(
@@ -21,7 +21,7 @@ class AppConfig {
     params['rinkeby'] = AppConfigParams(
         "https://rinkeby.infura.io/v3/54db77af32da4dfbba6451be28f42c04",
         "wss://kovan.infura.io/ws/v3/54db77af32da4dfbba6451be28f42c04",
-        "not_yet_deployed",
+        "0x7d9abcb2633e17debbafd400ce15003057219cd2",
         "rinkeby");
 
     params['goerli'] = AppConfigParams(
@@ -33,7 +33,7 @@ class AppConfig {
     params['mainnet'] = AppConfigParams(
         "https://mainnet.infura.io/v3/54db77af32da4dfbba6451be28f42c04",
         "wss://mainnet.infura.io/ws/v3/54db77af32da4dfbba6451be28f42c04",
-        "0xd810650bd094a2eba59912ecfc07ee108699116c",
+        "0x6ffbd6b41b802550c57d4661d81a1700a502f2ab",
         "mainnet");
   }
 
