@@ -59,13 +59,35 @@ class TransactionList extends StatelessWidget {
     return RefreshIndicator(
       child: Container(
         //color: Colors.red,
-        child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              return _tile(context, data[index]);
-            }),
+        child: Stack(
+          fit: StackFit.loose,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                borderRadius: new BorderRadius.circular(5.0),
+                color: Color(0xfff6f6f6),
+              ),
+              child: ListTile(
+                title: Text(
+                  'Tap on a transaction address below, to visit Etherscan for more details',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+                leading: Icon(Icons.info),
+              ),
+            ),
+            ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  return _tile(context, data[index]);
+                }),
+          ],
+        ),
       ),
       onRefresh: () async {
         await _fetchTransactions(context);

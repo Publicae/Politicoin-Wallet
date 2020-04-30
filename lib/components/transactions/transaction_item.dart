@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pblcwallet/components/transactions/transaction_item_row.dart';
 import 'package:pblcwallet/model/transactionsModel.dart';
+import 'package:pblcwallet/service/configuration_service.dart';
 import 'package:pblcwallet/stores/wallet_transactions_store.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TransactionItem extends StatelessWidget {
   TransactionItem(
@@ -27,39 +30,52 @@ class TransactionItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  transaction.to == store.walletStore.address
-                      ? "RECEIVED"
-                      : "SENT",
-                  style: TextStyle(
+          GestureDetector(
+            child: ListTile(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    transaction.to == store.walletStore.address
+                        ? "RECEIVED"
+                        : "SENT",
+                    style: TextStyle(
+                        color: transaction.txreceiptStatus == "0"
+                            ? Color(0xffffffff)
+                            : Color(0xff616161),
+                        fontSize: 20),
+                  ),
+                  Text(
+                    transaction.formatTxreceiptStatus(),
+                    style: TextStyle(
                       color: transaction.txreceiptStatus == "0"
                           ? Color(0xffffffff)
                           : Color(0xff616161),
-                      fontSize: 20),
-                ),
-                Text(
-                  transaction.formatTxreceiptStatus(),
-                  style: TextStyle(
+                      fontSize: transaction.txreceiptStatus == "0" ? 20 : 12,
+                    ),
+                  ),
+                ],
+              ),
+              subtitle: Text(
+                '${transaction.hash}',
+                style: TextStyle(
                     color: transaction.txreceiptStatus == "0"
                         ? Color(0xffffffff)
-                        : Color(0xff616161),
-                    fontSize: transaction.txreceiptStatus == "0" ? 20 : 12,
-                  ),
-                ),
-              ],
+                        : Color(0xff818181),
+                    fontSize: 14),
+              ),
             ),
-            subtitle: Text(
-              '${transaction.hash}',
-              style: TextStyle(
-                  color: transaction.txreceiptStatus == "0"
-                      ? Color(0xffffffff)
-                      : Color(0xff818181),
-                  fontSize: 14),
-            ),
+            onTap: () async {
+              final sharedPrefs = await SharedPreferences.getInstance();
+              var configurationService = ConfigurationService(sharedPrefs);
+              var network = configurationService.getNetwork();
+              var url = 'https://$network.etherscan.io/tx/${transaction.hash}';
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+            },
           ),
           SizedBox(height: 20),
           TransactionItemRow(
