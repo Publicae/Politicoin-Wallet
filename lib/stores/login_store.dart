@@ -209,7 +209,7 @@ abstract class LoginStoreBase with Store {
     signInWithGoogle().then((res) {
       if (res != 'error') {
         final route = _configurationService.didSetupWallet() ? '/main-page' : '/create';
-        Navigator.pushNamed(context, route);
+        Navigator.pushReplacementNamed(context, route);
       }
     });
   }
@@ -218,7 +218,7 @@ abstract class LoginStoreBase with Store {
     signInWithFacebook().then((res) {
       if (res != 'error') {
         final route = _configurationService.didSetupWallet() ? '/main-page' : '/create';
-        Navigator.pushNamed(context, route);
+        Navigator.pushReplacementNamed(context, route);
       }
     });
   }
@@ -227,7 +227,7 @@ abstract class LoginStoreBase with Store {
     signInWithEmail(email, password).then((res) {
       if (res != 'error') {
         final route = _configurationService.didSetupWallet() ? '/main-page' : '/create';
-        Navigator.pushNamed(context, route);
+        Navigator.pushReplacementNamed(context, route);
       }
     });
   }
