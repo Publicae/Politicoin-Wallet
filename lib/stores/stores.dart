@@ -53,14 +53,14 @@ Future<List<SingleChildCloneableWidget>> createStore(
   isLoggedIn = await loginStore.isLoggedIn();
 
   return [
-    Provider<WalletStore>(builder: (_) => walletStore),
-    Provider<WalletTransferStore>(builder: (_) => walletTransferStore),
-    Provider<WalletCreateStore>(builder: (_) => walletCreateStore),
-    Provider<WalletImportStore>(builder: (_) => walletImportStore),
-    Provider<ConfigurationService>(builder: (_) => configurationService),
-    Provider<WalletBuySellStore>(builder: (_) => walletBuySellStore),
-    Provider<WalletTransactionsStore>(builder: (_) => walletTransactionsStore),
-    Provider<FetchEtherscanData>(builder: (_) => FetchEtherscanData.create(configurationService)),
-    Provider<LoginStore>(builder: (_) => loginStore)
+    Provider<WalletStore>(create: (_) => walletStore),
+    Provider<WalletTransferStore>(create: (_) => walletTransferStore),
+    Provider<WalletCreateStore>(create: (_) => walletCreateStore),
+    Provider<WalletImportStore>(create: (_) => walletImportStore),
+    Provider<ConfigurationService>(create: (_) => configurationService),
+    Provider<WalletBuySellStore>(create: (_) => walletBuySellStore),
+    Provider<WalletTransactionsStore>(create: (_) => walletTransactionsStore),
+    Provider<FetchEtherscanData>(create: (_) => FetchEtherscanData.create(configurationService)),
+    Provider<LoginStore>(create: (_) => loginStore)
   ];
 }

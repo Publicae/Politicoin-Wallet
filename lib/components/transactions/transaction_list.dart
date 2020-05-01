@@ -63,7 +63,7 @@ class TransactionList extends StatelessWidget {
           fit: StackFit.loose,
           children: <Widget>[
             Container(
-              margin: EdgeInsets.all(30),
+              margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
               decoration: BoxDecoration(
                 borderRadius: new BorderRadius.circular(5.0),
                 color: Color(0xfff6f6f6),

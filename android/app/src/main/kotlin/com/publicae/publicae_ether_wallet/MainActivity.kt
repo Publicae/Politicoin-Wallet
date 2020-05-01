@@ -1,4 +1,4 @@
-package com.publicae.publicae_ether_wallet
+package com.publicae.pblcwallet
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
