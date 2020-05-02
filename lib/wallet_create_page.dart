@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:pblcwallet/components/buttons/copy_button.dart';
 import 'package:pblcwallet/components/form/paper_form.dart';
 import 'package:pblcwallet/components/form/paper_input.dart';
@@ -39,7 +40,7 @@ class _WalletCreatePage extends State<WalletCreatePage> {
           icon: ImageIcon(
             AssetImage("assets/images/back.png"),
           ),
-          onPressed: () => Navigator.of(context).pushNamed("/"),
+          onPressed: () => Get.toNamed("/"),
         ),
       ),
       body: GestureDetector(
@@ -192,8 +193,7 @@ class _WalletCreatePage extends State<WalletCreatePage> {
                                     onPressed: () async {
                                       if (await widget.store
                                           .confirmMnemonic()) {
-                                        Navigator.of(context)
-                                            .popAndPushNamed("/main-page");
+                                        Get.offNamed("/main-page");
                                       }
                                     }),
                               ),
@@ -257,7 +257,7 @@ class _WalletCreatePage extends State<WalletCreatePage> {
                                     ),
                                   ),
                                   onPressed: () async {
-                                    Navigator.of(context).pushNamed("/import");
+                                    Get.toNamed("/import");
                                   }),
                             ],
                           ),
@@ -336,7 +336,7 @@ class _WalletCreatePage extends State<WalletCreatePage> {
                 child: const Text('Confirm'),
                 onPressed: () async {
                   if (await widget.store.confirmMnemonic()) {
-                    Navigator.of(context).popAndPushNamed("/main-page");
+                    Get.offNamed("/main-page");
                   }
                 },
               )

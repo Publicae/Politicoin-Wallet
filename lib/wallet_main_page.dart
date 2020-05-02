@@ -1,4 +1,5 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:pblcwallet/components/buttons/network_dropdown_button.dart';
 import 'package:pblcwallet/components/wallet/balance.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
@@ -82,7 +83,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
                             color: Color(0xff696969),
                           ),
                           onTap: () async {
-                            Navigator.popAndPushNamed(context, "/transactions");
+                            Get.offNamed("/transactions");
                           },
                         ),
                       ),
@@ -110,7 +111,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
                             color: Color(0xff696969),
                           ),
                           onTap: () async {
-                            Navigator.popAndPushNamed(context, "/transfer");
+                            Get.offNamed("/transfer");
                           },
                         ),
                       ),
@@ -138,7 +139,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
                             color: Color(0xff696969),
                           ),
                           onTap: () async {
-                            Navigator.popAndPushNamed(context, "/buy-sell");
+                            Get.offNamed("/buy-sell");
                           },
                         ),
                       ),
@@ -210,7 +211,14 @@ class _WalletMainPageState extends State<WalletMainPage> {
                             color: Color(0xff696969),
                           ),
                           onTap: () {
-                            showAlertDialog(context);
+                            showAlert(
+                              "Reset wallet?",
+                              "Without your seed phrase or private key, you cannot restore your wallet!",
+                              () async {
+                                await widget.walletStore.resetWallet();
+                                Get.toNamed("/create");
+                              },
+                            );
                           },
                         ),
                       ),
@@ -237,7 +245,13 @@ class _WalletMainPageState extends State<WalletMainPage> {
                             color: Color(0xff696969),
                           ),
                           onTap: () {
-                            deleteDialog(context);
+                            showAlert(
+                              "Delete Account?",
+                              "This cannot be reversed! You will lose all your PBLC tokens!",
+                              () async {
+                                await widget.walletStore.deleteUser(context);
+                              },
+                            );
                           },
                         ),
                       ),
@@ -266,7 +280,9 @@ class _WalletMainPageState extends State<WalletMainPage> {
                         ), // button text
                       ),
                       onTap: () {
-                        signOutDialog(context);
+                        showAlert("Sign Out?", "", () async {
+                          await widget.walletStore.signOut(context);
+                        });
                       },
                     ),
                   ],
@@ -305,11 +321,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
               AssetImage("assets/images/paper-plane.png"),
             ),
             onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/transfer',
-                arguments: "",
-              );
+              Get.toNamed("/transfer", arguments: "");
             },
           ),
         ],
@@ -369,108 +381,17 @@ class _WalletMainPageState extends State<WalletMainPage> {
     await widget.walletStore.getUserInfo(context);
   }
 
-  showAlertDialog(BuildContext context) {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-    Widget continueButton = FlatButton(
-      child: Text("Reset"),
-      onPressed: () async {
-        await widget.walletStore.resetWallet();
-        Navigator.popAndPushNamed(context, "/create");
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Reset wallet?"),
-      content: Text(
-          "warning: without your seed phrase you cannot restore your wallet"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  signOutDialog(BuildContext context) {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-    Widget continueButton = FlatButton(
-      child: Text("Sign Out"),
-      onPressed: () async {
-        await widget.walletStore.signOut(context);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Sign Out?"),
-      content: Text(""),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  deleteDialog(BuildContext context) {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-    Widget continueButton = FlatButton(
-      child: Text("Delete"),
-      onPressed: () async {
-        await widget.walletStore.deleteUser(context);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Delete Account?"),
-      content:
-          Text("This cannot be reversed! You will lose all your PBLC tokens!"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+  showAlert(String title, String message, Function onPressed) {
+    Get.defaultDialog(
+        title: title,
+        content: Text(message),
+        confirm: FlatButton(
+          child: Text("Ok"),
+          onPressed: onPressed,
+        ),
+        cancel: FlatButton(
+          child: Text("Cancel"),
+          onPressed: () => Get.back(),
+        ));
   }
 }

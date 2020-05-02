@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:pblcwallet/components/transactions/transaction_list.dart';
 import 'package:pblcwallet/stores/wallet_transactions_store.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
           icon: ImageIcon(
             AssetImage("assets/images/back.png"),
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Get.back(),
         ),
       ),
       body: Builder(

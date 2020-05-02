@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:pblcwallet/components/form/paper_form.dart';
 import 'package:pblcwallet/components/form/paper_input.dart';
 import 'package:pblcwallet/components/form/paper_radio.dart';
@@ -38,7 +39,7 @@ class _WalletImportPage extends State<WalletImportPage> {
           icon: ImageIcon(
             AssetImage("assets/images/back.png"),
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Get.back(),
         ),
       ),
       body: GestureDetector(
@@ -123,14 +124,12 @@ class _WalletImportPage extends State<WalletImportPage> {
                                   if (widget.store.type ==
                                           WalletImportType.mnemonic &&
                                       await widget.store.confirmMnemonic()) {
-                                    Navigator.of(context)
-                                        .popAndPushNamed("/main-page");
+                                    Get.offNamed("/main-page");
                                   }
                                   if (widget.store.type ==
                                           WalletImportType.privateKey &&
                                       await widget.store.confirmPrivateKey()) {
-                                    Navigator.of(context)
-                                        .popAndPushNamed("/main-page");
+                                    Get.offNamed("/main-page");
                                   }
                                 },
                               ),

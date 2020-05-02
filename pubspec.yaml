@@ -46,7 +46,7 @@ dependencies:
   flutter_signin_button: ^1.0.0
   flutter_facebook_login: ^3.0.0
   decimal: ^0.3.0
-
+  get: ^2.0.3
 
 dev_dependencies:
   flutter_test:

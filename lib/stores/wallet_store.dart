@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pblcwallet/app_config.dart';
 import 'package:pblcwallet/main.dart';
 import 'package:pblcwallet/model/transaction.dart';
@@ -162,8 +163,7 @@ abstract class WalletStoreBase with Store {
 
       await resetWallet();
 
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+      Get.offAllNamed("/");
     }
   }
 
@@ -177,9 +177,8 @@ abstract class WalletStoreBase with Store {
     var contractAddress = AppConfig().params[network].contractAddress;
 
     _contractService.send(
-        this.privateKey,
-        EthereumAddress.fromHex(contractAddress),
-        amount, onTransfer: (from, to, value) {
+        this.privateKey, EthereumAddress.fromHex(contractAddress), amount,
+        onTransfer: (from, to, value) {
       controller.add(transactionEvent.confirmed(from, to, value));
       controller.close();
     }, onError: (ex) {

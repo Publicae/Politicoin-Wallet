@@ -1,4 +1,5 @@
 import 'package:flushbar/flushbar.dart';
+import 'package:get/get.dart';
 import 'package:pblcwallet/components/form/paper_form.dart';
 import 'package:pblcwallet/components/form/paper_input.dart';
 import 'package:pblcwallet/components/form/paper_validation_summary.dart';
@@ -41,7 +42,7 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
           icon: ImageIcon(
             AssetImage("assets/images/back.png"),
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Get.back(),
         ),
         actions: <Widget>[
           IconButton(
@@ -49,11 +50,7 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
               AssetImage("assets/images/transactions.png"),
             ),
             onPressed: () {
-              Navigator.popAndPushNamed(
-                context,
-                '/transactions',
-                arguments: "",
-              );
+              Get.offNamed("/transactions");
             },
           ),
         ],

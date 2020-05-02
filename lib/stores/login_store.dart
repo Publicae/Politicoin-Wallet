@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pblcwallet/data/fetchFacebookData.dart';
@@ -78,6 +79,7 @@ abstract class LoginStoreBase with Store {
           authResult = await _auth.signInWithCredential(credential);
         } catch (err) {
           print(err);
+          showAlert(err.message);
           return "error";
         }
         final FirebaseUser user = authResult.user;
@@ -131,6 +133,7 @@ abstract class LoginStoreBase with Store {
       }
     } catch (err) {
       print(err);
+      showAlert(err.code);
       return 'error';
     }
 
@@ -147,6 +150,7 @@ abstract class LoginStoreBase with Store {
         authResult = await _auth.signInWithCredential(credential);
       } catch (err) {
         print(err);
+        showAlert(err.message);
         return "error";
       }
 
@@ -183,6 +187,7 @@ abstract class LoginStoreBase with Store {
       );
     } catch (err) {
       print(err);
+      showAlert(err.message);
       return "error";
     }
 
@@ -253,8 +258,7 @@ abstract class LoginStoreBase with Store {
     }
 
     _configurationService.setLoggedIn(false);
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+    Get.offAllNamed("/");
   }
 
   Future<bool> isLoggedIn() async {
@@ -275,34 +279,19 @@ abstract class LoginStoreBase with Store {
       return 'user deleted';
     } catch (err) {
       print(err);
-      deleteDialog(context, err.message);
+      showAlert(err.message);
       return 'error';
     }
   }
 
-  deleteDialog(BuildContext context, String err) {
-    Widget continueButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () async {
-        Navigator.pop(context);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(err),
-      content: Text(""),
-      actions: [
-        continueButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
+  showAlert(String msg) {
+    Get.defaultDialog(
+      title: "Error",
+      content: Text(msg),
+      confirm: FlatButton(
+        child: Text("Ok"),
+        onPressed: () => Get.back(),
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:get/get.dart';
 import 'package:pblcwallet/app_config.dart';
 import 'package:pblcwallet/router.dart';
 import 'package:pblcwallet/service/address_service.dart';
@@ -58,7 +59,7 @@ class MainApp extends StatelessWidget {
 
     return MultiProvider(
       providers: stores,
-      child: new MaterialApp(
+      child: new GetMaterialApp(
         title: 'PBLC',
         initialRoute: initialRoute,
         routes: getRoutes(context),

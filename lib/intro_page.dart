@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class IntroPage extends StatelessWidget {
   @override
@@ -12,7 +13,7 @@ class IntroPage extends StatelessWidget {
             RaisedButton(
               child: Text("Create new wallet"),
               onPressed: () {
-                Navigator.of(context).pushNamed("/create");
+                Get.toNamed("/create");
               },
             ),
             Container(
@@ -20,7 +21,7 @@ class IntroPage extends StatelessWidget {
               child: OutlineButton(
                 child: Text("Import wallet"),
                 onPressed: () {
-                  Navigator.of(context).pushNamed("/import");
+                   Get.toNamed("/import");
                 },
               ),
             )
