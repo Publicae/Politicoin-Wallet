@@ -50,7 +50,6 @@ class _WalletMainPageState extends State<WalletMainPage> {
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 30),
                     Container(
                       height: 1,
                       color: const Color(0xaa858585),
@@ -327,31 +326,31 @@ class _WalletMainPageState extends State<WalletMainPage> {
       padding: EdgeInsets.zero,
       decoration: BoxDecoration(
         image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/bkg4.png'),
+          fit: BoxFit.fill,
+          image: AssetImage('assets/images/bkg1.png'),
         ),
       ),
       child: Stack(
         children: <Widget>[
           Positioned(
-            bottom: 17.0,
-            right: 50.0,
+            top: 30.0,
+            left: 40.0,
             child: Text(
               "PBLC Wallet",
               style: TextStyle(
-                  color: Color(0xff555555),
-                  fontSize: 25.0,
+                  color: Color(0xffffffff),
+                  fontSize: 30.0,
                   fontWeight: FontWeight.w500),
             ),
           ),
           Positioned(
-            bottom: 1.0,
-            right: 50.0,
+            top: 70.0,
+            left: 40.0,
             child: Observer(
               builder: (_) => Text(
                 widget.walletStore.username,
                 style: TextStyle(
-                    color: Color(0xff555555),
+                    color: Color(0xffffffff),
                     fontSize: 15.0,
                     fontWeight: FontWeight.w300),
               ),

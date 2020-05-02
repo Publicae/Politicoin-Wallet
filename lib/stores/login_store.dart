@@ -121,6 +121,7 @@ abstract class LoginStoreBase with Store {
     );
     GoogleSignInAccount googleSignInAccount;
     GoogleSignInAuthentication googleSignInAuthentication;
+
     try {
       var session = await isLoggedIn();
       if (session) {
@@ -128,42 +129,49 @@ abstract class LoginStoreBase with Store {
       } else {
         googleSignInAccount = await googleSignIn.signIn();
       }
-      googleSignInAuthentication = await googleSignInAccount.authentication;
     } catch (err) {
       print(err);
       return 'error';
     }
 
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
+    if (googleSignInAccount != null) {
+      googleSignInAuthentication = await googleSignInAccount.authentication;
 
-    AuthResult authResult;
-    try {
-      authResult = await _auth.signInWithCredential(credential);
-    } catch (err) {
-      print(err);
-      return "error";
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      AuthResult authResult;
+      try {
+        authResult = await _auth.signInWithCredential(credential);
+      } catch (err) {
+        print(err);
+        return "error";
+      }
+
+      final FirebaseUser user = authResult.user;
+
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      final FirebaseUser currentUser = await _auth.currentUser();
+      assert(user.uid == currentUser.uid);
+
+      assert(user.email != null);
+      assert(user.displayName != null);
+      assert(user.photoUrl != null);
+
+      name = user.displayName;
+      email = user.email;
+      imageUrl = user.photoUrl;
+
+      return 'signInWithGoogle succeeded: $user';
+    } else {
+      await _auth.signOut();
     }
 
-    final FirebaseUser user = authResult.user;
-
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-
-    final FirebaseUser currentUser = await _auth.currentUser();
-    assert(user.uid == currentUser.uid);
-
-    assert(user.email != null);
-    assert(user.displayName != null);
-    assert(user.photoUrl != null);
-
-    name = user.displayName;
-    email = user.email;
-    imageUrl = user.photoUrl;
-
-    return 'signInWithGoogle succeeded: $user';
+    return 'error';
   }
 
   Future<String> signInWithEmail(String email, String password) async {
@@ -208,7 +216,8 @@ abstract class LoginStoreBase with Store {
   Future attemptGoogleSignIn(BuildContext context) async {
     signInWithGoogle().then((res) {
       if (res != 'error') {
-        final route = _configurationService.didSetupWallet() ? '/main-page' : '/create';
+        final route =
+            _configurationService.didSetupWallet() ? '/main-page' : '/create';
         Navigator.pushReplacementNamed(context, route);
       }
     });
@@ -217,16 +226,19 @@ abstract class LoginStoreBase with Store {
   Future attemptFacebookSignIn(BuildContext context) async {
     signInWithFacebook().then((res) {
       if (res != 'error') {
-        final route = _configurationService.didSetupWallet() ? '/main-page' : '/create';
+        final route =
+            _configurationService.didSetupWallet() ? '/main-page' : '/create';
         Navigator.pushReplacementNamed(context, route);
       }
     });
   }
 
-  Future attemptEmailSignIn(BuildContext context, String email, String password) async {
+  Future attemptEmailSignIn(
+      BuildContext context, String email, String password) async {
     signInWithEmail(email, password).then((res) {
       if (res != 'error') {
-        final route = _configurationService.didSetupWallet() ? '/main-page' : '/create';
+        final route =
+            _configurationService.didSetupWallet() ? '/main-page' : '/create';
         Navigator.pushReplacementNamed(context, route);
       }
     });

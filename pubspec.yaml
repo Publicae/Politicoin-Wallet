@@ -56,19 +56,13 @@ dev_dependencies:
   build_runner: ^1.7.4
   json_serializable: ^3.2.5
   chopper_generator:
-  flutter_launcher_icons: ^0.7.4
-  flutter_native_splash: ^0.1.9
+  flutter_launcher_icons: ^0.7.5
 
 flutter_icons:
   android: true 
   ios: true
   image_path: "assets/icon/iTunesArtwork@3x.png"
-
-flutter_native_splash:
-  image: assets/splash/splash.png
-  color: "ffffff"
-  fill: true
-  # android: false
+  image_path_android: "assets/icon/playstore-icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -83,9 +77,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - TargaryenCoin.json
     - PoliticoinToken.json
-    - assets/icon/iTunesArtwork@3x.png
+    - assets/icon/
     - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
