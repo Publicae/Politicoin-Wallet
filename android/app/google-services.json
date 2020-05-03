@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "1823538104-1qcbs9doop5sftqa2h1gc3mo3os35evn.apps.googleusercontent.com",
+          "client_id": "1823538104-ptu92ksq14rnll29qau5gklvmugrj3mp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.publicae.pblcwallet",
+            "certificate_hash": "85aa4793f85c68055e50a46cba15561d5fb94357"
+          }
+        },
+        {
+          "client_id": "1823538104-vk4nl8bskfm2gjresm18ogsejvtbrbud.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.publicae.pblcwallet",
