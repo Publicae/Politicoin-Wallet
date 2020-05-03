@@ -1,3 +1,4 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:get/get.dart';
 import 'package:pblcwallet/components/form/paper_form.dart';
@@ -50,7 +51,7 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
               AssetImage("assets/images/transactions.png"),
             ),
             onPressed: () {
-              Get.offNamed("/transactions");
+              Get.toNamed("/transactions");
             },
           ),
         ],
@@ -199,30 +200,47 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
                                       ),
                                     ),
                                     onPressed: !widget.store.loading
-                                        ? () {
-                                            widget.store.buy().listen((tx) {
-                                              //Navigator.pop(context);
-                                              switch (tx.status) {
-                                                case TransactionStatus.started:
-                                                  print(
-                                                      'transact pending ${tx.key}');
-                                                  //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
-                                                  showInfoFlushbar(
-                                                      context, true, tx.key);
-                                                  break;
-                                                case TransactionStatus
-                                                    .confirmed:
-                                                  print(
-                                                      'transact confirmed ${tx.key}');
-                                                  //Navigator.popUntil(context, ModalRoute.withName('/'));
-                                                  showInfoFlushbar(
-                                                      context, false, tx.key);
-                                                  break;
-                                                default:
-                                                  break;
-                                              }
-                                            }).onError((error) => widget.store
-                                                .setError(error.message));
+                                        ? () async {
+                                            var connectivityResult =
+                                                await (Connectivity()
+                                                    .checkConnectivity());
+                                            if (connectivityResult ==
+                                                ConnectivityResult.none) {
+                                              Get.defaultDialog(
+                                                title: "No Internet",
+                                                content: Text(
+                                                    "Please check your internet connection and try again."),
+                                                confirm: FlatButton(
+                                                  child: Text("Ok"),
+                                                  onPressed: () => Get.back(),
+                                                ),
+                                              );
+                                            } else {
+                                              widget.store.buy().listen((tx) {
+                                                //Navigator.pop(context);
+                                                switch (tx.status) {
+                                                  case TransactionStatus
+                                                      .started:
+                                                    print(
+                                                        'transact pending ${tx.key}');
+                                                    //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
+                                                    showInfoFlushbar(
+                                                        context, true, tx.key);
+                                                    break;
+                                                  case TransactionStatus
+                                                      .confirmed:
+                                                    print(
+                                                        'transact confirmed ${tx.key}');
+                                                    //Navigator.popUntil(context, ModalRoute.withName('/'));
+                                                    showInfoFlushbar(
+                                                        context, false, tx.key);
+                                                    break;
+                                                  default:
+                                                    break;
+                                                }
+                                              }).onError((error) => widget.store
+                                                  .setError(error.message));
+                                            }
                                           }
                                         : null,
                                   ),
@@ -257,29 +275,46 @@ class _WalletBuySellPageState extends State<WalletBuySellPage> {
                                       ),
                                     ),
                                     onPressed: !widget.store.loading
-                                        ? () {
-                                            widget.store.sell().listen((tx) {
-                                              switch (tx.status) {
-                                                case TransactionStatus.started:
-                                                  print(
-                                                      'transact pending ${tx.key}');
-                                                  showInfoFlushbar(
-                                                      context, true, tx.key);
-                                                  //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
-                                                  break;
-                                                case TransactionStatus
-                                                    .confirmed:
-                                                  print(
-                                                      'transact confirmed ${tx.key}');
-                                                  showInfoFlushbar(
-                                                      context, false, tx.key);
-                                                  //Navigator.popUntil(context, ModalRoute.withName('/'));
-                                                  break;
-                                                default:
-                                                  break;
-                                              }
-                                            }).onError((error) => widget.store
-                                                .setError(error.message));
+                                        ? () async {
+                                            var connectivityResult =
+                                                await (Connectivity()
+                                                    .checkConnectivity());
+                                            if (connectivityResult ==
+                                                ConnectivityResult.none) {
+                                              Get.defaultDialog(
+                                                title: "No Internet",
+                                                content: Text(
+                                                    "Please check your internet connection and try again."),
+                                                confirm: FlatButton(
+                                                  child: Text("Ok"),
+                                                  onPressed: () => Get.back(),
+                                                ),
+                                              );
+                                            } else {
+                                              widget.store.sell().listen((tx) {
+                                                switch (tx.status) {
+                                                  case TransactionStatus
+                                                      .started:
+                                                    print(
+                                                        'transact pending ${tx.key}');
+                                                    showInfoFlushbar(
+                                                        context, true, tx.key);
+                                                    //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
+                                                    break;
+                                                  case TransactionStatus
+                                                      .confirmed:
+                                                    print(
+                                                        'transact confirmed ${tx.key}');
+                                                    showInfoFlushbar(
+                                                        context, false, tx.key);
+                                                    //Navigator.popUntil(context, ModalRoute.withName('/'));
+                                                    break;
+                                                  default:
+                                                    break;
+                                                }
+                                              }).onError((error) => widget.store
+                                                  .setError(error.message));
+                                            }
                                           }
                                         : null,
                                   ),

@@ -83,7 +83,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
                             color: Color(0xff696969),
                           ),
                           onTap: () async {
-                            Get.offNamed("/transactions");
+                            Get.toNamed("/transactions");
                           },
                         ),
                       ),
@@ -111,7 +111,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
                             color: Color(0xff696969),
                           ),
                           onTap: () async {
-                            Get.offNamed("/transfer");
+                            Get.toNamed("/transfer");
                           },
                         ),
                       ),
@@ -139,7 +139,7 @@ class _WalletMainPageState extends State<WalletMainPage> {
                             color: Color(0xff696969),
                           ),
                           onTap: () async {
-                            Get.offNamed("/buy-sell");
+                            Get.toNamed("/buy-sell");
                           },
                         ),
                       ),

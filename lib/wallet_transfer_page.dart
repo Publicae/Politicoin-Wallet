@@ -1,10 +1,14 @@
+import 'package:connectivity/connectivity.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:get/get.dart';
 import 'package:pblcwallet/components/form/paper_form.dart';
 import 'package:pblcwallet/components/form/paper_input.dart';
 import 'package:pblcwallet/components/form/paper_validation_summary.dart';
 import 'package:pblcwallet/model/transaction.dart';
 import 'package:pblcwallet/stores/wallet_transfer_store.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pblcwallet/utils/eth_amount_formatter.dart';
 
@@ -42,7 +46,7 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
           icon: ImageIcon(
             AssetImage("assets/images/back.png"),
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Get.back(),
         ),
         actions: <Widget>[
           IconButton(
@@ -50,11 +54,7 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
               AssetImage("assets/images/transactions.png"),
             ),
             onPressed: () {
-              Navigator.popAndPushNamed(
-                context,
-                '/transactions',
-                arguments: "",
-              );
+              Get.toNamed('/transactions', arguments: "");
             },
           ),
         ],
@@ -310,31 +310,48 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                                     ),
                                     onPressed: !widget.store.loading &&
                                             widget.store.denomination == "PBLC"
-                                        ? () {
-                                            widget.store
-                                                .transfer()
-                                                .listen((tx) {
-                                              switch (tx.status) {
-                                                case TransactionStatus.started:
-                                                  print(
-                                                      'transact pending ${tx.key}');
-                                                  showInfoFlushbar(
-                                                      context, true, tx.key);
-                                                  //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
-                                                  break;
-                                                case TransactionStatus
-                                                    .confirmed:
-                                                  print(
-                                                      'transact confirmed ${tx.key}');
-                                                  showInfoFlushbar(
-                                                      context, false, tx.key);
-                                                  //Navigator.popUntil(context, ModalRoute.withName('/'));
-                                                  break;
-                                                default:
-                                                  break;
-                                              }
-                                            }).onError((error) => widget.store
-                                                    .setError(error.message));
+                                        ? () async {
+                                            var connectivityResult =
+                                                await (Connectivity()
+                                                    .checkConnectivity());
+                                            if (connectivityResult ==
+                                                ConnectivityResult.none) {
+                                              Get.defaultDialog(
+                                                title: "No Internet",
+                                                content: Text(
+                                                    "Please check your internet connection and try again."),
+                                                confirm: FlatButton(
+                                                  child: Text("Ok"),
+                                                  onPressed: () => Get.back(),
+                                                ),
+                                              );
+                                            } else {
+                                              widget.store
+                                                  .transfer()
+                                                  .listen((tx) {
+                                                switch (tx.status) {
+                                                  case TransactionStatus
+                                                      .started:
+                                                    print(
+                                                        'transact pending ${tx.key}');
+                                                    showInfoFlushbar(
+                                                        context, true, tx.key);
+                                                    //Navigator.pushNamed(context, '/transactions', arguments: tx.key);
+                                                    break;
+                                                  case TransactionStatus
+                                                      .confirmed:
+                                                    print(
+                                                        'transact confirmed ${tx.key}');
+                                                    showInfoFlushbar(
+                                                        context, false, tx.key);
+                                                    //Navigator.popUntil(context, ModalRoute.withName('/'));
+                                                    break;
+                                                  default:
+                                                    break;
+                                                }
+                                              }).onError((error) => widget.store
+                                                      .setError(error.message));
+                                            }
                                           }
                                         : null,
                                   ),
@@ -376,10 +393,26 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                                     ),
                                     onPressed: !widget.store.loading &&
                                             widget.store.denomination != "PBLC"
-                                        ? () {
-                                            showInfoFlushbar(context, true,
-                                                "actual ETH transaction");
-                                            widget.store.transferEth(context);
+                                        ? () async {
+                                            var connectivityResult =
+                                                await (Connectivity()
+                                                    .checkConnectivity());
+                                            if (connectivityResult ==
+                                                ConnectivityResult.none) {
+                                              Get.defaultDialog(
+                                                title: "No Internet",
+                                                content: Text(
+                                                    "Please check your internet connection and try again."),
+                                                confirm: FlatButton(
+                                                  child: Text("Ok"),
+                                                  onPressed: () => Get.back(),
+                                                ),
+                                              );
+                                            } else {
+                                              showInfoFlushbar(context, true,
+                                                  "actual ETH transaction");
+                                              widget.store.transferEth(context);
+                                            }
                                           }
                                         : null,
                                   ),
