@@ -38,6 +38,13 @@ class AppConfig {
   }
 
   Map<String, AppConfigParams> params = Map<String, AppConfigParams>();
+
+  // https://etherscan.io/gastracker
+  static final gasPrice = 5000000000; // 5gwei
+  static final maxGas = 3000000;
+
+  static final pp = "http://publicae.org/privacy-policy/";
+  static final tos = "https://publicae.org/terms-of-service/";
 }
 
 class AppConfigParams {

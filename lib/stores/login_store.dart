@@ -31,6 +31,9 @@ abstract class LoginStoreBase with Store {
   @observable
   String accountId;
 
+  @observable
+  bool loading;
+
   @action
   void setAccountId(String value) {
     this.accountId = value;
@@ -111,6 +114,7 @@ abstract class LoginStoreBase with Store {
         break;
     }
 
+    loading = false;
     return 'error';
   }
 
@@ -175,6 +179,7 @@ abstract class LoginStoreBase with Store {
       await _auth.signOut();
     }
 
+    loading = false;
     return 'error';
   }
 
@@ -219,8 +224,10 @@ abstract class LoginStoreBase with Store {
   }
 
   Future attemptGoogleSignIn(BuildContext context) async {
+    loading = true;
     signInWithGoogle().then((res) {
       if (res != 'error') {
+        loading = false;
         final route =
             _configurationService.didSetupWallet() ? '/main-page' : '/create';
         Navigator.pushReplacementNamed(context, route);

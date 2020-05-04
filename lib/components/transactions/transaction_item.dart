@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pblcwallet/components/transactions/transaction_item_row.dart';
+import 'package:pblcwallet/main.dart';
 import 'package:pblcwallet/model/transactionsModel.dart';
 import 'package:pblcwallet/service/configuration_service.dart';
 import 'package:pblcwallet/stores/wallet_transactions_store.dart';
@@ -66,8 +67,6 @@ class TransactionItem extends StatelessWidget {
               ),
             ),
             onTap: () async {
-              final sharedPrefs = await SharedPreferences.getInstance();
-              var configurationService = ConfigurationService(sharedPrefs);
               var network = configurationService.getNetwork();
               var url = 'https://$network.etherscan.io/tx/${transaction.hash}';
               if (await canLaunch(url)) {
