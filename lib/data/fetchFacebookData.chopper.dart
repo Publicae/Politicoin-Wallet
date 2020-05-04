@@ -18,7 +18,7 @@ class _$FetchFacebookData extends FetchFacebookData {
 
   @override
   Future<Response<dynamic>> getProfile(String token) {
-    final $url = '?fields=name,first_name,last_name,email&access_token=/$token';
+    final $url = '?fields=name,first_name,last_name,email&access_token=$token';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
