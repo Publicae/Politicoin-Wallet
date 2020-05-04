@@ -1,5 +1,6 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get/get.dart';
+import 'package:package_info/package_info.dart';
 import 'package:pblcwallet/components/buttons/network_dropdown_button.dart';
 import 'package:pblcwallet/components/wallet/balance.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
@@ -284,6 +285,14 @@ class _WalletMainPageState extends State<WalletMainPage> {
                           await widget.walletStore.signOut(context);
                         });
                       },
+                    ),
+                    SizedBox(height: 30),
+                    Text(
+                      widget.walletStore.version,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Color(0xff696969),
+                      ),
                     ),
                   ],
                 ),

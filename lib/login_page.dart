@@ -30,21 +30,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
-      // if (widget.loginStore.loading != null && widget.loginStore.loading) {
-      //   return Container(
-      //     color: Colors.white,
-      //     child: Center(
-      //       child: Column(
-      //         mainAxisAlignment: MainAxisAlignment.center,
-      //         children: <Widget>[
-      //           SpinKitWanderingCubes(
-      //             color: Color(0xff818181),
-      //           )
-      //         ],
-      //       ),
-      //     ),
-      //   );
-      // }
       return Scaffold(
         body: GestureDetector(
           onTap: () {

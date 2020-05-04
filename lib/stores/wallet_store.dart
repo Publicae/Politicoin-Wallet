@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:package_info/package_info.dart';
 import 'package:pblcwallet/app_config.dart';
 import 'package:pblcwallet/main.dart';
 import 'package:pblcwallet/model/transaction.dart';
@@ -49,6 +50,9 @@ abstract class WalletStoreBase with Store {
   @observable
   String username = "";
 
+  @observable
+  String version = "";
+
   @action
   Future<void> initialise() async {
     final entropyMnemonic = _configurationService.getMnemonic();
@@ -60,6 +64,8 @@ abstract class WalletStoreBase with Store {
     }
 
     _initialiseFromPrivateKey(privateKey);
+
+    await getVersion();
   }
 
   Future<void> _initialiseFromMnemonic(String entropyMnemonic) async {
@@ -99,6 +105,17 @@ abstract class WalletStoreBase with Store {
 
       await fetchOwnBalance();
     });
+  }
+
+  Future<void> getVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    //String appName = packageInfo.appName;
+    //String packageName = packageInfo.packageName;
+    String version = packageInfo.version;
+    String buildNumber = packageInfo.buildNumber;
+
+    this.version = "v$version($buildNumber)";
   }
 
   @action

@@ -128,6 +128,23 @@ mixin _$WalletStore on WalletStoreBase, Store {
     }, _$usernameAtom, name: '${_$usernameAtom.name}_set');
   }
 
+  final _$versionAtom = Atom(name: 'WalletStoreBase.version');
+
+  @override
+  String get version {
+    _$versionAtom.context.enforceReadPolicy(_$versionAtom);
+    _$versionAtom.reportObserved();
+    return super.version;
+  }
+
+  @override
+  set version(String value) {
+    _$versionAtom.context.conditionallyRunInAction(() {
+      super.version = value;
+      _$versionAtom.reportChanged();
+    }, _$versionAtom, name: '${_$versionAtom.name}_set');
+  }
+
   final _$initialiseAsyncAction = AsyncAction('initialise');
 
   @override
@@ -193,7 +210,7 @@ mixin _$WalletStore on WalletStoreBase, Store {
   @override
   String toString() {
     final string =
-        'tokenBalance: ${tokenBalance.toString()},ethBalance: ${ethBalance.toString()},ethGasPrice: ${ethGasPrice.toString()},address: ${address.toString()},privateKey: ${privateKey.toString()},transactions: ${transactions.toString()},username: ${username.toString()}';
+        'tokenBalance: ${tokenBalance.toString()},ethBalance: ${ethBalance.toString()},ethGasPrice: ${ethGasPrice.toString()},address: ${address.toString()},privateKey: ${privateKey.toString()},transactions: ${transactions.toString()},username: ${username.toString()},version: ${version.toString()}';
     return '{$string}';
   }
 }

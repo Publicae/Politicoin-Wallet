@@ -48,6 +48,7 @@ dependencies:
   decimal: ^0.3.0
   get: ^2.0.3
   connectivity: ^0.4.8+2
+  package_info: ">=0.4.0+17 <2.0.0"
 
 dev_dependencies:
   flutter_test:
