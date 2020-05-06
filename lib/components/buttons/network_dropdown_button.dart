@@ -23,7 +23,7 @@ class _NetworkDropdownState extends State<NetworkDropdown> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text(
           "Current Network is",

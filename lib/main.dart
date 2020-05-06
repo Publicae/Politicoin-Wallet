@@ -54,7 +54,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var initialRoute = '/';
     if (isLoggedIn) {
-        initialRoute = configurationService.didSetupWallet() ? '/main-page' : '/create';
+      initialRoute =
+          configurationService.didSetupWallet() ? '/main-page' : '/create';
     }
 
     return MultiProvider(
@@ -62,7 +63,7 @@ class MainApp extends StatelessWidget {
       child: new GetMaterialApp(
         title: 'PBLC',
         initialRoute: initialRoute,
-        routes: getRoutes(context),
+        namedRoutes: getRoutes(context),
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: analytics),
         ],

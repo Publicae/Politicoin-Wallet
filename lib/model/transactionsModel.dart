@@ -4,9 +4,7 @@
 
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:intl/intl.dart';
-import 'package:web3dart/web3dart.dart';
 
 TransactionsModel transactionsModelFromJson(String str) => TransactionsModel.fromJson(json.decode(str));
 

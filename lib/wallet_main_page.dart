@@ -1,7 +1,5 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get/get.dart';
-import 'package:package_info/package_info.dart';
-import 'package:pblcwallet/components/buttons/network_dropdown_button.dart';
 import 'package:pblcwallet/components/wallet/balance.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:flutter/material.dart';
@@ -33,35 +31,61 @@ class _WalletMainPageState extends State<WalletMainPage> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
-              // ListTile(
-              //   title: Text("Get tokens "),
-              //   subtitle: Text("Receive some test tokens"),
-              //   trailing: Icon(Icons.attach_money),
-              //   onTap: () async {
-              //     var url =
-              //         'http://ec2-54-213-50-23.us-west-2.compute.amazonaws.com/transfer?address=${widget.walletStore.address}';
-              //     if (await canLaunch(url)) {
-              //       await launch(url);
-              //     } else {
-              //       throw 'Could not launch $url';
-              //     }
-              //   },
-              // ),
               _createHeader(),
               Container(
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      height: 1,
-                      color: const Color(0xaa858585),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                height: 1,
+                                color: Color(0xaa858585),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 1, 0, 15),
+                                height: 1,
+                                color: Color(0xaa858585),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: 70,
+                          child: FlatButton(
+                            onPressed: () => Get.toNamed('\settings'),
+                            padding: EdgeInsets.all(0.0),
+                            child: Image.asset('assets/images/settings_r.png'),
+                          ),
+                        ),
+                        Container(
+                          width: 30,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                height: 1,
+                                color: Color(0xaa858585),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 1, 0, 15),
+                                height: 1,
+                                color: Color(0xaa858585),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 1, 0, 0),
-                      height: 1,
-                      color: const Color(0xaa858585),
-                    ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 10),
                     Container(
                       decoration: BoxDecoration(
                         color: Color(0x1e616161),
@@ -143,40 +167,6 @@ class _WalletMainPageState extends State<WalletMainPage> {
                             Get.toNamed("/buy-sell");
                           },
                         ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 150, 0),
-                      height: 1,
-                      color: const Color(0xaa858585),
-                    ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 1, 150, 0),
-                      height: 1,
-                      color: const Color(0xaa858585),
-                    ),
-                    ListTile(
-                      title: Center(
-                        child: Text(
-                          "Change Network",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xff515151),
-                          ),
-                        ),
-                      ),
-                      subtitle: Center(
-                        child: Text("this will restart the app!"),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Color(0x1e616161),
-                      ),
-                      child: Container(
-                        margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                        child: NetworkDropdown(widget.currentNetwork),
                       ),
                     ),
                     SizedBox(height: 20),
@@ -287,11 +277,13 @@ class _WalletMainPageState extends State<WalletMainPage> {
                       },
                     ),
                     SizedBox(height: 30),
-                    Text(
-                      widget.walletStore.version,
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Color(0xff696969),
+                    Observer(
+                      builder: (_) => Text(
+                        widget.walletStore.version,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Color(0xff696969),
+                        ),
                       ),
                     ),
                   ],
@@ -346,6 +338,12 @@ class _WalletMainPageState extends State<WalletMainPage> {
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
       decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.white,
+            width: 1.0,
+          ),
+        ),
         image: DecorationImage(
           fit: BoxFit.fill,
           image: AssetImage('assets/images/bkg1.png'),

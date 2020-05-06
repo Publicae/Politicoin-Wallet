@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pblcwallet/components/transactions/transaction_item_row.dart';
 import 'package:pblcwallet/main.dart';
 import 'package:pblcwallet/model/transactionsModel.dart';
-import 'package:pblcwallet/service/configuration_service.dart';
 import 'package:pblcwallet/stores/wallet_transactions_store.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TransactionItem extends StatelessWidget {

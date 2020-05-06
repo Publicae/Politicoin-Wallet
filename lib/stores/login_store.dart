@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
-import 'package:pblcwallet/data/fetchFacebookData.dart';
-import 'package:pblcwallet/model/facebookProfileModel.dart';
 import 'package:pblcwallet/service/configuration_service.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 

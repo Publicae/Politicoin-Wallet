@@ -64,8 +64,6 @@ abstract class WalletStoreBase with Store {
     }
 
     _initialiseFromPrivateKey(privateKey);
-
-    await getVersion();
   }
 
   Future<void> _initialiseFromMnemonic(String entropyMnemonic) async {
@@ -94,6 +92,7 @@ abstract class WalletStoreBase with Store {
 
   Future<void> _initialise() async {
     await this.fetchOwnBalance();
+    await this.getVersion();
 
     _contractService.listenTransfer((from, to, value) async {
       var fromMe = from.toString() == this.address;

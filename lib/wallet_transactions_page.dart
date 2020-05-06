@@ -1,11 +1,8 @@
 import 'package:get/get.dart';
 import 'package:pblcwallet/components/transactions/transaction_list.dart';
 import 'package:pblcwallet/main.dart';
-import 'package:pblcwallet/service/address_service.dart';
-import 'package:pblcwallet/service/configuration_service.dart';
 import 'package:pblcwallet/stores/wallet_transactions_store.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class WalletTransactionsPage extends StatefulWidget {
