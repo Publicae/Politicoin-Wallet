@@ -1,3 +1,4 @@
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -23,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     widget.loginStore.reset();
+    widget.loginStore.isAppleSignInSupported();
     _accountController.value =
         TextEditingValue(text: widget.loginStore.accountId ?? "");
   }
@@ -90,6 +92,19 @@ class _LoginPageState extends State<LoginPage> {
                             shrinkWrap: true,
                             padding: EdgeInsets.all(20),
                             children: <Widget>[
+                              if (widget.loginStore.supportsAppleSignIn)
+                                Container(
+                                  padding:
+                                      EdgeInsets.only(left: 40.0, right: 40.0),
+                                  child: SignInButton(
+                                  Buttons.AppleDark,
+                                  text: "Continue with Apple",
+                                  onPressed: () async {
+                                    await widget.loginStore
+                                        .attemptAppleSignIn(context);
+                                  },
+                                ),
+                                ),
                               Container(
                                 padding:
                                     EdgeInsets.only(left: 40.0, right: 40.0),

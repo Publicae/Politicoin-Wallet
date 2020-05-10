@@ -94,6 +94,26 @@ mixin _$LoginStore on LoginStoreBase, Store {
     }, _$loadingAtom, name: '${_$loadingAtom.name}_set');
   }
 
+  final _$supportsAppleSignInAtom =
+      Atom(name: 'LoginStoreBase.supportsAppleSignIn');
+
+  @override
+  bool get supportsAppleSignIn {
+    _$supportsAppleSignInAtom.context
+        .enforceReadPolicy(_$supportsAppleSignInAtom);
+    _$supportsAppleSignInAtom.reportObserved();
+    return super.supportsAppleSignIn;
+  }
+
+  @override
+  set supportsAppleSignIn(bool value) {
+    _$supportsAppleSignInAtom.context.conditionallyRunInAction(() {
+      super.supportsAppleSignIn = value;
+      _$supportsAppleSignInAtom.reportChanged();
+    }, _$supportsAppleSignInAtom,
+        name: '${_$supportsAppleSignInAtom.name}_set');
+  }
+
   final _$LoginStoreBaseActionController =
       ActionController(name: 'LoginStoreBase');
 
@@ -120,7 +140,7 @@ mixin _$LoginStore on LoginStoreBase, Store {
   @override
   String toString() {
     final string =
-        'name: ${name.toString()},email: ${email.toString()},imageUrl: ${imageUrl.toString()},accountId: ${accountId.toString()},loading: ${loading.toString()}';
+        'name: ${name.toString()},email: ${email.toString()},imageUrl: ${imageUrl.toString()},accountId: ${accountId.toString()},loading: ${loading.toString()},supportsAppleSignIn: ${supportsAppleSignIn.toString()}';
     return '{$string}';
   }
 }

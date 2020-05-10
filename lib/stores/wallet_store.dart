@@ -148,7 +148,11 @@ abstract class WalletStoreBase with Store {
     final loginStore = Provider.of<LoginStore>(context);
 
     final user = await loginStore.getUser();
-    username = user.displayName ?? user.email;
+    if (user.displayName == null || user.displayName == "null null") {
+      username = user.email ?? "";
+    } else {
+      username = user.displayName ?? "";
+    }
   }
 
   @action

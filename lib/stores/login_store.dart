@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:device_info/device_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,6 +34,9 @@ abstract class LoginStoreBase with Store {
 
   @observable
   bool loading;
+
+  @observable
+  bool supportsAppleSignIn = false;
 
   @action
   void setAccountId(String value) {
@@ -181,6 +187,76 @@ abstract class LoginStoreBase with Store {
     return 'error';
   }
 
+  Future<String> signInWithApple() async {
+    try {
+      final AuthorizationResult result = await AppleSignIn.performRequests([
+        AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+      ]);
+
+      switch (result.status) {
+        case AuthorizationStatus.authorized:
+          try {
+            print("successfull sign in");
+            final AppleIdCredential appleIdCredential = result.credential;
+
+            OAuthProvider oAuthProvider =
+                new OAuthProvider(providerId: "apple.com");
+            final AuthCredential credential = oAuthProvider.getCredential(
+              idToken: String.fromCharCodes(appleIdCredential.identityToken),
+              accessToken:
+                  String.fromCharCodes(appleIdCredential.authorizationCode),
+            );
+
+            final AuthResult _res =
+                await FirebaseAuth.instance.signInWithCredential(credential);
+
+            FirebaseAuth.instance.currentUser().then((val) async {
+              UserUpdateInfo updateUser = UserUpdateInfo();
+              updateUser.displayName =
+                  "${appleIdCredential.fullName.givenName} ${appleIdCredential.fullName.familyName}";
+              updateUser.photoUrl = "define an url";
+              await val.updateProfile(updateUser);
+
+              final FirebaseUser user = _res.user;
+
+              assert(!user.isAnonymous);
+              assert(await user.getIdToken() != null);
+
+              final FirebaseUser currentUser = await _auth.currentUser();
+              assert(user.uid == currentUser.uid);
+
+              name = user.displayName;
+              email = user.email;
+
+              return 'signInWithApple succeeded: $updateUser';
+            });
+          } catch (e) {
+            print("error");
+            showAlert(e.message);
+            loading = false;
+            return "error";
+          }
+          break;
+        case AuthorizationStatus.error:
+          // do something
+          loading = false;
+          return "error";
+          break;
+
+        case AuthorizationStatus.cancelled:
+          print('User cancelled');
+          loading = false;
+          return "error";
+          break;
+      }
+    } catch (error) {
+      print("error with apple sign in");
+      showAlert(error.message);
+      loading = false;
+      return "error";
+    }
+  }
+
   Future<String> signInWithEmail(String email, String password) async {
     AuthResult authResult;
     try {
@@ -221,6 +297,11 @@ abstract class LoginStoreBase with Store {
     print("User Facebook Sign Out");
   }
 
+  Future signOutApple(BuildContext context) async {
+    _configurationService.setLoggedIn(false);
+    print("User Apple Sign Out");
+  }
+
   Future attemptGoogleSignIn(BuildContext context) async {
     loading = true;
     signInWithGoogle().then((res) {
@@ -234,8 +315,22 @@ abstract class LoginStoreBase with Store {
   }
 
   Future attemptFacebookSignIn(BuildContext context) async {
+    loading = true;
     signInWithFacebook().then((res) {
       if (res != 'error') {
+        loading = false;
+        final route =
+            _configurationService.didSetupWallet() ? '/main-page' : '/create';
+        Navigator.pushReplacementNamed(context, route);
+      }
+    });
+  }
+
+  Future attemptAppleSignIn(BuildContext context) async {
+    loading = true;
+    signInWithApple().then((res) {
+      if (res != 'error') {
+        loading = false;
         final route =
             _configurationService.didSetupWallet() ? '/main-page' : '/create';
         Navigator.pushReplacementNamed(context, route);
@@ -260,6 +355,8 @@ abstract class LoginStoreBase with Store {
       await signOutGoogle(context);
     } else if (facebookSignIn != null) {
       await signOutFacebook(context);
+    } else {
+      await signOutApple(context);
     }
 
     _configurationService.setLoggedIn(false);
@@ -298,5 +395,17 @@ abstract class LoginStoreBase with Store {
         onPressed: () => Get.back(),
       ),
     );
+  }
+
+  isAppleSignInSupported() async {
+    supportsAppleSignIn = await AppleSignIn.isAvailable();
+    // if (Platform.isIOS) {
+    //   var iosInfo = await DeviceInfoPlugin().iosInfo;
+    //   var version = iosInfo.systemVersion;
+
+    //   if (version.contains('13') == true) {
+    //     supportsAppleSignIn = true;
+    //   }
+    // }
   }
 }

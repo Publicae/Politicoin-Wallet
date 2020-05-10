@@ -190,11 +190,13 @@ class _WalletCreatePage extends State<WalletCreatePage> {
                                         color: Colors.white,
                                       ),
                                     ),
-                                    onPressed: () async {
-                                      if (await widget.store
-                                          .confirmMnemonic()) {
-                                        Get.offNamed("/main-page");
-                                      }
+                                    onPressed: () {
+                                      showAlert("Save your seed phrase", "Make sure you write down your 12-word mnemonic, or take a screenshot!", () async {
+                                        if (await widget.store
+                                            .confirmMnemonic()) {
+                                          Get.offNamed("/main-page");
+                                        }
+                                      });
                                     }),
                               ),
                             ],
@@ -270,6 +272,21 @@ class _WalletCreatePage extends State<WalletCreatePage> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  showAlert(String title, String message, Function onPressed) {
+    Get.defaultDialog(
+      title: title,
+      content: Text(message),
+      confirm: FlatButton(
+        child: Text("Yes, proceed"),
+        onPressed: onPressed,
+      ),
+      cancel: FlatButton(
+        child: Text("Cancel"),
+        onPressed: () => Get.back(),
       ),
     );
   }
