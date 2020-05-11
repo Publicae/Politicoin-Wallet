@@ -23,312 +23,318 @@ class _WalletMainPageState extends State<WalletMainPage> {
     refreshBalance();
     getUserInfo();
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      drawer: Drawer(
-        child: Container(
-          color: Colors.white,
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              _createHeader(),
-              Container(
-                color: Colors.white,
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                height: 1,
-                                color: Color(0xaa858585),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 1, 0, 15),
-                                height: 1,
-                                color: Color(0xaa858585),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: 70,
-                          child: FlatButton(
-                            onPressed: () => Get.toNamed('\settings'),
-                            padding: EdgeInsets.all(0.0),
-                            child: Image.asset('assets/images/settings_r.png'),
-                          ),
-                        ),
-                        Container(
-                          width: 30,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                height: 1,
-                                color: Color(0xaa858585),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 1, 0, 15),
-                                height: 1,
-                                color: Color(0xaa858585),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Color(0x1e616161),
-                      ),
-                      child: Container(
-                        margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                        child: ListTile(
-                          title: Text(
-                            "Transactions",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xff696969),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        drawer: Drawer(
+          child: Container(
+            color: Colors.white,
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                _createHeader(),
+                Container(
+                  color: Colors.white,
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                  height: 1,
+                                  color: Color(0xaa858585),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(0, 1, 0, 15),
+                                  height: 1,
+                                  color: Color(0xaa858585),
+                                ),
+                              ],
                             ),
                           ),
-                          //subtitle: Text("see sent and received transactions"),
-                          leading: ImageIcon(
-                              AssetImage("assets/images/transactions.png")),
-                          trailing: Icon(
-                            Icons.arrow_right,
-                            color: Color(0xff696969),
-                          ),
-                          onTap: () async {
-                            Get.toNamed("/transactions");
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Color(0x1e616161),
-                      ),
-                      child: Container(
-                        margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                        child: ListTile(
-                          title: Text(
-                            "Send",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xff696969),
+                          Container(
+                            width: 70,
+                            child: FlatButton(
+                              onPressed: () => Get.toNamed('\settings'),
+                              padding: EdgeInsets.all(0.0),
+                              child:
+                                  Image.asset('assets/images/settings_r.png'),
                             ),
                           ),
-                          //subtitle: Text("PBLC or ETH"),
-                          leading:
-                              ImageIcon(AssetImage("assets/images/send.png")),
-                          trailing: Icon(
-                            Icons.arrow_right,
-                            color: Color(0xff696969),
-                          ),
-                          onTap: () async {
-                            Get.toNamed("/transfer");
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Color(0x1e616161),
-                      ),
-                      child: Container(
-                        margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                        child: ListTile(
-                          title: Text(
-                            "Buy / Sell PBLC",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xff696969),
+                          Container(
+                            width: 30,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                  height: 1,
+                                  color: Color(0xaa858585),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(0, 1, 0, 15),
+                                  height: 1,
+                                  color: Color(0xaa858585),
+                                ),
+                              ],
                             ),
                           ),
-                          //subtitle: Text("Buy or Sell PBLC tokens"),
-                          leading: ImageIcon(
-                              AssetImage("assets/images/receive.png")),
-                          trailing: Icon(
-                            Icons.arrow_right,
-                            color: Color(0xff696969),
-                          ),
-                          onTap: () async {
-                            Get.toNamed("/buy-sell");
-                          },
-                        ),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 150, 0),
-                      height: 1,
-                      color: const Color(0xaa858585),
-                    ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 1, 150, 0),
-                      height: 1,
-                      color: const Color(0xaa858585),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Color(0x1e616161),
-                      ),
-                      child: Container(
-                        margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                        child: ListTile(
-                          title: Text(
-                            "Reset Wallet",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xff696969),
-                            ),
-                          ),
-                          leading:
-                              ImageIcon(AssetImage("assets/images/wallet.png")),
-                          trailing: Icon(
-                            Icons.warning,
-                            color: Color(0xff696969),
-                          ),
-                          onTap: () {
-                            showAlert(
-                              "Reset wallet?",
-                              "Without your seed phrase or private key, you cannot restore your wallet!",
-                              () async {
-                                await widget.walletStore.resetWallet();
-                                Get.toNamed("/create");
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Color(0x1e616161),
-                      ),
-                      child: Container(
-                        margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                        child: ListTile(
-                          title: Text(
-                            "Delete Account",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xff696969),
-                            ),
-                          ),
-                          leading: ImageIcon(
-                              AssetImage("assets/images/profile.png")),
-                          trailing: Icon(
-                            Icons.warning,
-                            color: Color(0xff696969),
-                          ),
-                          onTap: () {
-                            showAlert(
-                              "Delete Account?",
-                              "This cannot be reversed! You will lose all your PBLC tokens!",
-                              () async {
-                                await widget.walletStore.deleteUser(context);
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 30),
-                    GestureDetector(
-                      child: Container(
-                        width: 150,
-                        height: 40,
+                      SizedBox(height: 10),
+                      Container(
                         decoration: BoxDecoration(
-                          color: Colors.black,
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/bkg5.png"),
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(5.0),
+                          color: Color(0x1e616161),
                         ),
-                        child: Center(
-                          child: Text(
-                            "Sign Out",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: ListTile(
+                            title: Text(
+                              "Transactions",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xff696969),
+                              ),
                             ),
+                            //subtitle: Text("see sent and received transactions"),
+                            leading: ImageIcon(
+                                AssetImage("assets/images/transactions.png")),
+                            trailing: Icon(
+                              Icons.arrow_right,
+                              color: Color(0xff696969),
+                            ),
+                            onTap: () async {
+                              Get.toNamed("/transactions");
+                            },
                           ),
-                        ), // button text
-                      ),
-                      onTap: () {
-                        showAlert("Sign Out?", "", () async {
-                          await widget.walletStore.signOut(context);
-                        });
-                      },
-                    ),
-                    SizedBox(height: 30),
-                    Observer(
-                      builder: (_) => Text(
-                        widget.walletStore.version,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Color(0xff696969),
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0x1e616161),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: ListTile(
+                            title: Text(
+                              "Send",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xff696969),
+                              ),
+                            ),
+                            //subtitle: Text("PBLC or ETH"),
+                            leading:
+                                ImageIcon(AssetImage("assets/images/send.png")),
+                            trailing: Icon(
+                              Icons.arrow_right,
+                              color: Color(0xff696969),
+                            ),
+                            onTap: () async {
+                              Get.toNamed("/transfer");
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0x1e616161),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: ListTile(
+                            title: Text(
+                              "Buy / Sell PBLC",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xff696969),
+                              ),
+                            ),
+                            //subtitle: Text("Buy or Sell PBLC tokens"),
+                            leading: ImageIcon(
+                                AssetImage("assets/images/receive.png")),
+                            trailing: Icon(
+                              Icons.arrow_right,
+                              color: Color(0xff696969),
+                            ),
+                            onTap: () async {
+                              Get.toNamed("/buy-sell");
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 150, 0),
+                        height: 1,
+                        color: const Color(0xaa858585),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 1, 150, 0),
+                        height: 1,
+                        color: const Color(0xaa858585),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0x1e616161),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: ListTile(
+                            title: Text(
+                              "Reset Wallet",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xff696969),
+                              ),
+                            ),
+                            leading: ImageIcon(
+                                AssetImage("assets/images/wallet.png")),
+                            trailing: Icon(
+                              Icons.warning,
+                              color: Color(0xff696969),
+                            ),
+                            onTap: () {
+                              showAlert(
+                                "Reset wallet?",
+                                "Without your seed phrase or private key, you cannot restore your wallet!",
+                                () async {
+                                  await widget.walletStore.resetWallet();
+                                  Get.offAllNamed("/create");
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0x1e616161),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: ListTile(
+                            title: Text(
+                              "Delete Account",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xff696969),
+                              ),
+                            ),
+                            leading: ImageIcon(
+                                AssetImage("assets/images/profile.png")),
+                            trailing: Icon(
+                              Icons.warning,
+                              color: Color(0xff696969),
+                            ),
+                            onTap: () {
+                              showAlert(
+                                "Delete Account?",
+                                "This cannot be reversed! You will lose all your PBLC tokens!",
+                                () async {
+                                  await widget.walletStore.deleteUser(context);
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      GestureDetector(
+                        child: Container(
+                          width: 150,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/bkg5.png"),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Sign Out",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ), // button text
+                        ),
+                        onTap: () {
+                          showAlert("Sign Out?", "", () async {
+                            await widget.walletStore.signOut(context);
+                          });
+                        },
+                      ),
+                      SizedBox(height: 30),
+                      Observer(
+                        builder: (_) => Text(
+                          widget.walletStore.version,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Color(0xff696969),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      appBar: AppBar(
-        title: Text(widget.title),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: ImageIcon(AssetImage("assets/images/menu.png")),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-          ),
-        ),
-
-        // flexibleSpace: Image(
-        //   image: AssetImage('assets/images/bkg1.png'),
-        //   fit: BoxFit.cover,
-        // ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () async {
-              await widget.walletStore.fetchOwnBalance();
-            },
-          ),
-          IconButton(
-            icon: ImageIcon(
-              AssetImage("assets/images/paper-plane.png"),
+              ],
             ),
-            onPressed: () {
-              Get.toNamed("/transfer", arguments: "");
-            },
           ),
-        ],
-      ),
-      body: Consumer<WalletStore>(
-        builder: (context, walletStore, _) => Balance(walletStore),
+        ),
+        appBar: AppBar(
+          title: Text(widget.title),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: ImageIcon(AssetImage("assets/images/menu.png")),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            ),
+          ),
+
+          // flexibleSpace: Image(
+          //   image: AssetImage('assets/images/bkg1.png'),
+          //   fit: BoxFit.cover,
+          // ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () async {
+                await widget.walletStore.fetchOwnBalance();
+              },
+            ),
+            IconButton(
+              icon: ImageIcon(
+                AssetImage("assets/images/paper-plane.png"),
+              ),
+              onPressed: () {
+                Get.toNamed("/transfer", arguments: "");
+              },
+            ),
+          ],
+        ),
+        body: Consumer<WalletStore>(
+          builder: (context, walletStore, _) => Balance(walletStore),
+        ),
       ),
     );
   }
