@@ -24,7 +24,7 @@ class TransactionItem extends StatelessWidget {
             ? Color(0xaaff0000)
             : Color(0xfff6f6f6),
       ),
-      height: 360,
+      height: 370,
       width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
