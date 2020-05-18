@@ -99,7 +99,7 @@ class _WalletCreatePage extends State<WalletCreatePage> {
                       borderRadius: new BorderRadius.circular(5.0),
                       color: Color(0xfff6f6f6),
                     ),
-                    height: 230,
+                    height: 235,
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,

@@ -113,34 +113,34 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20.0),
-                      topLeft: Radius.circular(20.0),
-                    ),
-                    color: Color(0xfff3f3f3),
-                  ),
-                  height: 70,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListTile(
-                    title: Text(
-                      'Gas Price Setting',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Color(0xff3f3f3f),
-                      ),
-                    ),
-                    subtitle: Text(
-                      "${AppConfig.gasPrice.toString()} (5gwei)",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
+                // Container(
+                //   margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.only(
+                //       topRight: Radius.circular(20.0),
+                //       topLeft: Radius.circular(20.0),
+                //     ),
+                //     color: Color(0xfff3f3f3),
+                //   ),
+                //   height: 70,
+                //   width: MediaQuery.of(context).size.width,
+                //   child: ListTile(
+                //     title: Text(
+                //       'Gas Price Setting',
+                //       style: TextStyle(
+                //         fontSize: 18,
+                //         color: Color(0xff3f3f3f),
+                //       ),
+                //     ),
+                //     subtitle: Text(
+                //       "${AppConfig.gasPrice.toString()} (5gwei)",
+                //       style: TextStyle(
+                //         fontSize: 14,
+                //         color: Colors.grey,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Container(
                   margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
                   decoration: BoxDecoration(

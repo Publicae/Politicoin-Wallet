@@ -84,8 +84,8 @@ class ContractService implements IContractService {
         Transaction.callContract(
           contract: contract,
           function: _sendFunction(),
-          gasPrice: EtherAmount.inWei(BigInt.from(AppConfig.gasPrice)),
-          maxGas: AppConfig.maxGas,
+          //gasPrice: EtherAmount.inWei(BigInt.from(AppConfig.gasPrice)),
+          //maxGas: AppConfig.maxGas,
           parameters: [receiver, amount],
           from: from,
         ),
@@ -132,8 +132,8 @@ class ContractService implements IContractService {
         Transaction.callContract(
           contract: contract,
           function: _buyFunction(),
-          gasPrice: EtherAmount.inWei(BigInt.from(AppConfig.gasPrice)),
-          maxGas: AppConfig.maxGas,
+          //gasPrice: gasPrice,
+          //maxGas: AppConfig.maxGas,
           parameters: [],
           from: from,
           value: EtherAmount.inWei(amountForPBLC)
@@ -178,8 +178,8 @@ class ContractService implements IContractService {
         Transaction.callContract(
           contract: contract,
           function: _sellFunction(),
-          gasPrice: EtherAmount.inWei(BigInt.from(AppConfig.gasPrice)),
-          maxGas: AppConfig.maxGas,
+          //gasPrice: EtherAmount.inWei(BigInt.from(AppConfig.gasPrice)),
+          //maxGas: AppConfig.maxGas,
           parameters: [amount],
           from: from
         ),
@@ -206,8 +206,8 @@ class ContractService implements IContractService {
         credentials,
         Transaction(
           to: receiver,
-          gasPrice: EtherAmount.inWei(BigInt.from(AppConfig.gasPrice)),
-          maxGas: AppConfig.maxGas,
+          //gasPrice: EtherAmount.inWei(BigInt.from(AppConfig.gasPrice)),
+          //maxGas: AppConfig.maxGas,
           value: EtherAmount.fromUnitAndValue(EtherUnit.wei, amount),
         ),
         chainId: networkId,

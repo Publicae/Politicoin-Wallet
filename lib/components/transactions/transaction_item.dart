@@ -67,6 +67,9 @@ class TransactionItem extends StatelessWidget {
             onTap: () async {
               var network = configurationService.getNetwork();
               var url = 'https://$network.etherscan.io/tx/${transaction.hash}';
+              if (network == "mainnet")
+                url = 'https://etherscan.io/tx/${transaction.hash}';
+
               if (await canLaunch(url)) {
                 await launch(url);
               } else {
