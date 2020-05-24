@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get/get.dart';
 import 'package:pblcwallet/app_config.dart';
 import 'package:pblcwallet/components/buttons/network_dropdown_button.dart';
+import 'package:pblcwallet/main.dart';
 import 'package:pblcwallet/stores/settings_store.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -64,7 +65,23 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             height: MediaQuery.of(context).size.height / 6,
             width: MediaQuery.of(context).size.width,
-            child: null,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Text(
+                    configurationService.getNetwork(),
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                      fontFamily: 'Courier New',
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: ListView(

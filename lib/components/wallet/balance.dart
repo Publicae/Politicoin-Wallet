@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:pblcwallet/main.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:pblcwallet/utils/eth_amount_formatter.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,23 @@ class Balance extends StatelessWidget {
             ),
             height: MediaQuery.of(context).size.height / 6,
             width: MediaQuery.of(context).size.width,
-            child: null,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Text(
+                    configurationService.getNetwork(),
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                      fontFamily: 'Courier New',
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: ListView(
@@ -96,7 +113,7 @@ class Balance extends StatelessWidget {
                     ),
                     QrImage(
                       data: store.address,
-                      size: MediaQuery.of(context).size.width * 0.4,
+                      size: MediaQuery.of(context).size.width * 0.5,
                     ),
                     SizedBox(height: 50),
                     Container(

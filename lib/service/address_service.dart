@@ -29,9 +29,23 @@ class AddressService implements IAddressService {
 
   @override
   String getPrivateKey(String mnemonic) {
+    //return getPrivateKeyFromDerivedAddress(mnemonic);
+    return getMasterPrivateKey(mnemonic);
+  }
+
+  String getMasterPrivateKey(String mnemonic) {
     String seed = bip39.mnemonicToSeedHex(mnemonic);
     // KeyData master = ED25519_HD_KEY.getMasterKeyFromSeed(seed);
     KeyData master = HDKey.getMasterKeyFromSeed(seed);
+    final privateKey = HEX.encode(master.key);
+    print("private: $privateKey");
+    return privateKey;
+  }
+
+  String getPrivateKeyFromDerivedAddress(String mnemonic) {
+    String seed = bip39.mnemonicToSeedHex(mnemonic);
+    String path = "m/44'/60'/0'/0/0"; // use the first address
+    KeyData master = HDKey.derivePath(path, seed);
     final privateKey = HEX.encode(master.key);
     print("private: $privateKey");
     return privateKey;

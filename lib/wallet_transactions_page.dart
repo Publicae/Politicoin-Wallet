@@ -47,6 +47,8 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
               final pk = configurationService.getPrivateKey();
               final address = await addressService.getPublicAddress(pk);
               var url = 'https://$network.etherscan.io/address/$address';
+              if (network == "mainnet")
+                url = 'https://etherscan.io/address/$address';
               if (await canLaunch(url)) {
                 await launch(url);
               } else {
@@ -79,12 +81,22 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 50),
+                  padding: EdgeInsets.only(top: 60),
                   child: Text(
                     "Powered by Etherscan.io APIs",
                     style: TextStyle(fontSize: 15.0, color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
+                ),
+                SizedBox(height:5),
+                Text(
+                  configurationService.getNetwork(),
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                    fontFamily: 'Courier New',
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),

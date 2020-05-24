@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:pblcwallet/components/form/paper_form.dart';
 import 'package:pblcwallet/components/form/paper_input.dart';
 import 'package:pblcwallet/components/form/paper_validation_summary.dart';
+import 'package:pblcwallet/main.dart';
 import 'package:pblcwallet/model/transaction.dart';
 import 'package:pblcwallet/stores/wallet_transfer_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -83,7 +84,23 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
             ),
             height: MediaQuery.of(context).size.height / 6,
             width: MediaQuery.of(context).size.width,
-            child: null,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Text(
+                    configurationService.getNetwork(),
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                      fontFamily: 'Courier New',
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
           ),
           Container(
             margin: EdgeInsets.fromLTRB(0, 10, 0, 0),

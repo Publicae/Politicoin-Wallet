@@ -74,6 +74,7 @@ class MainApp extends StatelessWidget {
             textTheme: ButtonTextTheme.primary,
           ),
         ),
+        //debugShowCheckedModeBanner: false,
       ),
     );
   }

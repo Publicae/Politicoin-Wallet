@@ -114,7 +114,7 @@ abstract class WalletStoreBase with Store {
     String version = packageInfo.version;
     String buildNumber = packageInfo.buildNumber;
 
-    this.version = "v$version($buildNumber)";
+    this.version = "v$version ($buildNumber)";
   }
 
   @action

@@ -1,6 +1,7 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get/get.dart';
 import 'package:pblcwallet/components/wallet/balance.dart';
+import 'package:pblcwallet/main.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -44,6 +45,33 @@ class _WalletMainPageState extends State<WalletMainPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                  height: 1,
+                                  color: Color(0xaa858585),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(0, 1, 0, 15),
+                                  height: 1,
+                                  color: Color(0xaa858585),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                              margin: EdgeInsets.fromLTRB(5, 0, 5, 20),
+                              child: Text(
+                                configurationService.getNetwork(),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color(0xff696969),
+                                  fontFamily: 'Courier New',
+                                ),
+                              )),
                           Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
