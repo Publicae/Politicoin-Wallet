@@ -30,3 +30,25 @@ abstract class FetchEtherscanData extends ChopperService {
     return _$FetchEtherscanData(client);
   }
 }
+
+@ChopperApi(baseUrl: '?module=stats&action=ethprice&apikey=8VAG1Q1FGH2EBP8RI7NF7IQR111ZI58TJX')
+abstract class FetchEthereumPrice extends ChopperService {
+  @Get()
+  Future<Response> fetchEthereumPrice();
+  
+  static FetchEthereumPrice create(ConfigurationService configurationService) {
+  
+    //etherscan API
+    var etherscanNetwork = "api";
+    if (configurationService.getNetwork() != "mainnet") {
+      etherscanNetwork = "api-${configurationService.getNetwork()}";
+    }
+
+    final client = ChopperClient(
+      baseUrl: 'https://$etherscanNetwork.etherscan.io/api',
+      services: [_$FetchEthereumPrice()],
+      converter: JsonConverter(),
+    );
+    return _$FetchEthereumPrice(client);
+  }
+}

@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:package_info/package_info.dart';
 import 'package:pblcwallet/app_config.dart';
+import 'package:pblcwallet/data/fetchEtherscanData.dart';
 import 'package:pblcwallet/main.dart';
-import 'package:pblcwallet/model/transaction.dart';
+import 'package:pblcwallet/model/ethPriceModel.dart';
+import 'package:pblcwallet/model/transaction.dart' as transaction;
 import 'package:pblcwallet/service/address_service.dart';
 import 'package:pblcwallet/service/configuration_service.dart';
 import 'package:pblcwallet/service/contract_service.dart';
@@ -13,6 +15,7 @@ import 'package:mobx/mobx.dart';
 import 'package:pblcwallet/stores/login_store.dart';
 import 'package:provider/provider.dart';
 import 'package:web3dart/credentials.dart';
+import 'package:web3dart/web3dart.dart';
 
 part 'wallet_store.g.dart';
 
@@ -37,6 +40,9 @@ abstract class WalletStoreBase with Store {
 
   @observable
   BigInt ethGasPrice;
+
+  @observable
+  String ethPrice = "";
 
   @observable
   String address;
@@ -126,6 +132,18 @@ abstract class WalletStoreBase with Store {
 
     this.tokenBalance = tokenBalance * BigInt.from(pow(10, 9));
     this.ethBalance = ethBalance.getInWei;
+
+    final ethPrice = await fetchEthereumPrice();
+    final balanceToUsd = ethPrice * EtherAmount.fromUnitAndValue(EtherUnit.wei, this.ethBalance).getValueInUnit(EtherUnit.ether);
+    this.ethPrice = balanceToUsd.toStringAsFixed(2);
+  }
+
+  @action
+  Future<double> fetchEthereumPrice() async {
+    final ethPriceService = FetchEthereumPrice.create(configurationService);
+    final response = await ethPriceService.fetchEthereumPrice();
+    final ethPriceModel = ethPriceModelFromJson(response.bodyString);
+    return double.parse(ethPriceModel.result.ethusd);
   }
 
   @action
@@ -170,10 +188,10 @@ abstract class WalletStoreBase with Store {
 
       transfer().listen((tx) {
         switch (tx.status) {
-          case TransactionStatus.started:
+          case transaction.TransactionStatus.started:
             print('transact pending ${tx.key}');
             break;
-          case TransactionStatus.confirmed:
+          case transaction.TransactionStatus.confirmed:
             print('transact confirmed ${tx.key}');
             break;
           default:
@@ -188,9 +206,9 @@ abstract class WalletStoreBase with Store {
   }
 
   @action
-  Stream<Transaction> transfer() {
-    var controller = StreamController<Transaction>();
-    var transactionEvent = Transaction();
+  Stream<transaction.Transaction> transfer() {
+    var controller = StreamController<transaction.Transaction>();
+    var transactionEvent = transaction.Transaction();
 
     var amount = BigInt.from(this.tokenBalance / BigInt.from(pow(10, 9)));
     var network = configurationService.getNetwork();

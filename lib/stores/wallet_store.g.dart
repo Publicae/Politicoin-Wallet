@@ -60,6 +60,23 @@ mixin _$WalletStore on WalletStoreBase, Store {
     }, _$ethGasPriceAtom, name: '${_$ethGasPriceAtom.name}_set');
   }
 
+  final _$ethPriceAtom = Atom(name: 'WalletStoreBase.ethPrice');
+
+  @override
+  String get ethPrice {
+    _$ethPriceAtom.context.enforceReadPolicy(_$ethPriceAtom);
+    _$ethPriceAtom.reportObserved();
+    return super.ethPrice;
+  }
+
+  @override
+  set ethPrice(String value) {
+    _$ethPriceAtom.context.conditionallyRunInAction(() {
+      super.ethPrice = value;
+      _$ethPriceAtom.reportChanged();
+    }, _$ethPriceAtom, name: '${_$ethPriceAtom.name}_set');
+  }
+
   final _$addressAtom = Atom(name: 'WalletStoreBase.address');
 
   @override
@@ -159,6 +176,14 @@ mixin _$WalletStore on WalletStoreBase, Store {
     return _$fetchOwnBalanceAsyncAction.run(() => super.fetchOwnBalance());
   }
 
+  final _$fetchEthereumPriceAsyncAction = AsyncAction('fetchEthereumPrice');
+
+  @override
+  Future<double> fetchEthereumPrice() {
+    return _$fetchEthereumPriceAsyncAction
+        .run(() => super.fetchEthereumPrice());
+  }
+
   final _$resetWalletAsyncAction = AsyncAction('resetWallet');
 
   @override
@@ -198,7 +223,7 @@ mixin _$WalletStore on WalletStoreBase, Store {
       ActionController(name: 'WalletStoreBase');
 
   @override
-  Stream<Transaction> transfer() {
+  Stream<transaction.Transaction> transfer() {
     final _$actionInfo = _$WalletStoreBaseActionController.startAction();
     try {
       return super.transfer();
@@ -210,7 +235,7 @@ mixin _$WalletStore on WalletStoreBase, Store {
   @override
   String toString() {
     final string =
-        'tokenBalance: ${tokenBalance.toString()},ethBalance: ${ethBalance.toString()},ethGasPrice: ${ethGasPrice.toString()},address: ${address.toString()},privateKey: ${privateKey.toString()},transactions: ${transactions.toString()},username: ${username.toString()},version: ${version.toString()}';
+        'tokenBalance: ${tokenBalance.toString()},ethBalance: ${ethBalance.toString()},ethGasPrice: ${ethGasPrice.toString()},ethPrice: ${ethPrice.toString()},address: ${address.toString()},privateKey: ${privateKey.toString()},transactions: ${transactions.toString()},username: ${username.toString()},version: ${version.toString()}';
     return '{$string}';
   }
 }

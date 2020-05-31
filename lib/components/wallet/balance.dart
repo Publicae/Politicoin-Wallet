@@ -230,6 +230,21 @@ class Balance extends StatelessWidget {
                               ),
                             ),
                           ),
+                          Center(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Observer(
+                                builder: (_) => Text(
+                                  "\$${store.ethPrice}",
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.white,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

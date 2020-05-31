@@ -120,7 +120,7 @@ class _WalletTransferPageState extends State<WalletTransferPage> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                   child: Text(
-                    "Available Balance",
+                    "Available Balance" + "   \$${widget.store.walletStore.ethPrice}",
                     style: TextStyle(fontSize: 10.0, color: Colors.white),
                   ),
                 ),

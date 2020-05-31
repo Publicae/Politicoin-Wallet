@@ -235,7 +235,7 @@ class ContractService implements IContractService {
         params: [from],
       );
 
-      return response.first as BigInt;
+      return response.first as BigInt; // e.g 16.000.000.000.000.000.000
     }
     catch (e) {
       print("${e.toString()} \n Couldn't get PBLC balance for address: $from");
