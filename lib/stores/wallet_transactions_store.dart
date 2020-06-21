@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:pblcwallet/api_keys.dart';
 import 'package:pblcwallet/data/fetchEtherscanData.dart';
 import 'package:pblcwallet/model/transactionsModel.dart';
 import 'package:pblcwallet/stores/wallet_store.dart';
@@ -27,7 +28,7 @@ abstract class WalletTransactionsStoreBase with Store {
   @action
   Future fetchTransactions(BuildContext context) async {
     final etherscanData = Provider.of<FetchEtherscanData>(context);
-    final response = await etherscanData.fetchData(walletStore.address);
+    final response = await etherscanData.fetchData(walletStore.address, ApiKeys.etherscanApiKey);
     transactionsModel = transactionsModelFromJson(response.bodyString);
   }
 }

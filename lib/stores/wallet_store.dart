@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:package_info/package_info.dart';
+import 'package:pblcwallet/api_keys.dart';
 import 'package:pblcwallet/app_config.dart';
 import 'package:pblcwallet/data/fetchEtherscanData.dart';
 import 'package:pblcwallet/main.dart';
@@ -141,7 +142,7 @@ abstract class WalletStoreBase with Store {
   @action
   Future<double> fetchEthereumPrice() async {
     final ethPriceService = FetchEthereumPrice.create(configurationService);
-    final response = await ethPriceService.fetchEthereumPrice();
+    final response = await ethPriceService.fetchEthereumPrice(ApiKeys.etherscanApiKey);
     final ethPriceModel = ethPriceModelFromJson(response.bodyString);
     return double.parse(ethPriceModel.result.ethusd);
   }

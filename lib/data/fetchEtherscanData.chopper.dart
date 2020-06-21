@@ -17,9 +17,9 @@ class _$FetchEtherscanData extends FetchEtherscanData {
   final definitionType = FetchEtherscanData;
 
   @override
-  Future<Response<dynamic>> fetchData(String address) {
+  Future<Response<dynamic>> fetchData(String address, String apiKey) {
     final $url =
-        '?module=account&action=txlist&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=API_KEY&address=$address';
+        '?module=account&action=txlist&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=$apiKey&address=$address';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
@@ -27,7 +27,7 @@ class _$FetchEtherscanData extends FetchEtherscanData {
   @override
   Future<Response<dynamic>> postData(Map<String, dynamic> body) {
     final $url =
-        '?module=account&action=txlist&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=API_KEY&address=';
+        '?module=account&action=txlist&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=';
     final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
@@ -45,9 +45,8 @@ class _$FetchEthereumPrice extends FetchEthereumPrice {
   final definitionType = FetchEthereumPrice;
 
   @override
-  Future<Response<dynamic>> fetchEthereumPrice() {
-    final $url =
-        '?module=stats&action=ethprice&apikey=API_KEY';
+  Future<Response<dynamic>> fetchEthereumPrice(String apiKey) {
+    final $url = '?module=stats&action=ethprice&apikey=$apiKey';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }

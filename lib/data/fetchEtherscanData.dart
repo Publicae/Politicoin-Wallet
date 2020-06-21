@@ -4,13 +4,13 @@ import 'package:pblcwallet/service/configuration_service.dart';
 part 'fetchEtherscanData.chopper.dart';
 
 // IMPORTANT!!!!
-// after buildingchange in fetchEtherscanData.chopper.dart
-// final $url = '?module=account&action=txlist&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=API_KEY&address=$address';
+// after buildingchange in fetchEtherscanData.chopper.dart make sure it is like below 
+// final $url = '?module=account&action=txlist&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=$apiKey&address=$address';
 
-@ChopperApi(baseUrl: '?module=account&action=txlist&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=API_KEY&address=')
+@ChopperApi(baseUrl: '?module=account&action=txlist&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=')
 abstract class FetchEtherscanData extends ChopperService {
-  @Get(path: '{address}')
-  Future<Response> fetchData(@Path('address') String address);
+  @Get(path: '{apiKey}&address={address}')
+  Future<Response> fetchData(@Path('address') String address, @Path('apiKey') String apiKey);
   @Post()
   Future<Response> postData(@Body() Map<String, dynamic> body);
 
@@ -31,10 +31,10 @@ abstract class FetchEtherscanData extends ChopperService {
   }
 }
 
-@ChopperApi(baseUrl: '?module=stats&action=ethprice&apikey=API_KEY')
+@ChopperApi(baseUrl: '?module=stats&action=ethprice&apikey=')
 abstract class FetchEthereumPrice extends ChopperService {
-  @Get()
-  Future<Response> fetchEthereumPrice();
+  @Get(path: '{apiKey}')
+  Future<Response> fetchEthereumPrice(@Path('apiKey') String apiKey);
   
   static FetchEthereumPrice create(ConfigurationService configurationService) {
   

@@ -1,3 +1,5 @@
+import 'package:pblcwallet/api_keys.dart';
+
 class AppConfig {
   AppConfig() {
     params['dev'] = AppConfigParams(
@@ -7,32 +9,32 @@ class AppConfig {
         "development");
 
     params['ropsten'] = AppConfigParams(
-        "https://ropsten.infura.io/v3/54db77af32da4dfbba6451be28f42c04",
-        "wss://ropsten.infura.io/ws/v3/54db77af32da4dfbba6451be28f42c04",
+        "https://ropsten.infura.io/v3/${ApiKeys.infuraApiKey}",
+        "wss://ropsten.infura.io/ws/v3/${ApiKeys.infuraApiKey}",
         "0x7cbec5bcb81fd24db92f401f97c1dd48338f8df8",
         "ropsten");
 
     params['kovan'] = AppConfigParams(
-        "https://kovan.infura.io/v3/54db77af32da4dfbba6451be28f42c04",
-        "wss://kovan.infura.io/ws/v3/54db77af32da4dfbba6451be28f42c04",
+        "https://kovan.infura.io/v3/${ApiKeys.infuraApiKey}",
+        "wss://kovan.infura.io/ws/v3/${ApiKeys.infuraApiKey}",
         "not_yet_deployed",
         "kovan");
 
     params['rinkeby'] = AppConfigParams(
-        "https://rinkeby.infura.io/v3/54db77af32da4dfbba6451be28f42c04",
-        "wss://kovan.infura.io/ws/v3/54db77af32da4dfbba6451be28f42c04",
+        "https://rinkeby.infura.io/v3/${ApiKeys.infuraApiKey}",
+        "wss://kovan.infura.io/ws/v3/${ApiKeys.infuraApiKey}",
         "0x7d9abcb2633e17debbafd400ce15003057219cd2",
         "rinkeby");
 
     params['goerli'] = AppConfigParams(
-        "https://goerli.infura.io/v3/54db77af32da4dfbba6451be28f42c04",
-        "wss://goerli.infura.io/ws/v3/54db77af32da4dfbba6451be28f42c04",
+        "https://goerli.infura.io/v3/${ApiKeys.infuraApiKey}",
+        "wss://goerli.infura.io/ws/v3/${ApiKeys.infuraApiKey}",
         "not_yet_deployed",
         "goerli");
 
     params['mainnet'] = AppConfigParams(
-        "https://mainnet.infura.io/v3/54db77af32da4dfbba6451be28f42c04",
-        "wss://mainnet.infura.io/ws/v3/54db77af32da4dfbba6451be28f42c04",
+        "https://mainnet.infura.io/v3/${ApiKeys.infuraApiKey}",
+        "wss://mainnet.infura.io/ws/v3/${ApiKeys.infuraApiKey}",
         "0x6ffbd6b41b802550c57d4661d81a1700a502f2ab",
         "mainnet");
   }
