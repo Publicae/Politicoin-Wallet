@@ -5,9 +5,9 @@ part 'fetchEtherscanData.chopper.dart';
 
 // IMPORTANT!!!!
 // after buildingchange in fetchEtherscanData.chopper.dart
-// final $url = '?module=account&action=txlist&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=8VAG1Q1FGH2EBP8RI7NF7IQR111ZI58TJX&address=$address';
+// final $url = '?module=account&action=txlist&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=API_KEY&address=$address';
 
-@ChopperApi(baseUrl: '?module=account&action=txlist&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=8VAG1Q1FGH2EBP8RI7NF7IQR111ZI58TJX&address=')
+@ChopperApi(baseUrl: '?module=account&action=txlist&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=API_KEY&address=')
 abstract class FetchEtherscanData extends ChopperService {
   @Get(path: '{address}')
   Future<Response> fetchData(@Path('address') String address);
@@ -31,7 +31,7 @@ abstract class FetchEtherscanData extends ChopperService {
   }
 }
 
-@ChopperApi(baseUrl: '?module=stats&action=ethprice&apikey=8VAG1Q1FGH2EBP8RI7NF7IQR111ZI58TJX')
+@ChopperApi(baseUrl: '?module=stats&action=ethprice&apikey=API_KEY')
 abstract class FetchEthereumPrice extends ChopperService {
   @Get()
   Future<Response> fetchEthereumPrice();
